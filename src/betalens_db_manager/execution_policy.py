@@ -12,6 +12,11 @@ class LegacyTaskError(ValueError):
     code='legacy_task_read_only'
 
 
+class RetiredTaskError(ValueError):
+    status_code=410
+    code='task_cache_retired'
+
+
 class LegacyPipelineError(ValueError):
     status_code=422
     code='legacy_pipeline_removed'

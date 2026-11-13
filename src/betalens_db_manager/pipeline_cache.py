@@ -1,9 +1,64 @@
 """Typed immutable Parquet snapshots and exact rollback images."""
-import hashlib,json,os
+import gzip,hashlib,json,os,tempfile
 from pathlib import Path
 import pyarrow as pa
 import pyarrow.parquet as pq
 from .util import digest,atomic_json,dumps
+
+JOURNAL_FORMAT='gzip-json-v1'
+
+
+def read_journal_metadata(record):
+    """Read new compressed manifests and legacy pointers without changing hashes."""
+    path=Path(record['path'])
+    try:
+        payload=path.read_bytes()
+    except FileNotFoundError:
+        # Migration keeps the original logical path and SHA in local/remote
+        # receipts. Its compressed sidecar contains exactly the original bytes.
+        payload=gzip.decompress(path.with_suffix(path.suffix+'.gz').read_bytes())
+    if hashlib.sha256(payload).hexdigest()!=record['sha256']:raise ValueError('回退清单哈希不符')
+    if path.suffix=='.gz':payload=gzip.decompress(payload)
+    return json.loads(payload)
+
+
+def _atomic_gzip(path,payload):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    descriptor,name=tempfile.mkstemp(prefix=path.name+'.',suffix='.tmp',dir=path.parent)
+    try:
+        with os.fdopen(descriptor,'wb') as stream:
+            with gzip.GzipFile(filename='',fileobj=stream,mode='wb',compresslevel=1,mtime=0) as compressed:
+                compressed.write(payload)
+            stream.flush();os.fsync(stream.fileno())
+        os.replace(name,path)
+        if os.name=='posix':
+            directory=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+            try:os.fsync(directory)
+            finally:os.close(directory)
+    finally:
+        Path(name).unlink(missing_ok=True)
+
+
+def compress_journal_manifest(record,dry_run=False):
+    """Retain immutable audit bytes while retiring their uncompressed copy."""
+    path=Path(record['path'])
+    if path.suffix=='.gz' or not path.is_file() or path.is_symlink():return None
+    before=path.stat();destination=path.with_suffix(path.suffix+'.gz')
+    if dry_run:return {'files':1,'input_bytes':before.st_size,'bytes':0,'disk_bytes':0}
+    payload=path.read_bytes()
+    if hashlib.sha256(payload).hexdigest()!=record['sha256']:raise ValueError('旧审计清单哈希不符，保留原文件')
+    _atomic_gzip(destination,payload)
+    # Verify the entire compressed stream before dropping the original copy.
+    if gzip.decompress(destination.read_bytes())!=payload:raise ValueError('审计清单压缩核验失败，保留原文件')
+    current=path.stat()
+    if (current.st_ino,current.st_size,current.st_mtime_ns)!=(before.st_ino,before.st_size,before.st_mtime_ns):
+        raise ValueError('审计清单在压缩期间变化，保留原文件')
+    after=destination.stat()
+    if after.st_size>=before.st_size:
+        destination.unlink();return None
+    path.unlink()
+    return {'files':1,'input_bytes':before.st_size,'bytes':before.st_size-after.st_size,
+            'disk_bytes':max(0,getattr(before,'st_blocks',0)-getattr(after,'st_blocks',0))*512}
 
 
 def schema(spec):
@@ -48,13 +103,13 @@ def save_journal(root,spec,comparison,expected=None):
     meta={**{k:v for k,v in comparison.items() if k not in {'changes','conflicts'}},'table':spec.name,'before':before,'after':after,
           'changes':[{k:v for k,v in c.items() if k not in {'before','after'}}|{'has_before':c['before'] is not None,'has_after':c['after'] is not None} for c in changes]}
     if expected is not None:meta['expected']=write_rows(root/'expected.parquet',spec,expected)
-    atomic_json(root/'manifest.json',meta)
-    return {'path':str(root/'manifest.json'),'sha256':file_sha(root/'manifest.json'),'table':spec.name}
+    path=root/'manifest.json.gz'
+    _atomic_gzip(path,dumps(meta).encode('utf-8'))
+    return {'path':str(path),'sha256':file_sha(path),'table':spec.name}
 
 
 def load_journal(record,spec):
-    if file_sha(record['path'])!=record['sha256']:raise ValueError('回退清单哈希不符')
-    meta=json.loads(Path(record['path']).read_text());before=read_rows(meta['before'],spec);after=read_rows(meta['after'],spec)
+    meta=read_journal_metadata(record);before=read_rows(meta['before'],spec);after=read_rows(meta['after'],spec)
     return {**{k:v for k,v in meta.items() if k not in {'before','after','table'}},
             'changes':[{**{k:v for k,v in c.items() if k not in {'has_before','has_after'}},
                         'before':before[i] if c['has_before'] else None,'after':after[i] if c['has_after'] else None} for i,c in enumerate(meta['changes'])]}

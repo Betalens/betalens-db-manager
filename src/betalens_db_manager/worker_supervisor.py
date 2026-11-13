@@ -26,6 +26,8 @@ def worker_status(settings):
     try:age=(datetime.now(timezone.utc)-datetime.fromisoformat(beat['at'])).total_seconds()
     except (KeyError,ValueError):age=None
     result.update(available=alive and age is not None and age<30 and beat.get('status') in {'idle','running'},heartbeat_age_seconds=age)
+    try:result['cache_cleanup']=json.loads((settings.state_dir/'cache-cleanup-status.json').read_text())
+    except (OSError,ValueError):result['cache_cleanup']={}
     return result
 
 

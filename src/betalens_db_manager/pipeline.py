@@ -272,16 +272,18 @@ class Pipeline:
 
     def audit(self,job,after=0,limit=100,offset=None):
         """Expand only the requested page from immutable journals; no row JSON mirror."""
+        if self.s.state.ledger_get('cache_retirement',job):
+            from .execution_policy import RetiredTaskError
+            raise RetiredTaskError('任务已退役，本地审计与回退文件已删除')
         import heapq
         size=max(1,min(limit,1000));start=max(0,offset or 0)
         if offset is not None:after=0
         candidates=[];receipts=self.store.receipts(job);total=0
         for receipt in receipts:
             if receipt['batch'].startswith('rollback:'):continue
-            from .pipeline_cache import file_sha
+            from .pipeline_cache import read_journal_metadata
             record=receipt['manifest']
-            if file_sha(record['path'])!=record['sha256']:raise ValueError('审计清单哈希不符')
-            metadata=json.loads(Path(record['path']).read_text())
+            metadata=read_journal_metadata(record)
             total+=len(metadata['changes'])
             for index,change in enumerate(metadata['changes']):
                 ident=int(digest([job,receipt['target'],receipt['batch'],change['row_key']])[:15],16)

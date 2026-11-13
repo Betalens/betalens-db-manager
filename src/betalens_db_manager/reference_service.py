@@ -437,6 +437,7 @@ class ReferenceWorkflow:
             prepared,contract,_,_=downloader.prepared(root)
             selected=None
             for original in originals:
+                if original.get('cache_retirement'):continue
                 old_identity=original['plan'].get('source_instances',{}).get(root['source_id']) or original['plan'].get('source_identity')
                 if not old_identity or not identity_matches(self.s.sources.values[root['source_id']],old_identity):continue
                 old_contract=original['plan'].get('source_contracts',{}).get(root['source_id']+':'+root['endpoint'])

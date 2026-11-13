@@ -44,7 +44,9 @@ def retry_control(phase,call,settings,stopped=lambda:False):
 
 def heartbeat(service,status,job=None,jobs=None):
     from .util import atomic_json
-    try:atomic_json(service.settings.state_dir/'worker-heartbeat.json',{'pid':os.getpid(),'at':now(),'status':status,'job':job,'jobs':jobs or ([] if job is None else [job])})
+    from .cache_retention import POLICY_VERSION,LOADED_AT,LOADED_SHA256
+    try:atomic_json(service.settings.state_dir/'worker-heartbeat.json',{'pid':os.getpid(),'at':now(),'status':status,'job':job,'jobs':jobs or ([] if job is None else [job]),
+        'cache_policy_version':POLICY_VERSION,'cache_policy_loaded_at':LOADED_AT,'cache_policy_sha256':LOADED_SHA256})
     except OSError as exc:diagnostic(service.settings,'worker_heartbeat_failed',error=str(exc))
 
 
@@ -121,8 +123,16 @@ def execute_task(settings,task):
 
 def clean_cache(service,job=None):
     """A cleanup failure must never change a successful ingestion result."""
-    from .download_cache import cleanup_download_cache
-    try:return cleanup_download_cache(service,job=job)
+    from .cache_retention import cleanup_task_caches,POLICY_VERSION
+    from .util import atomic_json
+    from .execution_policy import maintenance
+    if maintenance(service.settings.state_dir):return None
+    try:
+        atomic_json(service.settings.state_dir/'cache-cleanup-status.json',{'policy_version':POLICY_VERSION,'pid':os.getpid(),'status':'running','started_at':now(),'job':job})
+        result=cleanup_task_caches(service,job=job,compression_budget_bytes=128*1024**2)
+        atomic_json(service.settings.state_dir/'cache-cleanup-status.json',{'policy_version':POLICY_VERSION,'pid':os.getpid(),'status':'failed' if result['errors'] else 'completed',
+            'finished_at':now(),'job':job,'summary':{k:result[k] for k in ('files','bytes','disk_bytes','raw_files','raw_bytes')},'compression_pending':result['derived']['compression_pending'],'errors':result['errors'][:20]})
+        return result
     except Exception as exc:
         diagnostic(service.settings,'download_cache_cleanup_failed',job=job,error=str(exc))
 
@@ -208,7 +218,15 @@ def work(service: DatabaseManagerService, once: bool = False):
                     if children:time.sleep(.25)
                     continue
                 if not children and time.monotonic()-last_cleanup>=60:
-                    clean_cache(service)
+                    # Long historical scans must not make a healthy idle worker
+                    # disappear from the supervisor/status page.
+                    import threading
+                    cleanup_stop=threading.Event()
+                    def cleanup_heartbeat():
+                        while not cleanup_stop.wait(5):heartbeat(service,'idle')
+                    cleanup_thread=threading.Thread(target=cleanup_heartbeat,daemon=True);cleanup_thread.start()
+                    try:clean_cache(service)
+                    finally:cleanup_stop.set();cleanup_thread.join()
                     last_cleanup=time.monotonic()
                 if once and claimed_once:
                     if not children:break

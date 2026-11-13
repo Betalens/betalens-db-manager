@@ -206,6 +206,8 @@ def install_routes(app,service,response):
     @cache_lock(service.state.root)
     def cache(job:str,offset:int=0,limit:int=100,dataset:str|None=None):
         item=service._job(job);offset=max(0,offset);size=max(1,min(limit,1000));samples=[];cursor=0
+        if item.get('cache_retirement'):
+            return response({'rows':[],'total':0,'offset':offset,'next':None,'cache_purged':True,'retirement':item['cache_retirement']})
         from .source import read_archive
         parts=[p for p in item['slices'] if p.get('archive') and p['status']!='split' and (not dataset or p['dataset']==dataset) and Path(p['archive']).exists()]
         total=sum(p['rows'] or 0 for p in parts)

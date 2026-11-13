@@ -38,8 +38,10 @@ def main(argv=None):
         command.add_argument("job")
     validator=commands.add_parser('validate');validator.add_argument('job');validator.add_argument('--rules',nargs='+',choices=['values','relations','readback'],default=['values','relations'])
     commands.add_parser("jobs")
-    cache=commands.add_parser('cache-clean',help='清理已完成或已回退任务的下载缓存，保留未完成任务和审计镜像')
+    cache=commands.add_parser('cache-clean',help='清理已结束任务的下载/转换缓存，压缩保留审计和回退镜像')
     cache.add_argument('--dry-run',action='store_true',help='仅统计可清理的文件和字节数')
+    cache.add_argument('--job',help='只维护指定主任务的缓存')
+    cache.add_argument('--retire-rolled-back',action='store_true',help='永久退役已完整回退的任务，删除其本地审计、回退和缓存文件')
     probe = commands.add_parser("probe"); probe.add_argument("datasets", nargs="+")
     query = commands.add_parser("query"); query.add_argument("dataset")
     query.add_argument("--code"); query.add_argument("--start"); query.add_argument("--end"); query.add_argument("--after")
@@ -85,8 +87,8 @@ def main(argv=None):
         else:service=DatabaseManagerService(settings)
         result = None
         if args.command == 'cache-clean':
-            from .download_cache import cleanup_download_cache
-            result=cleanup_download_cache(service,dry_run=args.dry_run)
+            from .cache_retention import cleanup_task_caches
+            result=cleanup_task_caches(service,job=args.job,dry_run=args.dry_run,retire_rolled_back=args.retire_rolled_back)
         elif args.command == "doctor": result = service.doctor()
         elif args.command == 'migration-preview':
             from .deployment_preview import migration_preview

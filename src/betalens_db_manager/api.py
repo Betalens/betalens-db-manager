@@ -260,12 +260,15 @@ def create_app(service: DatabaseManagerService | None = None) -> FastAPI:
 
     @app.get("/api/jobs/{job}/audit")
     def audit(job: str, after: int = 0, limit: int = 100, offset: int | None = Query(default=None, ge=0)):
-        service._job(job); return response(service.audit(job,after,limit,offset=offset))
+        item=service._job(job)
+        if item.get('cache_retirement'):raise HTTPException(status_code=410,detail='任务已退役，本地审计与回退文件已删除')
+        return response(service.audit(job,after,limit,offset=offset))
 
     @app.get("/api/jobs/{job}/archive/{slice_id}")
     @cache_lock(service.state.root)
     def archive(job: str, slice_id: str, wire: bool = False):
         item = service._job(job); part = next((p for p in item["slices"] if p["id"] == slice_id), None)
+        if item.get('cache_retirement'):raise HTTPException(status_code=410,detail='任务已退役，本地缓存已删除')
         if not part or not part["archive"]: raise ValueError("归档不存在")
         path=service.settings.state_dir / part["archive"]
         if not path.exists() and item.get('download_cache_cleanup'):

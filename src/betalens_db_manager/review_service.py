@@ -40,6 +40,9 @@ class ReviewService:
     def _job(self,job,write=False):
         if write:self.s.state.ensure_execution(job)
         item=self.s._job(job,write)
+        if item.get('cache_retirement'):
+            from .execution_policy import RetiredTaskError
+            raise RetiredTaskError('任务已退役，本地拒收与审计文件已删除')
         if item['plan'].get('pipeline_version')!=2 or item['plan'].get('revision')!='manager-v1' or item['plan'].get('pipeline_parent'):
             raise ValueError('人工审计仅支持普通表异步主任务')
         if write:

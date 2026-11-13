@@ -219,7 +219,7 @@ def test_readback_still_checks_target_after_source_cleanup(tmp_path, monkeypatch
     with registry_context(s.registry):
         spec = s.registry.spec('cache_quotes')
         row = typed(spec, {'code': 'a', 'business_date': date(2026, 10, 20), 'price': Decimal('2')})
-        record = write_rows(s.settings.state_dir / 'pipeline' / job / 'data.parquet', spec, [row])
+        record = write_rows(s.settings.state_dir / 'pipeline' / job / 'cache_quotes' / '0.parquet', spec, [row])
         manifest = save_journal(s.settings.state_dir / 'pipeline' / job / 'intents', spec,
                                 {'changes': [{'row_key': row_key(spec, row), 'before': None, 'after': row,
                                               'before_hash': None, 'after_hash': row_hash(spec, row)}]}, [row])
@@ -229,7 +229,9 @@ def test_readback_still_checks_target_after_source_cleanup(tmp_path, monkeypatch
     store.prepare(job, job + ':cache_quotes:0', 'postgres', manifest)
     store.acknowledge(job, job + ':cache_quotes:0', 'postgres', {})
     s.state.update_job(job, status='completed')
-    cleanup_download_cache(s)
+    from betalens_db_manager.cache_retention import cleanup_task_caches
+    cleanup_task_caches(s)
+    assert not Path(record['path']).exists()
     assert source.exists()  # Only the managed copy is disposable.
     monkeypatch.setattr(s, '_build_canonical', lambda *_: pytest.fail('cleaned source must not be replayed'))
     live = dict(row)

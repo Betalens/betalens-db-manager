@@ -178,6 +178,10 @@ class State:
             cleanup_job=result['plan'].get('pipeline_parent') or job
             cleanup=conn.execute("SELECT value FROM ledger WHERE table_name='download_cache_cleanup' AND row_key=?",(cleanup_job,)).fetchone()
             result['download_cache_cleanup']=json.loads(cleanup[0]) if cleanup else None
+            derived=conn.execute("SELECT value FROM ledger WHERE table_name='derived_cache_cleanup' AND row_key=?",(cleanup_job,)).fetchone()
+            result['derived_cache_cleanup']=json.loads(derived[0]) if derived else None
+            retired=conn.execute("SELECT value FROM ledger WHERE table_name='cache_retirement' AND row_key=?",(cleanup_job,)).fetchone()
+            result['cache_retirement']=json.loads(retired[0]) if retired else None
             return result
 
     def jobs(self, limit: int = 100, target: str | None = None, offset: int = 0) -> list[dict]:
@@ -247,7 +251,11 @@ class State:
         return task
 
     def ensure_execution(self,job):
-        from .execution_policy import LegacyTaskError,ensure_available
+        from .execution_policy import LegacyTaskError,RetiredTaskError,ensure_available
+        with self.connect() as conn:
+            row=conn.execute("SELECT coalesce(json_extract(plan,'$.pipeline_parent'),id) FROM jobs WHERE id=?",(job,)).fetchone()
+        if row and self.ledger_get('cache_retirement',row[0]):
+            raise RetiredTaskError('任务已退役，本地缓存、审计和回退文件已删除；请创建新任务')
         if self.job_header(job)['pipeline_version']!=2:
             raise LegacyTaskError('旧任务仅保留查看和导出，不能继续执行、提交、回退或重试')
         ensure_available(self.root)

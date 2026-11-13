@@ -35,7 +35,7 @@ def cache_guard(method):
     return guarded
 
 
-def cleanup_download_cache(service, *, job=None, dry_run=False):
+def cleanup_download_cache(service, *, job=None, dry_run=False, exclude_jobs=()):
     """Clean terminal task families; shared payloads stay until all users finish.
 
     Only task directories directly below the configured archive directory are
@@ -44,10 +44,10 @@ def cleanup_download_cache(service, *, job=None, dry_run=False):
     cohorts retain their inputs for recovery and human review.
     """
     with cache_lock(service.state.root):
-        return _cleanup(service, job, dry_run)
+        return _cleanup(service, job, dry_run, exclude_jobs)
 
 
-def _cleanup(service, job, dry_run):
+def _cleanup(service, job, dry_run, exclude_jobs=()):
     state = service.state
     archive = Path(service.settings.archive_dir or service.settings.state_dir / 'archive').resolve()
     summary = {'dry_run': dry_run, 'tasks': 0, 'files': 0, 'bytes': 0, 'disk_bytes': 0,
@@ -77,6 +77,7 @@ def _cleanup(service, job, dry_run):
         eligible = {identity for identity, r in jobs.items()
                     if not r['parent'] and r['status'] in TERMINAL and identity not in blocked}
         selected = eligible & {job} if job else eligible
+        selected -= set(exclude_jobs)
         directories = {}
         for identity, root in roots.items():
             if root not in selected or Path(identity).name != identity or identity in {'.', '..'}:
@@ -104,12 +105,13 @@ def _cleanup(service, job, dry_run):
             path = Path(value)
             if not path.is_absolute():
                 path = state.root / path
-            path = path.resolve()
+            path = Path(os.path.abspath(path))
             try:
                 relative = path.relative_to(archive)
             except ValueError:
                 return
             if relative.parts and relative.parts[0] in directories:
+                path = path.resolve()
                 protected.add(path)
                 protected.add(path.with_suffix('.meta.json'))
                 protected.add(path.with_suffix('.tmp'))

@@ -11,7 +11,7 @@ from pathlib import Path
 import uuid
 from .canonical import registry_context,catalog_snapshot
 from .comparison import row_key,content_hash,row_hash,typed,typed_row_hash,typed_content_hash
-from .pipeline_cache import read_rows,load_journal
+from .pipeline_cache import read_rows,load_journal,read_journal_metadata
 from .pipeline_store import PipelineStore
 from .publishing import existing
 from .util import digest,now,parse_date
@@ -135,7 +135,15 @@ class ValidationRunner:
                     for record_index,record in enumerate(records):
                         limits=record.get('ranges',{}).get(time_field,{})
                         if limits.get('null_count')==0 and limits.get('min') and limits.get('max') and (parse_date(limits['max'])<a or parse_date(limits['min'])>b):continue
-                        expected=read_rows(record,spec,columns=columns,filters=predicate)
+                        input_record=record
+                        if not Path(record['path']).is_file() and parent.get('derived_cache_cleanup'):
+                            batch=child+':'+name+':'+str(record_index)
+                            for target in targets:
+                                receipt=self.store.receipt(job,batch,target)
+                                if receipt and receipt['status']=='completed':
+                                    input_record=read_journal_metadata(receipt['manifest']).get('expected') or record
+                                    break
+                        expected=read_rows(input_record,spec,columns=columns,filters=predicate)
                         if not expected:continue
                         if 'readback' in rules and child_item is None:
                             child_item=self.s._job(child,True)
