@@ -1,4 +1,6 @@
 import json
+import asyncio
+import pytest
 
 from fastapi.testclient import TestClient
 
@@ -66,3 +68,34 @@ def test_live_latest_starts_at_tail_and_skips_new_backlog(tmp_path,monkeypatch):
         monkeypatch.setattr(service.state,'job',original)
         with client.websocket_connect('/api/live/' + job + '?after=5') as socket:
             assert socket.receive_json()['record']['id'] == 6
+
+
+def test_stream_queries_run_outside_http_event_loop(tmp_path,monkeypatch):
+    service=manager(tmp_path)
+    job=service.state.create_job({'request':{'tables':[],'targets':[]}},service.settings.fingerprint)['id']
+    seed_logs(service.state,job,1,1)
+    for name in ('logs','live_status','job_header'):
+        original=getattr(service.state,name)
+        def checked(*args,_original=original,**kwargs):
+            with pytest.raises(RuntimeError,match='no running event loop'):asyncio.get_running_loop()
+            return _original(*args,**kwargs)
+        monkeypatch.setattr(service.state,name,checked)
+    monkeypatch.setattr(service.state,'job',lambda *_:pytest.fail('streams must not load a full task snapshot'))
+    app=create_app(service)
+    with TestClient(app) as client:
+        for suffix in ('?latest=true','?after=0'):
+            with client.websocket_connect('/api/live/'+job+suffix) as socket:
+                first=socket.receive_json()
+                assert first['type'] in {'logs','log'}
+                if first['type']=='logs':assert socket.receive_json()['type']=='heartbeat'
+                assert socket.receive_json()['record']['id']==job
+    class Request:
+        async def is_disconnected(self):return False
+    async def stream():
+        endpoint=next(r.endpoint for r in app.routes if getattr(r,'path','')=='/api/tasks/{job}/events')
+        response=await endpoint(job,Request())
+        try:
+            event=await anext(response.body_iterator)
+            assert json.loads(event.removeprefix('data: '))['id']==job
+        finally:await response.body_iterator.aclose()
+    asyncio.run(stream())

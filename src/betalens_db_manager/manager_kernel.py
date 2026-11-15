@@ -14,7 +14,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from .canonical import CanonicalTable, canonical, load_canonical_catalog, FINANCIAL_ALIASES
-from .comparison import typed, row_key, PROVENANCE, quote_close_precision_matches
+from .comparison import typed, row_key, PROVENANCE, quote_close_prefers_daily, quote_close_source
 from .catalog import Dataset, dataset, load_catalog, optional_source_fields
 from .config import Settings
 from .mapping import FIELD_MAP, VERSION
@@ -317,15 +317,29 @@ class ManagerKernel:
         result = {}
         for row in rows:
             key = tuple(row.get(k) for k in spec.keys)
-            if key not in result: result[key] = dict(row); continue
+            if key not in result:
+                result[key]=dict(row)
+                if spec.name=='market_daily_raw' and row.get('close') is not None:
+                    result[key]['_quote_close_source']=quote_close_source(row)
+                continue
             current = result[key]
             for name in columns(spec):
                 if name not in PROVENANCE and name not in spec.keys and current.get(name) is not None and row.get(name) is not None and current[name]!=row[name]:
-                    if quote_close_precision_matches(spec,name,current,row):
-                        # The price feed wins regardless of archive ordering.
-                        if 'daily' in str(row.get('source_endpoint') or '').split(','):current[name]=row[name]
+                    if quote_close_prefers_daily(spec,name,current,row):
+                        daily,basic=(row,current) if quote_close_source(row)=='daily' else (current,row)
+                        state=getattr(self,'state',None);job=current.get('import_task_id') or row.get('import_task_id')
+                        if state is not None and job:
+                            state.ledger_put('quote_close_resolution',digest([job,key]),{'task_id':job,
+                                'security_code':current.get('security_code'),'trade_date':current.get('trade_date'),
+                                'column':'close','selected_source':'tushare:daily','selected_value':daily[name],
+                                'other_source':'tushare:daily_basic','other_value':basic[name],
+                                'daily_record_hash':daily.get('source_record_hash'),'daily_basic_record_hash':basic.get('source_record_hash'),
+                                'policy':'daily-close-primary-20261115','checked_at':now()})
+                        current[name]=daily[name];current['_quote_close_source']='daily'
                     else:current['data_quality_status']='conflicting_source_rows'
-                if current.get(name) is None and row.get(name) is not None: current[name] = row[name]
+                if current.get(name) is None and row.get(name) is not None:
+                    current[name]=row[name]
+                    if spec.name=='market_daily_raw' and name=='close':current['_quote_close_source']=quote_close_source(row)
             current["source_endpoint"] = ",".join(sorted(set(filter(None, str(current.get("source_endpoint", "")).split(",") + [str(row.get("source_endpoint", ""))]))))
             current["source_record_hash"] = digest([current.get("source_record_hash"), row.get("source_record_hash")])
         return list(result.values())

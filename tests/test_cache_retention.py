@@ -16,7 +16,7 @@ from betalens_db_manager.canonical import registry_context
 from betalens_db_manager.comparison import compare
 from betalens_db_manager.pipeline import Pipeline
 from betalens_db_manager.pipeline_cache import (save_journal,load_journal,read_journal_metadata,
-    compress_journal_manifest,write_rows)
+    compress_journal_manifest,write_rows,share_identical_snapshot,file_sha)
 from betalens_db_manager.pipeline_store import PipelineStore
 from betalens_db_manager.worker import heartbeat
 from betalens_db_manager.worker_supervisor import worker_status
@@ -57,6 +57,44 @@ def test_new_compressed_journal_and_legacy_migration_preserve_audit(tmp_path):
     assert Pipeline(s).audit(job)['total']==1
     Path(record['path']+'.gz').write_bytes(gzip.compress(b'{"changed":true}'))
     with pytest.raises(ValueError,match='哈希'):load_journal(record,spec)
+
+
+def test_identical_expected_and_after_share_storage_but_preserve_audit_and_rollback(tmp_path):
+    s=manager(tmp_path);job=task(s)
+    spec,record,_,_=journal(s,job)
+    metadata=read_journal_metadata(record)
+    expected,after=metadata['expected'],metadata['after']
+    assert Path(expected['path']).samefile(after['path'])
+    assert file_sha(expected['path'])==expected['sha256']==after['sha256']
+    recovered=load_journal(record,spec)
+    assert recovered['changes'][0]['before'] is None
+    assert recovered['changes'][0]['after']['price']==Decimal('12.00000001')
+    assert share_identical_snapshot(expected['path'],after['path']) is None
+
+
+def test_snapshot_sharing_preserves_distinct_values_and_failed_replacement(tmp_path,monkeypatch):
+    a,b=tmp_path/'a.parquet',tmp_path/'b.parquet'
+    a.write_bytes(b'first');b.write_bytes(b'other')
+    assert share_identical_snapshot(a,b) is None
+    assert a.read_bytes()==b'first' and b.read_bytes()==b'other'
+    b.write_bytes(b'first')
+    def fail(*_):raise OSError('replacement denied')
+    monkeypatch.setattr('betalens_db_manager.pipeline_cache.os.replace',fail)
+    with pytest.raises(OSError):share_identical_snapshot(a,b)
+    assert a.read_bytes()==b.read_bytes()==b'first' and not a.samefile(b)
+    assert not list(tmp_path.glob('*.tmp'))
+    with pytest.raises(ValueError,match='哈希'):share_identical_snapshot(a,b,expected_sha='incorrect')
+
+
+def test_journal_keeps_verified_copies_when_hard_links_are_unavailable(tmp_path,monkeypatch):
+    def unsupported(*args,**kwargs):raise OSError('hard links unavailable')
+    monkeypatch.setattr('betalens_db_manager.pipeline_cache.os.link',unsupported)
+    s=manager(tmp_path);job=task(s)
+    spec,record,_,_=journal(s,job)
+    meta=read_journal_metadata(record)
+    assert not Path(meta['expected']['path']).samefile(meta['after']['path'])
+    assert file_sha(meta['expected']['path'])==meta['expected']['sha256']
+    assert load_journal(record,spec)['changes'][0]['after']['price']==Decimal('12.00000001')
 
 
 def test_compression_failure_preserves_original_journal(tmp_path,monkeypatch):

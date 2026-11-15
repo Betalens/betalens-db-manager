@@ -73,6 +73,37 @@ def file_sha(path):
     return h.hexdigest()
 
 
+def share_identical_snapshot(path,existing,*,expected_sha=None):
+    """Atomically share immutable bytes, preserving both audit paths and hashes."""
+    path,existing=Path(path),Path(existing)
+    if path.is_symlink() or existing.is_symlink():return None
+    before,source=path.stat(),existing.stat()
+    if before.st_dev!=source.st_dev or before.st_size!=source.st_size:return None
+    if before.st_ino==source.st_ino:return None
+    actual=file_sha(existing)
+    if expected_sha is not None and actual!=expected_sha:raise ValueError('镜像哈希不符，保留原文件')
+    if file_sha(path)!=actual:
+        if expected_sha is not None:raise ValueError('镜像哈希不符，保留原文件')
+        return None
+    def stamp(value):return value.st_dev,value.st_ino,value.st_size,value.st_mtime_ns
+    if stamp(path.stat())!=stamp(before) or stamp(existing.stat())!=stamp(source):
+        raise ValueError('镜像在核验期间变化，保留原文件')
+    descriptor,temporary=tempfile.mkstemp(prefix=path.name+'.share-',suffix='.tmp',dir=path.parent)
+    os.close(descriptor);temporary=Path(temporary);temporary.unlink()
+    try:
+        os.link(existing,temporary,follow_symlinks=False)
+        if stamp(temporary.stat())!=stamp(source) or stamp(path.stat())!=stamp(before):
+            raise ValueError('镜像在共享期间变化，保留原文件')
+        os.replace(temporary,path)
+        if os.name=='posix':
+            directory=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+            try:os.fsync(directory)
+            finally:os.close(directory)
+    finally:temporary.unlink(missing_ok=True)
+    return {'files':1,'bytes':before.st_size if before.st_nlink==1 else 0,
+            'disk_bytes':getattr(before,'st_blocks',0)*512 if before.st_nlink==1 else 0}
+
+
 def write_rows(path,spec,rows):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     table=rows if isinstance(rows,pa.Table) else pa.Table.from_pylist(rows,schema=schema(spec))
@@ -102,7 +133,11 @@ def save_journal(root,spec,comparison,expected=None):
     after=write_rows(root/'after.parquet',spec,[c['after'] or {} for c in changes])
     meta={**{k:v for k,v in comparison.items() if k not in {'changes','conflicts'}},'table':spec.name,'before':before,'after':after,
           'changes':[{k:v for k,v in c.items() if k not in {'before','after'}}|{'has_before':c['before'] is not None,'has_after':c['after'] is not None} for c in changes]}
-    if expected is not None:meta['expected']=write_rows(root/'expected.parquet',spec,expected)
+    if expected is not None:
+        meta['expected']=write_rows(root/'expected.parquet',spec,expected)
+        if meta['expected']['sha256']==after['sha256']:
+            try:share_identical_snapshot(meta['expected']['path'],after['path'],expected_sha=after['sha256'])
+            except OSError:pass  # Filesystems without hard links retain both verified copies.
     path=root/'manifest.json.gz'
     _atomic_gzip(path,dumps(meta).encode('utf-8'))
     return {'path':str(path),'sha256':file_sha(path),'table':spec.name}

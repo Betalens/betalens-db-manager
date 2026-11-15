@@ -15,7 +15,8 @@ from test_manager import cached_part,manager
 from test_retrieval import task
 
 
-@pytest.mark.parametrize('code',['00700.HK','03690.HK','BABA','PDD','BRK.B','RDS-A','000001.SZ','6758','035720','5PD','900250','000001'])
+@pytest.mark.parametrize('code',['00700.HK','03690.HK','BABA','PDD','BRK.B','RDS-A','000001.SZ','6758','035720','5PD','900250','000001',
+    'WOLF!AB','EMC!AJ','S!AJ','BITA!AA','CD!AA','GLACU!AA','CNEL!AA'])
 def test_index_constituents_preserve_native_identifiers(code):
     spec=canonical('index_membership')
     row={'index_code':'000501HKD08.CSI','security_code':code,'trade_date':date(2026,10,30),'weight':Decimal('7.121')}

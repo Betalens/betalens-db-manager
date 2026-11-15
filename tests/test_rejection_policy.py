@@ -38,9 +38,10 @@ def quote(source, close, **values):
 
 
 @pytest.mark.parametrize('reverse', [False, True])
-def test_cross_feed_close_rounding_selects_daily_independent_of_order(reverse):
+@pytest.mark.parametrize('basic_close',['13.9389','13.93','6.62'])
+def test_cross_feed_close_selects_daily_independent_of_order(reverse,basic_close):
     service = ManagerKernel.__new__(ManagerKernel)
-    rows = [quote('daily', '13.94'), quote('daily_basic', '13.9389')]
+    rows = [quote('daily', '13.94'), quote('daily_basic', basic_close)]
     if reverse:
         rows.reverse()
     result = service._merge(rows, canonical('market_daily_raw'))[0]
@@ -50,13 +51,38 @@ def test_cross_feed_close_rounding_selects_daily_independent_of_order(reverse):
 
 
 @pytest.mark.parametrize('rows', [
-    [quote('daily', '13.94'), quote('daily_basic', '13.93')],
     [quote('daily', '13.94'), quote('daily', '13.9389')],
+    [quote('daily', '13.94'), quote('daily_basic', '13.93'), quote('daily', '13.95')],
+    [quote('daily', '13.94'), quote('daily_basic', '13.93'), quote('daily_basic', '13.92'),quote('daily','13.95')],
     [quote('daily', '13.94', volume=Decimal('10')), quote('daily_basic', '13.9389', volume=Decimal('11'))],
 ])
-def test_close_tolerance_does_not_hide_real_or_unrelated_conflicts(rows):
+def test_close_priority_does_not_hide_same_feed_or_unrelated_conflicts(rows):
     service = ManagerKernel.__new__(ManagerKernel)
     assert service._merge(rows, canonical('market_daily_raw'))[0]['data_quality_status'] == 'conflicting_source_rows'
+
+
+def test_daily_close_priority_reaches_adjusted_prices_and_records_conflict(tmp_path):
+    service=manager(tmp_path)
+    job=service.plan({'tables':['market_daily_raw','market_daily_post_adjusted'],'source_id':'tushare',
+        'endpoints':['daily','daily_basic','adj_factor'],'asset_types':['stock'],'codes':['002357.SZ'],
+        'start_date':'2013-07-15','end_date':'2013-07-15'})
+    values={'daily':{'ts_code':'002357.SZ','trade_date':'20130715','open':'6.6','high':'6.9','low':'6.5',
+        'close':'6.8','pre_close':'6.6','change':'.2','pct_chg':'3.03','vol':'100','amount':'67'},
+        'daily_basic':{'ts_code':'002357.SZ','trade_date':'20130715','close':'6.62'},
+        'adj_factor':{'ts_code':'002357.SZ','trade_date':'20130715','adj_factor':'2'}}
+    for endpoint,row in values.items():
+        fields=[f['name'] for f in service.sources.endpoint('tushare',endpoint)['fields']]
+        cached_part(service,job,endpoint,{'fields':fields,'items':[[row.get(f) for f in fields]]})
+    with light_normalization(),registry_context(service.registry):
+        tables,rejects=service._build_canonical(service.state.job(job['id']))
+    assert not rejects
+    assert tables['market_daily_raw'][0]['close']==Decimal('6.8')
+    assert tables['market_daily_post_adjusted'][0]['raw_close']==Decimal('6.8')
+    assert tables['market_daily_post_adjusted'][0]['close']==Decimal('13.6')
+    audit=service.state.ledger_rows('quote_close_resolution',job['id'])
+    assert len(audit)==1 and audit[0]['selected_source']=='tushare:daily'
+    assert Decimal(audit[0]['selected_value'])==Decimal('6.8')
+    assert Decimal(audit[0]['other_value'])==Decimal('6.62')
 
 
 @pytest.mark.parametrize('omit_field', [False, True])

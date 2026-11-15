@@ -284,13 +284,16 @@ def create_app(service: DatabaseManagerService | None = None) -> FastAPI:
             'X-Original-SHA256':original,'X-Export-SHA256':exported})
 
     @app.get("/api/jobs/{job}/events")
-    async def events(job: str):
-        service._job(job)
+    async def events(job: str, request: Request):
+        await asyncio.to_thread(service.state.job_header,job)
+        def snapshot():
+            from .security import public_data
+            return dumps(public_data(service.state.live_status(job),service.settings,getattr(getattr(service,'sources',None),'values',{}).values()))
         async def generate():
             last = None
             for _ in range(120):
-                from .security import public_data
-                item = service.state.job(job); content = dumps(public_data(item,service.settings,getattr(getattr(service,'sources',None),'values',{}).values()))
+                if await request.is_disconnected():return
+                content=await asyncio.to_thread(snapshot)
                 if content != last: yield "data: " + content + "\n\n"; last = content
                 await asyncio.sleep(2)
         return StreamingResponse(generate(), media_type="text/event-stream")

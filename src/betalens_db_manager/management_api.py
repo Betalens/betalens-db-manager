@@ -244,25 +244,28 @@ def install_routes(app,service,response):
     async def live(websocket:WebSocket,job:str,after:int=0,latest:bool=False,limit:int=500):
         from .security import public_data
         def safe(value):return public_data(value,service.settings,service.sources.values.values())
+        def encode(value):return __import__('betalens_db_manager.util',fromlist=['dumps']).dumps(safe(value))
         origin=websocket.headers.get('origin')
         if origin and urlsplit(origin).netloc!=websocket.headers.get('host'):await websocket.close(code=1008);return
         await websocket.accept();after=max(0,after);last=None;initial=True
         try:
             while True:
-                rows=service.state.logs(job,after,limit,latest=True) if latest else service.state.logs(job,after)
+                rows=await asyncio.to_thread(service.state.logs,job,after,limit,latest=latest)
                 if latest and initial:
                     # Start at the current tail, never replay a large historical backlog.
-                    await websocket.send_text(__import__('betalens_db_manager.util',fromlist=['dumps']).dumps(safe({'type':'logs','records':rows})))
+                    await websocket.send_text(await asyncio.to_thread(encode,{'type':'logs','records':rows}))
                     after=rows[-1]['id'] if rows else after
                     rows=[]
                 for row in rows:
                     if latest and row['id']<=after:continue
-                    await websocket.send_text(__import__('betalens_db_manager.util',fromlist=['dumps']).dumps(safe({'type':'log','record':row})));after=row['id']
+                    await websocket.send_text(await asyncio.to_thread(encode,{'type':'log','record':row}));after=row['id']
                 if latest:await websocket.send_text('{"type":"heartbeat"}')
                 initial=False
-                item=service.state.live_status(job) if latest else service.state.job(job)
-                signature=digest(item if latest else [item['updated'],[(p['id'],p['status'],p['rows']) for p in item['slices']],item['tasks']])
+                # Both protocols notify with small metadata. Older clients can
+                # still consume cursor logs without expanding every archive.
+                item=await asyncio.to_thread(service.state.live_status,job)
+                signature=digest(item)
                 if signature!=last:
-                    await websocket.send_text(__import__('betalens_db_manager.util',fromlist=['dumps']).dumps(safe({'type':'task','record':item})));last=signature
+                    await websocket.send_text(await asyncio.to_thread(encode,{'type':'task','record':item}));last=signature
                 await asyncio.sleep(1)
         except (WebSocketDisconnect,RuntimeError):pass

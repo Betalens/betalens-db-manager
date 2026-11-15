@@ -334,3 +334,84 @@ def test_compact_pipeline_does_not_return_full_large_request_list(tmp_path):
     assert len(result['plan']['requests'])==100
     assert result['plan']['requests_count']==full_count
     assert len(s.state.plan(job['id'])['requests'])==full_count
+
+
+def test_compact_pipeline_reads_bounded_samples_and_keeps_full_write_totals(tmp_path,monkeypatch):
+    from betalens_db_manager.pipeline import Pipeline
+    from betalens_db_manager.task_progress import summary
+    from betalens_db_manager.util import now
+    s=manager(tmp_path);store=PipelineStore(s.state)
+    job=s.plan({'tables':['market_daily_raw'],'source_id':'tushare','endpoints':['daily'],
+        'asset_types':['stock'],'codes':['000001.SZ'],'start_date':'2026-10-20','end_date':'2026-10-20'})
+    identity=job['id']
+    s.state.ledger_put('pipeline_work_plan',identity,{'task_id':identity,'basis':'logical_requests','frozen_at':now(),
+        'version':'fixed','request_ids':[],'batch_ids':['one'],'requests_total':0,'batches_total':1})
+    store.put(identity,'one','normalize',{});store.finish(identity,'one',{'child_id':'child','tables':{},'rejected':0})
+    store.put(identity,'stored:child:postgres','stored',{'child_id':'child','target':'postgres'})
+    store.finish(identity,'stored:child:postgres',{})
+    store.prepare_many(identity,'postgres',[(str(n),{'table':'market_daily_raw'}) for n in range(150)])
+    store.acknowledge_many(identity,'postgres',[(str(n),{'applied':2},None) for n in range(150)])
+    for n in range(120):
+        store.prepare(identity,'rollback:'+str(n),'postgres',{'table':'market_daily_raw'})
+        store.acknowledge(identity,'rollback:'+str(n),'postgres',{'applied':2},error='conflict' if n==119 else None)
+    expected=summary(s,s.state.job(identity),store.units(identity))
+    original=s.state.job
+    def metadata_only(job,**kwargs):
+        assert kwargs.get('metadata_only'),'compact reads must not hydrate request/archive graphs'
+        return original(job,**kwargs)
+    monkeypatch.setattr(s.state,'job',metadata_only)
+    monkeypatch.setattr(store,'units',lambda *_:pytest.fail('must not load full normalization payloads'))
+    monkeypatch.setattr(store,'receipts',lambda *_:pytest.fail('must not load full receipt manifests'))
+    pipeline=Pipeline.__new__(Pipeline);pipeline.s=s;pipeline.store=store
+    result=pipeline.detail(identity,compact=True)['pipeline']
+    assert result['progress']==expected
+    assert len(result['receipts'])==100 and result['receipts_total']==270
+    assert result['receipt_summary'][0]['batches']==150 and result['receipt_summary'][0]['applied']==300
+    rollback=result['rollback_progress'][0]
+    assert {k:rollback[k] for k in ('total','completed','remaining','failed','applied')}=={
+        'total':150,'completed':119,'remaining':31,'failed':1,'applied':238}
+    assert len(rollback['pending'])==1 and rollback['pending'][0]['error']=='conflict'
+
+
+def test_reconciliation_reuses_verified_checkpoints_and_detects_changed_images(tmp_path,monkeypatch):
+    from betalens_db_manager.pipeline import Pipeline
+    from test_manager import table_definition
+    from betalens_db_manager.pipeline_cache import read_journal_metadata
+    import pyarrow.parquet as pq
+    s=manager(tmp_path);s.registry.save(table_definition())
+    parent=s.state.create_job({'pipeline_version':2,'request':{'targets':['postgres','clickhouse']}},s.settings.fingerprint)
+    store=PipelineStore(s.state);spec=s.registry.spec('sample_prices')
+    incoming=[{'code':'a','business_date':date(2026,10,20),'price':Decimal('12.3')}]
+    for target in ('postgres','clickhouse'):
+        record=save_journal(tmp_path/target,spec,compare(spec,incoming,[],'fill_missing'),incoming)
+        store.prepare(parent['id'],'one',target,record)
+        store.acknowledge(parent['id'],'one',target,{'schema_hash':spec.hash})
+    pipeline=Pipeline(s)
+    assert pipeline.reconcile(parent['id'])==[]
+    key=parent['id']+':one';saved=s.state.ledger_get('pipeline_reconciliation',key)
+    assert saved['input_signature']
+    monkeypatch.setattr(pq,'read_table',lambda *_args,**_kwargs:pytest.fail('verified checkpoints need no repeated row decoding'))
+    assert pipeline.reconcile(parent['id'])==[]
+    # A legacy passed checkpoint is upgraded only after immutable receipt/schema
+    # and physical file hashes are verified again.
+    s.state.ledger_put('pipeline_reconciliation',key,{k:v for k,v in saved.items() if k!='input_signature'})
+    assert pipeline.reconcile(parent['id'])==[]
+    assert s.state.ledger_get('pipeline_reconciliation_progress',parent['id'])['reused']==1
+    expected=read_journal_metadata(store.receipt(parent['id'],'one','postgres')['manifest'])['expected']
+    Path(expected['path']).write_bytes(b'corrupt')
+    with pytest.raises(ValueError,match='镜像校验失败'):pipeline.reconcile(parent['id'])
+
+
+def test_reconciliation_keeps_cross_target_conflicts_and_honors_cancellation(tmp_path):
+    from betalens_db_manager.pipeline import Pipeline
+    from test_manager import table_definition
+    s=manager(tmp_path);s.registry.save(table_definition())
+    parent=s.state.create_job({'pipeline_version':2,'request':{'targets':['postgres','clickhouse']}},s.settings.fingerprint)
+    store=PipelineStore(s.state);spec=s.registry.spec('sample_prices')
+    for target,price in [('postgres','12.3'),('clickhouse','99')]:
+        incoming=[{'code':'a','business_date':date(2026,10,20),'price':Decimal(price)}]
+        record=save_journal(tmp_path/target,spec,compare(spec,incoming,[],'fill_missing'),incoming)
+        store.prepare(parent['id'],'one',target,record);store.acknowledge(parent['id'],'one',target,{})
+    assert Pipeline(s).reconcile(parent['id'])[0]['stage']=='cross_target'
+    s.state.cancel(parent['id'])
+    with pytest.raises(InterruptedError):Pipeline(s).reconcile(parent['id'])

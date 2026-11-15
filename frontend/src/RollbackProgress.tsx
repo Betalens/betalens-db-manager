@@ -4,14 +4,15 @@ import {Table,targetNames,type R} from './ui';
 /** Count immutable write receipts, never the growing list of inverse receipts. */
 export function rollbackProgress(job:R){
  const receipts:R[]=job.pipeline?.receipts||[];
- const operations:R[]=(job.tasks||[]).filter((t:R)=>t.operation==='rollback');
+ const operations:R[]=(job.tasks||[]).filter((t:R)=>['rollback','pipeline_rollback'].includes(t.operation));
  const operation=operations[operations.length-1];
  const originals=new Map(receipts.filter(r=>!r.batch.startsWith('rollback:')).map(r=>[r.target+':'+r.batch,r]));
  const inverses=new Map(receipts.filter(r=>r.batch.startsWith('rollback:')).map(r=>[r.target+':'+r.batch.slice(9),r]));
- if(!operation&&!inverses.size&&!['rolled_back','partially_rolled_back'].includes(job.status))return;
+ const summary:R[]|undefined=job.pipeline?.rollback_progress;
+ if(!operation&&!inverses.size&&!summary?.some(r=>r.completed||r.failed||r.pending?.length)&&!['rolled_back','partially_rolled_back'].includes(job.status))return;
  const targets=[...new Set<string>([...(job.plan?.request?.targets||[]),...receipts.map(r=>r.target)])];
  const running=operation?.status==='running';
- const results=targets.map(target=>{
+ const results:R[]=summary?summary.map(r=>({...r,pending:(r.pending||[]).map((p:R)=>({...p,status:p.status==='failed'?'failed':running?'running':'pending'}))})):targets.map(target=>{
   const writes=[...originals.values()].filter(r=>r.target===target);
   const undo=writes.map(r=>inverses.get(target+':'+r.batch)).filter((r):r is R=>!!r);
   const completed=undo.filter(r=>r.status==='completed').length;
@@ -45,7 +46,7 @@ export default function RollbackProgress({job}:{job:R}){
    {p.results.map(r=><div key={r.target} aria-label={targetNames[r.target]+' 回退详情'}><small>{targetNames[r.target]} 回退批次</small>
     <strong>{r.completed} / {r.total}</strong><progress aria-label={targetNames[r.target]+' 回退进度'} value={r.completed} max={r.total||1}/>
     <small>剩余 {r.remaining} · 失败 {r.failed} · 实际逆操作 {r.applied.toLocaleString('zh-CN')} 行</small>
-    {r.pending.length>0&&<small>{p.status==='running'?'当前处理':'未完成'}：{r.pending.map(v=>v.table).join('、')}</small>}
+    {r.pending.length>0&&<small>{p.status==='running'?'当前处理':'未完成'}：{r.pending.map((v:R)=>v.table).join('、')}</small>}
    </div>)}
   </div>
   {p.error&&<p role="alert" className="error">回退操作异常：{p.error}</p>}

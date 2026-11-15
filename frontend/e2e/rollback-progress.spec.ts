@@ -44,3 +44,20 @@ test('单库回退显示双库累计量，切换任务和重载不串进度',asy
  await page.goBack();await expect(card).toContainText('50%');await page.reload();await expect(card).toContainText('50%');
  await expect(card.getByLabel('回退总进度',{exact:true})).toHaveAttribute('max','4');
 });
+
+test('大量回执使用完整汇总计算回退进度，不以最近样本作为分母',async({page,request})=>{
+ page.on('dialog',d=>d.accept());const job=await createTask(request);
+ const state={...job,status:'partially_rolled_back',target_matches:true,
+  tasks:[{id:'large-rollback',operation:'pipeline_rollback',status:'failed',error:'conflict'}],
+  pipeline:{receipts:[inverse('postgres','first','failed')],receipts_total:270,
+   rollback_progress:[{target:'postgres',total:150,completed:119,remaining:31,failed:1,applied:238,
+    pending:[{target:'postgres',batch:'rollback:first',table:'security_dim',status:'failed',error:'conflict'}]}]}};
+ await page.route('**/api/task-history/'+job.id,route=>route.fulfill({json:state}));
+ await page.route('**/api/tasks/'+job.id+'/logs?*',route=>route.fulfill({json:[]}));
+ await page.routeWebSocket('**/api/live/'+job.id+'?*',()=>{});
+ await page.goto('/tasks?task='+job.id);
+ const card=page.getByRole('region',{name:'回退进度'}),total=card.getByRole('progressbar',{name:'回退总进度',exact:true});
+ await expect(total).toHaveAttribute('max','150');await expect(total).toHaveAttribute('value','119');
+ await expect(card).toContainText('剩余 31');await expect(card).toContainText('实际逆操作 238 行');
+ await expect(card).toContainText('回退失败');await expect(card).toContainText('security_dim');
+});

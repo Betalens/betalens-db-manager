@@ -1,0 +1,5370 @@
+{
+  "active_operations": [],
+  "business_rules": [
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 203,
+      "table": "corporate_action",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 203,
+      "table": "corporate_action",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 144,
+      "table": "dividend_event",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 144,
+      "table": "dividend_event",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "etf_profile",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "etf_profile",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 196,
+      "table": "fund_nav_daily",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 196,
+      "table": "fund_nav_daily",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "fund_nav_observation",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "fund_nav_observation",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "fund_profile",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "fund_profile",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 192,
+      "table": "fund_shares_daily",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 192,
+      "table": "fund_shares_daily",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "fundamental_periodic",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "fundamental_periodic",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "index_membership",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "index_membership",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "index_profile",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "index_profile",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "industry_dim",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "industry_dim",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "industry_membership_record",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "industry_membership_record",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 2,
+      "table": "industry_scheme_dim",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 2,
+      "table": "industry_scheme_dim",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "market_daily_post_adjusted",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "market_daily_post_adjusted",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 198,
+      "table": "market_daily_raw",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 198,
+      "table": "market_daily_raw",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 47,
+      "table": "security_code_history",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 47,
+      "table": "security_code_history",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 96,
+      "table": "security_dim",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 96,
+      "table": "security_dim",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "security_industry_membership",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "security_industry_membership",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 12,
+      "table": "security_name_history",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 12,
+      "table": "security_name_history",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "stock_profile",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "stock_profile",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "stock_quote_supplement_daily",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "stock_quote_supplement_daily",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 239,
+      "table": "suspension_event",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 239,
+      "table": "suspension_event",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "trade_calendar",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 48,
+      "table": "trade_calendar",
+      "target": "clickhouse"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "trade_status_daily",
+      "target": "postgres"
+    },
+    {
+      "examples": [],
+      "issues": {},
+      "rows": 240,
+      "table": "trade_status_daily",
+      "target": "clickhouse"
+    }
+  ],
+  "checks": [
+    {
+      "name": "frozen_plan_sha256",
+      "passed": true
+    },
+    {
+      "name": "frozen_table_contracts",
+      "passed": true,
+      "tables": 24
+    },
+    {
+      "name": "no_rejected_or_unfinished_batches",
+      "passed": true
+    },
+    {
+      "name": "physical_schema_and_primary_keys",
+      "passed": true
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:corporate_action:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "corporate_action"
+    },
+    {
+      "batch": "16c349b8ffb44641b27e72e167de6f2a:corporate_action:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "corporate_action"
+    },
+    {
+      "batch": "3ef9eb4d02ce43debb554ceb918377e0:corporate_action:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "corporate_action"
+    },
+    {
+      "batch": "8021bf84861b42dea45ffcf7312209e1:corporate_action:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "corporate_action"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:corporate_action:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "corporate_action"
+    },
+    {
+      "batch": "001beaa7532f479286bd0840ab0b9913:dividend_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "dividend_event"
+    },
+    {
+      "batch": "42486129f7f04c159b8aeb8ce66e4540:dividend_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "dividend_event"
+    },
+    {
+      "batch": "7942fbba0e024c058388db9f6fe63839:dividend_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "dividend_event"
+    },
+    {
+      "batch": "818afbb1a1e44ef38376b072edb7e1cb:dividend_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "dividend_event"
+    },
+    {
+      "batch": "fff12f9579db461697b234bce95dfd08:dividend_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "dividend_event"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:etf_profile:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "etf_profile"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:fund_nav_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_daily"
+    },
+    {
+      "batch": "0187c307590d4d71b4c59db151eeb1da:fund_nav_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_daily"
+    },
+    {
+      "batch": "7ee3e7c0a17c4dcaa3b53d53dca7cce2:fund_nav_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_daily"
+    },
+    {
+      "batch": "96275c28731446c2bfb2741b9106b534:fund_nav_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_daily"
+    },
+    {
+      "batch": "nav_user_revision_a058a089add7673a005b1ef1:fund_nav_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_daily"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:fund_nav_observation:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_observation"
+    },
+    {
+      "batch": "450dee48e27f498e80a7c5054c7cb182:fund_nav_observation:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_observation"
+    },
+    {
+      "batch": "7ee3e7c0a17c4dcaa3b53d53dca7cce2:fund_nav_observation:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_observation"
+    },
+    {
+      "batch": "98fa41005c5d40ff84dfea94edeb7e74:fund_nav_observation:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_observation"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:fund_nav_observation:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_nav_observation"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:fund_profile:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_profile"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:fund_shares_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_shares_daily"
+    },
+    {
+      "batch": "73641bbd09674b83a11bad79066436f4:fund_shares_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_shares_daily"
+    },
+    {
+      "batch": "7eb5e856fbf94c7e821c1ba771fc179e:fund_shares_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_shares_daily"
+    },
+    {
+      "batch": "ad77d486411c4475bd060d63b6c51ed0:fund_shares_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_shares_daily"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:fund_shares_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fund_shares_daily"
+    },
+    {
+      "name": "frozen_plan_sha256",
+      "passed": true
+    },
+    {
+      "name": "frozen_table_contracts",
+      "passed": true,
+      "tables": 24
+    },
+    {
+      "name": "no_rejected_or_unfinished_batches",
+      "passed": true
+    },
+    {
+      "name": "physical_schema_and_primary_keys",
+      "passed": true
+    },
+    {
+      "batch": "05f1a18814e94471adb65b27484a2d67:fundamental_periodic:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "5ae7fbef3df34dc9ab7d48d56a7835e0:fundamental_periodic:1",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "7244392cc6b84878ba1fdda1762c499d:fundamental_periodic:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "98fb2dc8563e480a9c08ccf4c4aae6c8:fundamental_periodic:1",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "fefee21ba44e4bf8beb77ebb8d3a1155:fundamental_periodic:1",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "00197658403f428684026aa368d59af7:index_membership:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "index_membership"
+    },
+    {
+      "batch": "8c5edfe943344c50a99913236c36c9c9:index_membership:34",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "index_membership"
+    },
+    {
+      "batch": "91ac363ccd2f41d7a1515e80e3bf01c9:index_membership:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "index_membership"
+    },
+    {
+      "batch": "d68271f47a284ce2831715b77cec3ab6:index_membership:121",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "index_membership"
+    },
+    {
+      "batch": "fff184f877ad496fa3a0cde43188f5a5:index_membership:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "index_membership"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:index_profile:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "index_profile"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:industry_dim:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "industry_dim"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:industry_membership_record:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "industry_membership_record"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:industry_scheme_dim:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "industry_scheme_dim"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:market_daily_post_adjusted:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "7ea27d57cc8a4018a7d803b852143e6a:market_daily_post_adjusted:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "ce4237a72e34415a87812150837442d2:market_daily_post_adjusted:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "ea1a621dd247421ea502fbe9be41c07e:market_daily_post_adjusted:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:market_daily_post_adjusted:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:market_daily_raw:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "7ea27d57cc8a4018a7d803b852143e6a:market_daily_raw:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "961fa1463a284fb9a159c14d3fbe786d:market_daily_raw:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "971f2c443fbf42918547fff8e9a1e779:market_daily_raw:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:market_daily_raw:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_code_history:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_code_history"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_dim:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_dim"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_dim:1",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_dim"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_industry_membership:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_industry_membership"
+    },
+    {
+      "batch": "001beaa7532f479286bd0840ab0b9913:security_name_history:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_name_history"
+    },
+    {
+      "batch": "3a910149a88c42278424954e3ca4ac1e:security_name_history:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_name_history"
+    },
+    {
+      "batch": "472eaa0095484bf88b327ef85e6962ac:security_name_history:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_name_history"
+    },
+    {
+      "batch": "816d93583c3843cc93591153d862ffda:security_name_history:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_name_history"
+    },
+    {
+      "batch": "fff12f9579db461697b234bce95dfd08:security_name_history:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "security_name_history"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:stock_profile:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "stock_profile"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:stock_quote_supplement_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "64412f59d66d4c67977678168a73faef:stock_quote_supplement_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "7efb24a54b374503972f8ed7c199ea89:stock_quote_supplement_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "b596d22e09404114b9c2e6548d64c5c4:stock_quote_supplement_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:stock_quote_supplement_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "025d129c6bea4ffdb03f957817ca82b0:suspension_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "suspension_event"
+    },
+    {
+      "batch": "36b38b3b01d041f0be69986c254ca54b:suspension_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "suspension_event"
+    },
+    {
+      "batch": "5ffab0e9dff64384b5a5e8efcfb2da8a:suspension_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "suspension_event"
+    },
+    {
+      "batch": "7974b26a21bd4ec5af5672c821e50251:suspension_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "suspension_event"
+    },
+    {
+      "batch": "ff198337343a437f8be2af53c5e858b0:suspension_event:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "suspension_event"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:trade_calendar:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "trade_calendar"
+    },
+    {
+      "batch": "0034bdcf57b348d2b2d558f38790bdea:trade_status_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "7d0164b7117044d69fbc6bdda88a8db6:trade_status_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "82be1fddb5134cb691ff061429e09627:trade_status_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "d368179a79024108ae3610d0d6871afc:trade_status_daily:0",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "fffb00542cbf40b99f06cefaf5510208:trade_status_daily:1",
+      "name": "sampled_expected_image_sha256",
+      "passed": true,
+      "table": "trade_status_daily"
+    },
+    {
+      "endpoint": "daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "2aba0104e50b231692d14bd5"
+    },
+    {
+      "endpoint": "daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "403a92dc48e440460ebeda61"
+    },
+    {
+      "endpoint": "daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "verified-requery:17"
+    },
+    {
+      "endpoint": "daily_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "db83b722006809d8af0a28c5"
+    },
+    {
+      "endpoint": "daily_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "5bdb49bd2e355d566dc3e0c2"
+    },
+    {
+      "endpoint": "daily_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "verified-requery:18"
+    },
+    {
+      "endpoint": "fund_daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0d7d8ef475957c2b0ba5950f"
+    },
+    {
+      "endpoint": "fund_daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "b3786f56697858ef877e9d2b"
+    },
+    {
+      "endpoint": "fund_daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "5082d2df405ebdda3b5de45f"
+    },
+    {
+      "endpoint": "index_daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "10d3b697ea86fa92500e8b7a"
+    },
+    {
+      "endpoint": "index_daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "a094756e6f32c38aa89dc930"
+    },
+    {
+      "endpoint": "index_daily",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "a20823b63dc6562fd69f33c9"
+    },
+    {
+      "endpoint": "stock_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0d3c4edbe4c0919a1c6e4620"
+    },
+    {
+      "endpoint": "stock_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "ec28b62d814905b586725e92"
+    },
+    {
+      "endpoint": "stock_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "f46ffec39d857c69564d975b"
+    },
+    {
+      "endpoint": "fund_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "3935e6a96c68873474d12df9"
+    },
+    {
+      "endpoint": "fund_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "471be458439bfc44a76be9d9"
+    },
+    {
+      "endpoint": "fund_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fb3ed00c1546bff85abdd865"
+    },
+    {
+      "endpoint": "index_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0a9053d5d5383ac45bcae437"
+    },
+    {
+      "endpoint": "index_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "8c826df1bfdbed465e1447e9"
+    },
+    {
+      "endpoint": "index_basic",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "ee9a08d87bb5dc7094060811"
+    },
+    {
+      "endpoint": "trade_cal",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "04ea24bd0677a40d40f43073"
+    },
+    {
+      "endpoint": "trade_cal",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0e12e793523b2fd7cd4aa88c"
+    },
+    {
+      "endpoint": "trade_cal",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "7f09e4e2e9bec8888e0d1fd0"
+    },
+    {
+      "endpoint": "index_weight",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "00458f85c71ad9dc763c7822"
+    },
+    {
+      "endpoint": "index_weight",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0cdf997c5a962847068db2b7"
+    },
+    {
+      "endpoint": "index_weight",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "verified-requery:25"
+    },
+    {
+      "endpoint": "fund_share",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "f4efa0bec207517e625535c1"
+    },
+    {
+      "endpoint": "fund_share",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "41c9f8cfaab950a96d74da39"
+    },
+    {
+      "endpoint": "fund_share",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "6c0a5bf589838a60f4ab4f21"
+    },
+    {
+      "endpoint": "fund_nav",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "001458691726e8052480fb4a"
+    },
+    {
+      "endpoint": "fund_nav",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "7d9674f421291e02a13db975"
+    },
+    {
+      "endpoint": "fund_nav",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fffcd04b452152f4ab4d7487"
+    },
+    {
+      "endpoint": "dividend",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0001c4b14dffdbe003d2fed0"
+    },
+    {
+      "endpoint": "dividend",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "8196a7973be80c03b21049ec"
+    },
+    {
+      "endpoint": "dividend",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fffdcd1e5898e1a53491e209"
+    },
+    {
+      "endpoint": "namechange",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "0007a0d5d7703c0c022a00a7"
+    },
+    {
+      "endpoint": "namechange",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "807d0debdba82801a23b524a"
+    },
+    {
+      "endpoint": "namechange",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "ffff21a7d63107a627cb50a5"
+    },
+    {
+      "endpoint": "adj_factor",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "5723d2b6b73e73a986827fa0"
+    },
+    {
+      "endpoint": "adj_factor",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "6a62883f4047a6589b4a3faa"
+    },
+    {
+      "endpoint": "adj_factor",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "c9c553844d18572a58657dbc"
+    },
+    {
+      "endpoint": "fund_adj",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "1a73d5527d65129082c485f3"
+    },
+    {
+      "endpoint": "fund_adj",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "e285531b236314e9167756f8"
+    },
+    {
+      "endpoint": "fund_adj",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "84a5672084627ab67aec6d5d"
+    },
+    {
+      "endpoint": "income_vip",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fresh-control:income_vip"
+    },
+    {
+      "endpoint": "balancesheet_vip",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fresh-control:balancesheet_vip"
+    },
+    {
+      "endpoint": "cashflow_vip",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fresh-control:cashflow_vip"
+    },
+    {
+      "endpoint": "fina_indicator_vip",
+      "name": "sampled_source_archive_sha256",
+      "passed": true,
+      "slice_id": "fresh-control:fina_indicator_vip"
+    }
+  ],
+  "findings": [
+    {
+      "code": "UNPAIRED_STATUS_ROWS",
+      "severity": "high",
+      "title": "状态表双库存在 656,279 行实际差异",
+      "postgres_rows": 120155834,
+      "clickhouse_rows": 119499555,
+      "difference": 656279,
+      "unpaired_receipts": 26,
+      "dates": [
+        "2014-09-04",
+        "2014-09-05",
+        "2014-09-09",
+        "2014-09-10",
+        "2014-09-11",
+        "2014-09-12",
+        "2014-09-15",
+        "2014-09-16",
+        "2014-09-17",
+        "2014-09-18",
+        "2014-09-19",
+        "2014-09-22",
+        "2014-09-23",
+        "2014-09-24"
+      ],
+      "readback": [
+        {
+          "duplicate_examples": [],
+          "duplicate_keys": 0,
+          "expected_rows": 596,
+          "field_comparisons": 7152,
+          "found_rows": 596,
+          "label": "unpaired_trade_status_receipts",
+          "mismatch_count": 0,
+          "mismatch_examples": [],
+          "missing_count": 0,
+          "missing_examples": [],
+          "table": "trade_status_daily",
+          "target": "postgres"
+        },
+        {
+          "duplicate_examples": [],
+          "duplicate_keys": 0,
+          "expected_rows": 596,
+          "field_comparisons": 0,
+          "found_rows": 0,
+          "label": "unpaired_trade_status_receipts",
+          "mismatch_count": 0,
+          "mismatch_examples": [],
+          "missing_count": 596,
+          "missing_examples": [
+            [
+              "stock",
+              "601100.SH",
+              "2014-09-23"
+            ],
+            [
+              "index",
+              "000982.SH",
+              "2014-09-23"
+            ],
+            [
+              "index",
+              "H00022.CSI",
+              "2014-09-23"
+            ],
+            [
+              "index",
+              "H30476.CSI",
+              "2014-09-23"
+            ],
+            [
+              "index",
+              "932559.CSI",
+              "2014-09-23"
+            ],
+            [
+              "index",
+              "N31328.CSI",
+              "2014-09-23"
+            ],
+            [
+              "index",
+              "807145.SI",
+              "2014-09-23"
+            ],
+            [
+              "fund",
+              "028687.OF",
+              "2014-09-23"
+            ],
+            [
+              "fund",
+              "026451.OF",
+              "2014-09-23"
+            ],
+            [
+              "fund",
+              "025885.OF",
+              "2014-09-23"
+            ],
+            [
+              "fund",
+              "024594.OF",
+              "2014-09-23"
+            ],
+            [
+              "fund",
+              "018401.OF",
+              "2014-09-23"
+            ]
+          ],
+          "table": "trade_status_daily",
+          "target": "clickhouse"
+        }
+      ],
+      "facts": [
+        "差异均在 derived_from_daily_quote 和 security_lifecycle 状态中；未观察到其他状态分类计数差异。",
+        "PG 单边回执写入时间为 2026-11-10 15:53:57 至 16:01:18 UTC。",
+        "这些日期的当前标准化结果在 2026-11-10 16:07:31 UTC 更新后，不再包含 trade_status_daily。",
+        "83,225 组流水线核验只遍历同时存在两个目标回执的批次，未涵盖这 26 份单边回执。"
+      ],
+      "cause_inference": "结合冻结子任务范围及恢复路径，差异应为恢复期间由密集派生状态转为稀疏输出后遗留的 PG 单边写入；该解释为依据日志和代码的推断。",
+      "recommendation": "先明确状态表的保留口径，对齐这 14 日的目标库数据；将单边回执与覆盖差异纳入完成条件。"
+    },
+    {
+      "code": "RETAINED_FUND_PROFILE_VALUES",
+      "severity": "medium",
+      "title": "fill_missing 保留了两项与当前源接口不一致的基金档案值",
+      "readback": [
+        {
+          "duplicate_examples": [],
+          "duplicate_keys": 0,
+          "expected_rows": 72,
+          "field_comparisons": 1800,
+          "found_rows": 72,
+          "label": "original_raw_json_to_current_database",
+          "mismatch_count": 2,
+          "mismatch_examples": [
+            {
+              "actual": "0.15",
+              "column": "c_fee",
+              "expected": "0.05",
+              "key": [
+                "016537.OF"
+              ]
+            },
+            {
+              "actual": "中债总全价(总值)指数收益率×100%",
+              "column": "benchmark",
+              "expected": "中债-优选投资级信用债全价(总值)指数收益率×100%",
+              "key": [
+                "005778.OF"
+              ]
+            }
+          ],
+          "missing_count": 0,
+          "missing_examples": [],
+          "table": "fund_profile",
+          "target": "postgres"
+        },
+        {
+          "duplicate_examples": [],
+          "duplicate_keys": 0,
+          "expected_rows": 72,
+          "field_comparisons": 1800,
+          "found_rows": 72,
+          "label": "original_raw_json_to_current_database",
+          "mismatch_count": 2,
+          "mismatch_examples": [
+            {
+              "actual": "0.15",
+              "column": "c_fee",
+              "expected": "0.05",
+              "key": [
+                "016537.OF"
+              ]
+            },
+            {
+              "actual": "中债总全价(总值)指数收益率×100%",
+              "column": "benchmark",
+              "expected": "中债-优选投资级信用债全价(总值)指数收益率×100%",
+              "key": [
+                "005778.OF"
+              ]
+            }
+          ],
+          "missing_count": 0,
+          "missing_examples": [],
+          "table": "fund_profile",
+          "target": "clickhouse"
+        }
+      ],
+      "fresh_source_controls": [
+        {
+          "api_code": 0,
+          "archive": "/tmp/dbm-business-audit-6f16-20261115/1-fund_basic-control.response.json.gz",
+          "called_at": "2026-11-15T05:12:53.450207+00:00",
+          "endpoint": "fund_basic",
+          "params": {
+            "ts_code": "016537.OF"
+          },
+          "rows": 1,
+          "selected": [
+            {
+              "benchmark": "中国债券综合全价指数收益率×100%",
+              "c_fee": "0.05",
+              "name": "上银慧鑫利债券",
+              "ts_code": "016537.OF"
+            }
+          ],
+          "sha256": "295878c9e544683f1e371a0bd476ed35d9cf6f341277127729507f8dec1cd50b"
+        },
+        {
+          "api_code": 0,
+          "archive": "/tmp/dbm-business-audit-6f16-20261115/2-fund_basic-control.response.json.gz",
+          "called_at": "2026-11-15T05:12:54.908528+00:00",
+          "endpoint": "fund_basic",
+          "params": {
+            "ts_code": "005778.OF"
+          },
+          "rows": 1,
+          "selected": [
+            {
+              "benchmark": "中债-优选投资级信用债全价(总值)指数收益率×100%",
+              "c_fee": "0.1",
+              "name": "广发汇元纯债定开债券",
+              "ts_code": "005778.OF"
+            }
+          ],
+          "sha256": "4fd580e5ce490f9507e11f97e8b1bb7c9b52deddba27c46423115e4898fb54c0"
+        }
+      ],
+      "stored_import_task_id": "dabaf1725f7946caa74b3367f0bde141",
+      "stored_downloaded_date_utc": "2026-11-04",
+      "confirmed_by_fresh_requests": true,
+      "recommendation": "对这两行做有前后值审计的定向更新；将档案快照的刷新规则与历史数值补缺规则分别定义。"
+    },
+    {
+      "code": "RAW_ARCHIVE_RETENTION_LIMIT",
+      "severity": "medium",
+      "title": "部分原始响应已被完成任务缓存清理，影响重新独立追溯",
+      "nonempty_archive_references": 159034,
+      "missing_file_references": 112440,
+      "retained_file_references": 46594,
+      "availability": [
+        {
+          "endpoint": "daily",
+          "missing_paths": 2529,
+          "nonempty_leaf_slices": 5304,
+          "retained_paths": 2775
+        },
+        {
+          "endpoint": "daily_basic",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 5304,
+          "retained_paths": 5304
+        },
+        {
+          "endpoint": "fund_daily",
+          "missing_paths": 2529,
+          "nonempty_leaf_slices": 5304,
+          "retained_paths": 2775
+        },
+        {
+          "endpoint": "index_daily",
+          "missing_paths": 6033,
+          "nonempty_leaf_slices": 8808,
+          "retained_paths": 2775
+        },
+        {
+          "endpoint": "sw_daily",
+          "missing_paths": 761,
+          "nonempty_leaf_slices": 761,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "stock_basic",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 6,
+          "retained_paths": 6
+        },
+        {
+          "endpoint": "fund_basic",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 5,
+          "retained_paths": 5
+        },
+        {
+          "endpoint": "index_basic",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 12,
+          "retained_paths": 12
+        },
+        {
+          "endpoint": "etf_basic",
+          "missing_paths": 3,
+          "nonempty_leaf_slices": 3,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "trade_cal",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 4,
+          "retained_paths": 4
+        },
+        {
+          "endpoint": "index_weight",
+          "missing_paths": 66534,
+          "nonempty_leaf_slices": 73804,
+          "retained_paths": 7270
+        },
+        {
+          "endpoint": "fund_share",
+          "missing_paths": 3022,
+          "nonempty_leaf_slices": 5784,
+          "retained_paths": 2762
+        },
+        {
+          "endpoint": "fund_nav",
+          "missing_paths": 9735,
+          "nonempty_leaf_slices": 15277,
+          "retained_paths": 5542
+        },
+        {
+          "endpoint": "dividend",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 5890,
+          "retained_paths": 5890
+        },
+        {
+          "endpoint": "suspend_d",
+          "missing_paths": 303,
+          "nonempty_leaf_slices": 303,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "namechange",
+          "missing_paths": 0,
+          "nonempty_leaf_slices": 5922,
+          "retained_paths": 5922
+        },
+        {
+          "endpoint": "index_member_all",
+          "missing_paths": 7564,
+          "nonempty_leaf_slices": 7564,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "ci_index_member",
+          "missing_paths": 5494,
+          "nonempty_leaf_slices": 5494,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "income_vip",
+          "missing_paths": 116,
+          "nonempty_leaf_slices": 116,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "balancesheet_vip",
+          "missing_paths": 121,
+          "nonempty_leaf_slices": 121,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "cashflow_vip",
+          "missing_paths": 112,
+          "nonempty_leaf_slices": 112,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "fina_indicator_vip",
+          "missing_paths": 141,
+          "nonempty_leaf_slices": 141,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "bse_mapping",
+          "missing_paths": 1,
+          "nonempty_leaf_slices": 1,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "bak_daily",
+          "missing_paths": 2266,
+          "nonempty_leaf_slices": 2266,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "index_classify",
+          "missing_paths": 1,
+          "nonempty_leaf_slices": 1,
+          "retained_paths": 0
+        },
+        {
+          "endpoint": "adj_factor",
+          "missing_paths": 2528,
+          "nonempty_leaf_slices": 5304,
+          "retained_paths": 2776
+        },
+        {
+          "endpoint": "fund_adj",
+          "missing_paths": 2647,
+          "nonempty_leaf_slices": 5423,
+          "retained_paths": 2776
+        }
+      ],
+      "cleanup_at": "2026-11-15T01:38:19+08:00",
+      "cleanup_policy": "完成任务的下载缓存清理；原始回包视为缓存，保留写入镜像及元数据。",
+      "recommendation": "保留可供业务重审的原始响应或经验证的独立归档，缓存回收与审计证据保留分开。"
+    }
+  ],
+  "finished_at": "2026-11-15T05:19:53.781633+00:00",
+  "image_samples": [
+    {
+      "batch": "05f1a18814e94471adb65b27484a2d67:fundamental_periodic:0",
+      "image_rows": 5264,
+      "sampled": 48,
+      "sha256": "95cc6e5677dcaf0416008b87489283dd0747c892516dc89538a7c2c2082256b3",
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "5ae7fbef3df34dc9ab7d48d56a7835e0:fundamental_periodic:1",
+      "image_rows": 6407,
+      "sampled": 48,
+      "sha256": "982986b8c3719a22a672bd89fea21b009be8d77d0335ca4b77761fdcc89dc915",
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "7244392cc6b84878ba1fdda1762c499d:fundamental_periodic:0",
+      "image_rows": 7949,
+      "sampled": 48,
+      "sha256": "5d8c7954cc04c33a484890f73c06f354264bb54a612b1472a0bf105ef9fdd6cf",
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "98fb2dc8563e480a9c08ccf4c4aae6c8:fundamental_periodic:1",
+      "image_rows": 6483,
+      "sampled": 48,
+      "sha256": "603263926dd8a125e2ae50511200ab7c6243453acbdb749c3323a11f7d50b847",
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "fefee21ba44e4bf8beb77ebb8d3a1155:fundamental_periodic:1",
+      "image_rows": 6325,
+      "sampled": 48,
+      "sha256": "ca255e3942c1beeaf652be2c318f04fe2e4eee906cd5217021cfae0eaad127c8",
+      "table": "fundamental_periodic"
+    },
+    {
+      "batch": "00197658403f428684026aa368d59af7:index_membership:0",
+      "image_rows": 3325,
+      "sampled": 48,
+      "sha256": "bb5b02e33c29206cb2aa70056064b1bbc640d316dad39794167b93f32e31d430",
+      "table": "index_membership"
+    },
+    {
+      "batch": "8c5edfe943344c50a99913236c36c9c9:index_membership:34",
+      "image_rows": 16441,
+      "sampled": 48,
+      "sha256": "7a4addf67aa8d60a135f6ca341c316cc8898d85948016515462bb9e15c1537ef",
+      "table": "index_membership"
+    },
+    {
+      "batch": "91ac363ccd2f41d7a1515e80e3bf01c9:index_membership:0",
+      "image_rows": 4502,
+      "sampled": 48,
+      "sha256": "ad090d4f5ceb923f41f949909e6b6629371fed8fa5c27c165a9d58485376bc41",
+      "table": "index_membership"
+    },
+    {
+      "batch": "d68271f47a284ce2831715b77cec3ab6:index_membership:121",
+      "image_rows": 17868,
+      "sampled": 48,
+      "sha256": "62b09d87787836d57872c0421bfa1909c1c5d166b4ac79728293f5349cc7b2fe",
+      "table": "index_membership"
+    },
+    {
+      "batch": "fff184f877ad496fa3a0cde43188f5a5:index_membership:0",
+      "image_rows": 21495,
+      "sampled": 48,
+      "sha256": "443e7f5366a694b8d2ccdbf4b747730f591759fa4c080b245b1409f842e80397",
+      "table": "index_membership"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:index_profile:0",
+      "image_rows": 11863,
+      "sampled": 48,
+      "sha256": "cb2e87e507a42a847994e47fc164c3e3a36c7e167adb0952e574bc981608007d",
+      "table": "index_profile"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:industry_dim:0",
+      "image_rows": 927,
+      "sampled": 48,
+      "sha256": "3bd1da8f1f41207ceeae21f5407a3bb073458640d229d8c82b0a96fb488a770f",
+      "table": "industry_dim"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:industry_membership_record:0",
+      "image_rows": 14640,
+      "sampled": 48,
+      "sha256": "64cbd4a5874ad248ee57adc0baa333045adb27277a4f6b1795788ecbfb112438",
+      "table": "industry_membership_record"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:industry_scheme_dim:0",
+      "image_rows": 2,
+      "sampled": 2,
+      "sha256": "bb04dfa50b4b09d1dced7798c97251db40c311d099a084518d8684c69feb3fee",
+      "table": "industry_scheme_dim"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:market_daily_post_adjusted:0",
+      "image_rows": 17200,
+      "sampled": 48,
+      "sha256": "f072d7a21768a266d4d033b9969380b62c446d740c7927bb471c9536721c4a07",
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "7ea27d57cc8a4018a7d803b852143e6a:market_daily_post_adjusted:0",
+      "image_rows": 5917,
+      "sampled": 48,
+      "sha256": "b8b0e55e23bd0a0dc3ec7e4cd3c6b6f813a8142751839392bb512dae19fb7d3c",
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "ce4237a72e34415a87812150837442d2:market_daily_post_adjusted:0",
+      "image_rows": 8378,
+      "sampled": 48,
+      "sha256": "0d1a2e6222144da6506d47607a56bbf281e45e0244b2b907346b51c78b0ebd98",
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "ea1a621dd247421ea502fbe9be41c07e:market_daily_post_adjusted:0",
+      "image_rows": 10460,
+      "sampled": 48,
+      "sha256": "c416c091524878069d1827baca9af2bc19c10a4b2ca9404d0ebb9bf4ef006e0b",
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:market_daily_post_adjusted:0",
+      "image_rows": 13379,
+      "sampled": 48,
+      "sha256": "03c0434964234b2a90998b38afe00fe17e67849fe27ae220b7de2d374d082e28",
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:market_daily_raw:0",
+      "image_rows": 17200,
+      "sampled": 48,
+      "sha256": "7262f6241812c3261223a63344ea70a6de30bce55b4f06a0696769abbc8e8bec",
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "7ea27d57cc8a4018a7d803b852143e6a:market_daily_raw:0",
+      "image_rows": 5917,
+      "sampled": 48,
+      "sha256": "f28c187760d2f391d70235c94e31f13d827d3e83e7c956d08b9ff7078fb3db21",
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "961fa1463a284fb9a159c14d3fbe786d:market_daily_raw:0",
+      "image_rows": 3138,
+      "sampled": 48,
+      "sha256": "fc679f159b6aa48e480446f98e14b92a55e289e17fa581c9b9d901a465845d90",
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "971f2c443fbf42918547fff8e9a1e779:market_daily_raw:0",
+      "image_rows": 6,
+      "sampled": 6,
+      "sha256": "599a8d41fd12ed31c6a045ec140e89fb4dd42a4c1ca545b0e8bbded6d894afb8",
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:market_daily_raw:0",
+      "image_rows": 13379,
+      "sampled": 48,
+      "sha256": "a2c05eecc7b54a98443885788a7fb4177c99d29ee3436a40d565a034e2aa0555",
+      "table": "market_daily_raw"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_code_history:0",
+      "image_rows": 248,
+      "sampled": 47,
+      "sha256": "8e7fa073d4ed0f8e4233a7ef3c30a7c3d3372357d8ba0c1f8c9e8e8cfe46039e",
+      "table": "security_code_history"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_dim:0",
+      "image_rows": 50000,
+      "sampled": 48,
+      "sha256": "04dec12a5ec57bb16870dbe1eecb4f6bb0b7f9dfbc020b63cd0fd376cd639a6f",
+      "table": "security_dim"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_dim:1",
+      "image_rows": 480,
+      "sampled": 48,
+      "sha256": "d385f87f5f894b17c3190f7006a43d206e772a3169801cf11ec2692da1cc3822",
+      "table": "security_dim"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:security_industry_membership:0",
+      "image_rows": 43920,
+      "sampled": 48,
+      "sha256": "3b9993fc45cf52c2040357a4caca36d9854ce79bed6cc925756373a1b610ead4",
+      "table": "security_industry_membership"
+    },
+    {
+      "batch": "001beaa7532f479286bd0840ab0b9913:security_name_history:0",
+      "image_rows": 1,
+      "sampled": 1,
+      "sha256": "f1905b0c4e065f76bd360a1281d5713711e8910e508e950267f278d28f45bba0",
+      "table": "security_name_history"
+    },
+    {
+      "batch": "3a910149a88c42278424954e3ca4ac1e:security_name_history:0",
+      "image_rows": 1,
+      "sampled": 1,
+      "sha256": "b188aad97dec930760780d4648f8a7e57ba56691800ad82da3ff6f0f4b3268b4",
+      "table": "security_name_history"
+    },
+    {
+      "batch": "472eaa0095484bf88b327ef85e6962ac:security_name_history:0",
+      "image_rows": 1,
+      "sampled": 1,
+      "sha256": "831d3b9776ca10e0e56266ccce92bb45a90e0b4ff22add39a26eba5406da035d",
+      "table": "security_name_history"
+    },
+    {
+      "batch": "816d93583c3843cc93591153d862ffda:security_name_history:0",
+      "image_rows": 3,
+      "sampled": 3,
+      "sha256": "d95f5864565f9a5e8676e6646b724ae25035cbd1fd8188fa07267382ce0f5a13",
+      "table": "security_name_history"
+    },
+    {
+      "batch": "fff12f9579db461697b234bce95dfd08:security_name_history:0",
+      "image_rows": 6,
+      "sampled": 6,
+      "sha256": "b280718b417c3ac5c3ca2a357d99d6a0b4dee00ee80d753ad5988083437b47e3",
+      "table": "security_name_history"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:stock_profile:0",
+      "image_rows": 5926,
+      "sampled": 48,
+      "sha256": "e876ab4dfaaebce7c6a767a5e4eb0f3d6fc6f5caa68b24839e197a5250ac1ffb",
+      "table": "stock_profile"
+    },
+    {
+      "batch": "0005126ef7404a0d93076b3b210f682e:stock_quote_supplement_daily:0",
+      "image_rows": 5390,
+      "sampled": 48,
+      "sha256": "d22b57f624002af560478bf18f0b499ed77b491e53b645e9d0e001e0050af821",
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "64412f59d66d4c67977678168a73faef:stock_quote_supplement_daily:0",
+      "image_rows": 4811,
+      "sampled": 48,
+      "sha256": "42786b6062fbf73cbb9f620af7a3adb36181a88a794c87a0dcb79bfe516faa1c",
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "7efb24a54b374503972f8ed7c199ea89:stock_quote_supplement_daily:0",
+      "image_rows": 4120,
+      "sampled": 48,
+      "sha256": "9a09e0fbc4dc67c248d7819f305cb204f709689cc29c80e062607f8f0366375c",
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "b596d22e09404114b9c2e6548d64c5c4:stock_quote_supplement_daily:0",
+      "image_rows": 4635,
+      "sampled": 48,
+      "sha256": "5b39272939ef89e518939750ba55f7a30663cbfee6e0be4f1d6c77f8a7598c24",
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "fffd453a3c3a47d4856b113fabe4a811:stock_quote_supplement_daily:0",
+      "image_rows": 3765,
+      "sampled": 48,
+      "sha256": "e98c4cff32b5fc983d85e6f434aa29ac2e1d69daa5ec5909ca37be67eb104f53",
+      "table": "stock_quote_supplement_daily"
+    },
+    {
+      "batch": "025d129c6bea4ffdb03f957817ca82b0:suspension_event:0",
+      "image_rows": 1950,
+      "sampled": 48,
+      "sha256": "6cad29d4ec820dd006a694acd980de2326f8a2ac0d26e4e320eb6e6c16a28533",
+      "table": "suspension_event"
+    },
+    {
+      "batch": "36b38b3b01d041f0be69986c254ca54b:suspension_event:0",
+      "image_rows": 926,
+      "sampled": 48,
+      "sha256": "9ae2f60233651547689d272a725386d8669b2d0a14d8ad07c5b02d8ca240cdbc",
+      "table": "suspension_event"
+    },
+    {
+      "batch": "5ffab0e9dff64384b5a5e8efcfb2da8a:suspension_event:0",
+      "image_rows": 3872,
+      "sampled": 47,
+      "sha256": "cd877ee199a3a3e6f855979f1b07cd36e425d9756939201d9d8b74c814ece8ee",
+      "table": "suspension_event"
+    },
+    {
+      "batch": "7974b26a21bd4ec5af5672c821e50251:suspension_event:0",
+      "image_rows": 1210,
+      "sampled": 48,
+      "sha256": "c862e22ebabe2c41473c583ea639e8c02c31ebd8519c0620cb5341e25b31b9da",
+      "table": "suspension_event"
+    },
+    {
+      "batch": "ff198337343a437f8be2af53c5e858b0:suspension_event:0",
+      "image_rows": 951,
+      "sampled": 48,
+      "sha256": "239c32456082bfb40c5e8c387565dab501f20050f656879a324b3c0257ace270",
+      "table": "suspension_event"
+    },
+    {
+      "batch": "6d5d84b641e048d58611403b15525ce0:trade_calendar:0",
+      "image_rows": 15964,
+      "sampled": 48,
+      "sha256": "eb6a3c4e2def1cbc383a2662ff4299e94f5a6646dc70b9fcf45596a4cedc4ee8",
+      "table": "trade_calendar"
+    },
+    {
+      "batch": "0034bdcf57b348d2b2d558f38790bdea:trade_status_daily:0",
+      "image_rows": 50000,
+      "sampled": 48,
+      "sha256": "2d9f75348c85ef21f123ff868f197bd68db7c9288bef63591ca652350b597367",
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "7d0164b7117044d69fbc6bdda88a8db6:trade_status_daily:0",
+      "image_rows": 50000,
+      "sampled": 48,
+      "sha256": "9774cde256eef5e2aac65716c8706bc41c438a9f9a0af0ccfc8198492f0009bc",
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "82be1fddb5134cb691ff061429e09627:trade_status_daily:0",
+      "image_rows": 50000,
+      "sampled": 48,
+      "sha256": "8e832aa1e548838718727e7554795dc24c213bfe27aacb6d8c3f73989df79cff",
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "d368179a79024108ae3610d0d6871afc:trade_status_daily:0",
+      "image_rows": 50000,
+      "sampled": 48,
+      "sha256": "53017bceccf8d5c9106828d72b74d855eacfd01f898c1e87a44230ed40a68863",
+      "table": "trade_status_daily"
+    },
+    {
+      "batch": "fffb00542cbf40b99f06cefaf5510208:trade_status_daily:1",
+      "image_rows": 482,
+      "sampled": 48,
+      "sha256": "7f1bbe7b8e3f010f9d760cc5c07eda48be068388860753e3e3fb0e5f08417782",
+      "table": "trade_status_daily"
+    }
+  ],
+  "prior_reconciliation": [
+    {
+      "n": 83225,
+      "status": "passed"
+    }
+  ],
+  "read_only": true,
+  "receipt_summary": [
+    {
+      "applied": 20313707,
+      "batches": 11188,
+      "status": "completed",
+      "table_name": "corporate_action",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 250486,
+      "batches": 5879,
+      "status": "completed",
+      "table_name": "dividend_event",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 33,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "etf_profile",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 38211483,
+      "batches": 7393,
+      "status": "completed",
+      "table_name": "fund_nav_daily",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 38211483,
+      "batches": 7392,
+      "status": "completed",
+      "table_name": "fund_nav_observation",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 62,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "fund_profile",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 2753261,
+      "batches": 5524,
+      "status": "completed",
+      "table_name": "fund_shares_daily",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 1910218,
+      "batches": 331,
+      "status": "completed",
+      "table_name": "fundamental_periodic",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 246011704,
+      "batches": 19409,
+      "status": "completed",
+      "table_name": "index_membership",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 0,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "index_profile",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 1,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "industry_dim",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 8725,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "industry_membership_record",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 0,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "industry_scheme_dim",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 56666317,
+      "batches": 6476,
+      "status": "completed",
+      "table_name": "market_daily_post_adjusted",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 56666317,
+      "batches": 6476,
+      "status": "completed",
+      "table_name": "market_daily_raw",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 0,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "security_code_history",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 57,
+      "batches": 2,
+      "status": "completed",
+      "table_name": "security_dim",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 9633,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "security_industry_membership",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 7429,
+      "batches": 5921,
+      "status": "completed",
+      "table_name": "security_name_history",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 2,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "stock_profile",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 10212346,
+      "batches": 2266,
+      "status": "completed",
+      "table_name": "stock_quote_supplement_daily",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 598369,
+      "batches": 263,
+      "status": "completed",
+      "table_name": "suspension_event",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 15904,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "trade_calendar",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 118533336,
+      "batches": 4695,
+      "status": "completed",
+      "table_name": "trade_status_daily",
+      "target": "clickhouse"
+    },
+    {
+      "applied": 20313707,
+      "batches": 11188,
+      "status": "completed",
+      "table_name": "corporate_action",
+      "target": "postgres"
+    },
+    {
+      "applied": 250486,
+      "batches": 5879,
+      "status": "completed",
+      "table_name": "dividend_event",
+      "target": "postgres"
+    },
+    {
+      "applied": 33,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "etf_profile",
+      "target": "postgres"
+    },
+    {
+      "applied": 38211483,
+      "batches": 7393,
+      "status": "completed",
+      "table_name": "fund_nav_daily",
+      "target": "postgres"
+    },
+    {
+      "applied": 38211483,
+      "batches": 7392,
+      "status": "completed",
+      "table_name": "fund_nav_observation",
+      "target": "postgres"
+    },
+    {
+      "applied": 62,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "fund_profile",
+      "target": "postgres"
+    },
+    {
+      "applied": 2753261,
+      "batches": 5524,
+      "status": "completed",
+      "table_name": "fund_shares_daily",
+      "target": "postgres"
+    },
+    {
+      "applied": 1910218,
+      "batches": 331,
+      "status": "completed",
+      "table_name": "fundamental_periodic",
+      "target": "postgres"
+    },
+    {
+      "applied": 246011704,
+      "batches": 19409,
+      "status": "completed",
+      "table_name": "index_membership",
+      "target": "postgres"
+    },
+    {
+      "applied": 0,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "index_profile",
+      "target": "postgres"
+    },
+    {
+      "applied": 1,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "industry_dim",
+      "target": "postgres"
+    },
+    {
+      "applied": 8725,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "industry_membership_record",
+      "target": "postgres"
+    },
+    {
+      "applied": 0,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "industry_scheme_dim",
+      "target": "postgres"
+    },
+    {
+      "applied": 56666317,
+      "batches": 6476,
+      "status": "completed",
+      "table_name": "market_daily_post_adjusted",
+      "target": "postgres"
+    },
+    {
+      "applied": 56666317,
+      "batches": 6476,
+      "status": "completed",
+      "table_name": "market_daily_raw",
+      "target": "postgres"
+    },
+    {
+      "applied": 0,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "security_code_history",
+      "target": "postgres"
+    },
+    {
+      "applied": 57,
+      "batches": 2,
+      "status": "completed",
+      "table_name": "security_dim",
+      "target": "postgres"
+    },
+    {
+      "applied": 9633,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "security_industry_membership",
+      "target": "postgres"
+    },
+    {
+      "applied": 7429,
+      "batches": 5921,
+      "status": "completed",
+      "table_name": "security_name_history",
+      "target": "postgres"
+    },
+    {
+      "applied": 2,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "stock_profile",
+      "target": "postgres"
+    },
+    {
+      "applied": 10212346,
+      "batches": 2266,
+      "status": "completed",
+      "table_name": "stock_quote_supplement_daily",
+      "target": "postgres"
+    },
+    {
+      "applied": 598369,
+      "batches": 263,
+      "status": "completed",
+      "table_name": "suspension_event",
+      "target": "postgres"
+    },
+    {
+      "applied": 15904,
+      "batches": 1,
+      "status": "completed",
+      "table_name": "trade_calendar",
+      "target": "postgres"
+    },
+    {
+      "applied": 119189615,
+      "batches": 4721,
+      "status": "completed",
+      "table_name": "trade_status_daily",
+      "target": "postgres"
+    }
+  ],
+  "rejected": 0,
+  "request": {
+    "asset_types": [
+      "stock",
+      "fund",
+      "index"
+    ],
+    "auto_commit": true,
+    "backlog_high_bytes": 2147483648,
+    "backlog_low_bytes": 1073741824,
+    "codes": [],
+    "commit_batch_bytes": 67108864,
+    "commit_batch_max_wait_seconds": 1,
+    "commit_batch_rows": 50000,
+    "download_workers": 4,
+    "end_date": "2026-11-08",
+    "history_batch_size": 1,
+    "memory_budget_bytes": 34359738368,
+    "min_free_bytes": 10737418240,
+    "mode": "fill_missing",
+    "normalization_workers": 1,
+    "parameters": {},
+    "pipeline_version": 2,
+    "post_check_rules": [],
+    "requests_per_minute": 500,
+    "resource_profile": "throughput_90",
+    "run_in_background": true,
+    "source_id": "tushare",
+    "sources": [
+      "tushare"
+    ],
+    "start_date": "2005-01-01",
+    "tables": [
+      "corporate_action",
+      "dividend_event",
+      "etf_profile",
+      "fund_nav_daily",
+      "fund_nav_observation",
+      "fund_profile",
+      "fund_shares_daily",
+      "fundamental_periodic",
+      "index_membership",
+      "index_profile",
+      "industry_dim",
+      "industry_membership_record",
+      "industry_scheme_dim",
+      "market_daily_post_adjusted",
+      "market_daily_raw",
+      "security_code_history",
+      "security_dim",
+      "security_industry_membership",
+      "security_name_history",
+      "stock_profile",
+      "stock_quote_supplement_daily",
+      "suspension_event",
+      "trade_calendar"
+    ],
+    "targets": [
+      "postgres",
+      "clickhouse"
+    ],
+    "validation_profile": "light"
+  },
+  "schema": [
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "fundamental_periodic"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "fund_nav_daily"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "fund_shares_daily"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "fund_profile"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "industry_membership_record"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "industry_dim"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "market_daily_post_adjusted"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "security_industry_membership"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "industry_scheme_dim"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "stock_profile"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "index_profile"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "index_membership"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "suspension_event"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "dividend_event"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "trade_status_daily"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "security_dim"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "trade_calendar"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "fund_nav_observation"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "security_name_history"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "corporate_action"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "security_code_history"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "market_daily_raw"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "etf_profile"
+    },
+    {
+      "clickhouse_columns": true,
+      "postgres_columns": true,
+      "postgres_primary_key": true,
+      "table": "stock_quote_supplement_daily"
+    }
+  ],
+  "scope": "Completed task; current physical business rows; immutable original archives and expected images",
+  "seed": 61115,
+  "source_archive_availability": [
+    {
+      "endpoint": "daily",
+      "missing_paths": 2529,
+      "nonempty_leaf_slices": 5304,
+      "retained_paths": 2775
+    },
+    {
+      "endpoint": "daily_basic",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 5304,
+      "retained_paths": 5304
+    },
+    {
+      "endpoint": "fund_daily",
+      "missing_paths": 2529,
+      "nonempty_leaf_slices": 5304,
+      "retained_paths": 2775
+    },
+    {
+      "endpoint": "index_daily",
+      "missing_paths": 6033,
+      "nonempty_leaf_slices": 8808,
+      "retained_paths": 2775
+    },
+    {
+      "endpoint": "sw_daily",
+      "missing_paths": 761,
+      "nonempty_leaf_slices": 761,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "stock_basic",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 6,
+      "retained_paths": 6
+    },
+    {
+      "endpoint": "fund_basic",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 5,
+      "retained_paths": 5
+    },
+    {
+      "endpoint": "index_basic",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 12,
+      "retained_paths": 12
+    },
+    {
+      "endpoint": "etf_basic",
+      "missing_paths": 3,
+      "nonempty_leaf_slices": 3,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "trade_cal",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 4,
+      "retained_paths": 4
+    },
+    {
+      "endpoint": "index_weight",
+      "missing_paths": 66534,
+      "nonempty_leaf_slices": 73804,
+      "retained_paths": 7270
+    },
+    {
+      "endpoint": "fund_share",
+      "missing_paths": 3022,
+      "nonempty_leaf_slices": 5784,
+      "retained_paths": 2762
+    },
+    {
+      "endpoint": "fund_nav",
+      "missing_paths": 9735,
+      "nonempty_leaf_slices": 15277,
+      "retained_paths": 5542
+    },
+    {
+      "endpoint": "dividend",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 5890,
+      "retained_paths": 5890
+    },
+    {
+      "endpoint": "suspend_d",
+      "missing_paths": 303,
+      "nonempty_leaf_slices": 303,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "namechange",
+      "missing_paths": 0,
+      "nonempty_leaf_slices": 5922,
+      "retained_paths": 5922
+    },
+    {
+      "endpoint": "index_member_all",
+      "missing_paths": 7564,
+      "nonempty_leaf_slices": 7564,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "ci_index_member",
+      "missing_paths": 5494,
+      "nonempty_leaf_slices": 5494,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "income_vip",
+      "missing_paths": 116,
+      "nonempty_leaf_slices": 116,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "balancesheet_vip",
+      "missing_paths": 121,
+      "nonempty_leaf_slices": 121,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "cashflow_vip",
+      "missing_paths": 112,
+      "nonempty_leaf_slices": 112,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "fina_indicator_vip",
+      "missing_paths": 141,
+      "nonempty_leaf_slices": 141,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "bse_mapping",
+      "missing_paths": 1,
+      "nonempty_leaf_slices": 1,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "bak_daily",
+      "missing_paths": 2266,
+      "nonempty_leaf_slices": 2266,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "index_classify",
+      "missing_paths": 1,
+      "nonempty_leaf_slices": 1,
+      "retained_paths": 0
+    },
+    {
+      "endpoint": "adj_factor",
+      "missing_paths": 2528,
+      "nonempty_leaf_slices": 5304,
+      "retained_paths": 2776
+    },
+    {
+      "endpoint": "fund_adj",
+      "missing_paths": 2647,
+      "nonempty_leaf_slices": 5423,
+      "retained_paths": 2776
+    }
+  ],
+  "source_readbacks": [
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 144,
+      "field_comparisons": 720,
+      "found_rows": 144,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "corporate_action",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 144,
+      "field_comparisons": 720,
+      "found_rows": 144,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "corporate_action",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 799,
+      "found_rows": 47,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "dividend_event",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 799,
+      "found_rows": 47,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "dividend_event",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 71,
+      "field_comparisons": 710,
+      "found_rows": 71,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_nav_observation",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 71,
+      "field_comparisons": 710,
+      "found_rows": 71,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_nav_observation",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 1800,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 2,
+      "mismatch_examples": [
+        {
+          "actual": "0.15",
+          "column": "c_fee",
+          "expected": "0.05",
+          "key": [
+            "016537.OF"
+          ]
+        },
+        {
+          "actual": "中债总全价(总值)指数收益率×100%",
+          "column": "benchmark",
+          "expected": "中债-优选投资级信用债全价(总值)指数收益率×100%",
+          "key": [
+            "005778.OF"
+          ]
+        }
+      ],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 1800,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 2,
+      "mismatch_examples": [
+        {
+          "actual": "0.15",
+          "column": "c_fee",
+          "expected": "0.05",
+          "key": [
+            "016537.OF"
+          ]
+        },
+        {
+          "actual": "中债总全价(总值)指数收益率×100%",
+          "column": "benchmark",
+          "expected": "中债-优选投资级信用债全价(总值)指数收益率×100%",
+          "key": [
+            "005778.OF"
+          ]
+        }
+      ],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 141,
+      "found_rows": 47,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_shares_daily",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 141,
+      "found_rows": 47,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_shares_daily",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 288,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_membership",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 288,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_membership",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 936,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 936,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 280,
+      "field_comparisons": 4004,
+      "found_rows": 280,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "market_daily_raw",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 280,
+      "field_comparisons": 4004,
+      "found_rows": 280,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "market_daily_raw",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 5,
+      "field_comparisons": 35,
+      "found_rows": 5,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_name_history",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 5,
+      "field_comparisons": 35,
+      "found_rows": 5,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_name_history",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 799,
+      "found_rows": 47,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "stock_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 799,
+      "found_rows": 47,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "stock_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 288,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "trade_calendar",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 72,
+      "field_comparisons": 288,
+      "found_rows": 72,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "trade_calendar",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 7,
+      "field_comparisons": 958,
+      "found_rows": 7,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fundamental_periodic",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 7,
+      "field_comparisons": 958,
+      "found_rows": 7,
+      "label": "original_raw_json_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fundamental_periodic",
+      "target": "clickhouse"
+    }
+  ],
+  "source_samples": [
+    {
+      "archive_rows": 1345,
+      "endpoint": "daily",
+      "selected_rows": 24,
+      "sha256": "bd2983e345d1a4bea6ab5792dcaecab0058e8514b34ded9e6685e258cb9bae45",
+      "slice_id": "2aba0104e50b231692d14bd5",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 1830,
+      "endpoint": "daily",
+      "selected_rows": 24,
+      "sha256": "60b60fc7070d76d4fb0496fc36192d412cda7cb0e1bc91aa5e6b9becc443ccdb",
+      "slice_id": "403a92dc48e440460ebeda61",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 5299,
+      "endpoint": "daily",
+      "selected_rows": 24,
+      "sha256": "a4ea20d159e09d5720790a5b6c4ca71a1ac9f9dcac1d48237c7a89810d3fc1d2",
+      "slice_id": "verified-requery:17",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 1344,
+      "endpoint": "daily_basic",
+      "selected_rows": 24,
+      "sha256": "8a7407d1c8cb6cea018e15ca415963e9b7557ed89b2dc849602c11015e9cd58e",
+      "slice_id": "db83b722006809d8af0a28c5",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 2507,
+      "endpoint": "daily_basic",
+      "selected_rows": 24,
+      "sha256": "1cf7614224fba88e3ddbf0750c326bd52b302f942d4a7d44c16554a74ef6469a",
+      "slice_id": "5bdb49bd2e355d566dc3e0c2",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 5299,
+      "endpoint": "daily_basic",
+      "selected_rows": 24,
+      "sha256": "353b22aeab38b642f48788ee7bcbce47eee83dce6c527b920e5514fe681f99df",
+      "slice_id": "verified-requery:18",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 68,
+      "endpoint": "fund_daily",
+      "selected_rows": 22,
+      "sha256": "1c9f64c3fec735da98ce67cf0ae2415ca39f52875b7c5369d6d803fd2e9e7f8c",
+      "slice_id": "0d7d8ef475957c2b0ba5950f",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 110,
+      "endpoint": "fund_daily",
+      "selected_rows": 24,
+      "sha256": "93d07a95a64627720b3643294630a6072d16102baeababf529d95025a613dc10",
+      "slice_id": "b3786f56697858ef877e9d2b",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 571,
+      "endpoint": "fund_daily",
+      "selected_rows": 24,
+      "sha256": "50163aa80952dd42b790f0680415fd4340ce76b36e260e8b31aa9bd0cf92cc00",
+      "slice_id": "5082d2df405ebdda3b5de45f",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 1708,
+      "endpoint": "index_daily",
+      "selected_rows": 23,
+      "sha256": "e4e949123f3029cf149ffbd0643275e3347f01feed0891a9c125faec69f4aeef",
+      "slice_id": "10d3b697ea86fa92500e8b7a",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 3564,
+      "endpoint": "index_daily",
+      "selected_rows": 22,
+      "sha256": "fc7be1f736132b1ec26fcf63ff4962e803772dd566cc981902ce3978eeeb0746",
+      "slice_id": "a094756e6f32c38aa89dc930",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 7261,
+      "endpoint": "index_daily",
+      "selected_rows": 23,
+      "sha256": "312c9ec4dc17aaed5f151c815f1a8075f91595eb5a45b11c010b78b2f5c7d224",
+      "slice_id": "a20823b63dc6562fd69f33c9",
+      "table": "market_daily_raw"
+    },
+    {
+      "archive_rows": 343,
+      "endpoint": "stock_basic",
+      "selected_rows": 24,
+      "sha256": "9c69b54b3a5fdaf524a3de423db134f2bf802810b91071b4247db64729bc293c",
+      "slice_id": "0d3c4edbe4c0919a1c6e4620",
+      "table": "stock_profile"
+    },
+    {
+      "archive_rows": 4,
+      "endpoint": "stock_basic",
+      "selected_rows": 4,
+      "sha256": "63786835c62a34af38fb7ed93db8038cfccba6ee5eb1d34a6f566eac958d2b45",
+      "slice_id": "ec28b62d814905b586725e92",
+      "table": "stock_profile"
+    },
+    {
+      "archive_rows": 343,
+      "endpoint": "stock_basic",
+      "selected_rows": 24,
+      "sha256": "9c69b54b3a5fdaf524a3de423db134f2bf802810b91071b4247db64729bc293c",
+      "slice_id": "f46ffec39d857c69564d975b",
+      "table": "stock_profile"
+    },
+    {
+      "archive_rows": 2285,
+      "endpoint": "fund_basic",
+      "selected_rows": 24,
+      "sha256": "afb79363c106da4d0601d177464ad69393c6feac8a2d8860a24156db87b6b41b",
+      "slice_id": "3935e6a96c68873474d12df9",
+      "table": "fund_profile"
+    },
+    {
+      "archive_rows": 15000,
+      "endpoint": "fund_basic",
+      "selected_rows": 24,
+      "sha256": "17910d11a50613307429b0f58ba021f02c8e282760b1420f5ce2790d53525082",
+      "slice_id": "471be458439bfc44a76be9d9",
+      "table": "fund_profile"
+    },
+    {
+      "archive_rows": 10362,
+      "endpoint": "fund_basic",
+      "selected_rows": 24,
+      "sha256": "b1a13f7436e7bcea04541a44a96a58cf5903be09180b2908dc00ccec6b4b4c5c",
+      "slice_id": "fb3ed00c1546bff85abdd865",
+      "table": "fund_profile"
+    },
+    {
+      "archive_rows": 1063,
+      "endpoint": "index_basic",
+      "selected_rows": 24,
+      "sha256": "5b5dbe1fac8332477c285445f674222f77baed21c50ae8bf2340497929c944f7",
+      "slice_id": "0a9053d5d5383ac45bcae437",
+      "table": "index_profile"
+    },
+    {
+      "archive_rows": 8000,
+      "endpoint": "index_basic",
+      "selected_rows": 24,
+      "sha256": "9b6438c7fe1d542a77137955a65fd1e6ef379990be35d606bbd6b9fe6edf7746",
+      "slice_id": "8c826df1bfdbed465e1447e9",
+      "table": "index_profile"
+    },
+    {
+      "archive_rows": 961,
+      "endpoint": "index_basic",
+      "selected_rows": 24,
+      "sha256": "69dd39bc27ce39e6b86b545938306cec02e642376974e68de31eed732f644b1a",
+      "slice_id": "ee9a08d87bb5dc7094060811",
+      "table": "index_profile"
+    },
+    {
+      "archive_rows": 5400,
+      "endpoint": "trade_cal",
+      "selected_rows": 24,
+      "sha256": "11c3f73fe560cfda58802d14c0aca1238de038b23224f900565b0dd094ddbd3d",
+      "slice_id": "04ea24bd0677a40d40f43073",
+      "table": "trade_calendar"
+    },
+    {
+      "archive_rows": 2582,
+      "endpoint": "trade_cal",
+      "selected_rows": 24,
+      "sha256": "5b3bf353564eb3cf1b398654e365c2bd386a44bf6491f736a06d0603b2cbc966",
+      "slice_id": "0e12e793523b2fd7cd4aa88c",
+      "table": "trade_calendar"
+    },
+    {
+      "archive_rows": 2582,
+      "endpoint": "trade_cal",
+      "selected_rows": 24,
+      "sha256": "1de4a8b4b086ef4e2623042e9c6afbf395a97730413ef8ac6d79d2827160061e",
+      "slice_id": "7f09e4e2e9bec8888e0d1fd0",
+      "table": "trade_calendar"
+    },
+    {
+      "archive_rows": 2065,
+      "endpoint": "index_weight",
+      "selected_rows": 24,
+      "sha256": "012b65508d847040dbe36b6e0320324c71ce707937249a24a5f3a704c0582bc2",
+      "slice_id": "00458f85c71ad9dc763c7822",
+      "table": "index_membership"
+    },
+    {
+      "archive_rows": 3683,
+      "endpoint": "index_weight",
+      "selected_rows": 24,
+      "sha256": "9f8f2a733ec0ed4470533317bab703b2eebb983fea85b13ac8765eeb5c34931a",
+      "slice_id": "0cdf997c5a962847068db2b7",
+      "table": "index_membership"
+    },
+    {
+      "archive_rows": 2455,
+      "endpoint": "index_weight",
+      "selected_rows": 24,
+      "sha256": "db879686e434663d7d11ef8fe5ff16fa431a67f329c1ad1fd6869d242efc7644",
+      "slice_id": "verified-requery:25",
+      "table": "index_membership"
+    },
+    {
+      "archive_rows": 2,
+      "endpoint": "fund_share",
+      "selected_rows": 2,
+      "sha256": "e4650261697ea6252db3585b707b28a094aaa8d95b2686a5b4bbc096c02d76b4",
+      "slice_id": "f4efa0bec207517e625535c1",
+      "table": "fund_shares_daily"
+    },
+    {
+      "archive_rows": 35,
+      "endpoint": "fund_share",
+      "selected_rows": 22,
+      "sha256": "4f8e60be3b86f37e7d015bc94c81f0a9b3ccb341af5fdeed3b7faf347dfbc7c0",
+      "slice_id": "41c9f8cfaab950a96d74da39",
+      "table": "fund_shares_daily"
+    },
+    {
+      "archive_rows": 452,
+      "endpoint": "fund_share",
+      "selected_rows": 23,
+      "sha256": "8f40fce404577ea66db630b455d3d4846f21c22a36b34c60bf034555d921356a",
+      "slice_id": "6c0a5bf589838a60f4ab4f21",
+      "table": "fund_shares_daily"
+    },
+    {
+      "archive_rows": 404,
+      "endpoint": "fund_nav",
+      "selected_rows": 24,
+      "sha256": "5be41d0b1de445686c1f38c329f5f06cf3ccff2c8bf319c91e352b84ead8e2c9",
+      "slice_id": "001458691726e8052480fb4a",
+      "table": "fund_nav_observation"
+    },
+    {
+      "archive_rows": 1504,
+      "endpoint": "fund_nav",
+      "selected_rows": 24,
+      "sha256": "a186a5cd58959fb206a89f2b4afdb8efb79f43e48c77a36523b4059df5f708e5",
+      "slice_id": "7d9674f421291e02a13db975",
+      "table": "fund_nav_observation"
+    },
+    {
+      "archive_rows": 120,
+      "endpoint": "fund_nav",
+      "selected_rows": 23,
+      "sha256": "f9c910c93c65b6139ed4fb9632c9d2fca14f132517475d09d45fac49e471ba2b",
+      "slice_id": "fffcd04b452152f4ab4d7487",
+      "table": "fund_nav_observation"
+    },
+    {
+      "archive_rows": 77,
+      "endpoint": "dividend",
+      "selected_rows": 21,
+      "sha256": "49f738bb371f78941de9303eda72da887e0b116da73fb5b6caaa9657dd064a5f",
+      "slice_id": "0001c4b14dffdbe003d2fed0",
+      "table": "dividend_event"
+    },
+    {
+      "archive_rows": 4,
+      "endpoint": "dividend",
+      "selected_rows": 4,
+      "sha256": "ad6c80c5f254e926a3c401c98361850954cee1218c742bf41e06b0de10f27d16",
+      "slice_id": "8196a7973be80c03b21049ec",
+      "table": "dividend_event"
+    },
+    {
+      "archive_rows": 27,
+      "endpoint": "dividend",
+      "selected_rows": 22,
+      "sha256": "0b9925b8e221ecea6969de6897bf3cc0e4648e67295cf0cf470fe975c4367c16",
+      "slice_id": "fffdcd1e5898e1a53491e209",
+      "table": "dividend_event"
+    },
+    {
+      "archive_rows": 1,
+      "endpoint": "namechange",
+      "selected_rows": 1,
+      "sha256": "a59f1a43340e6c879170ef03e6f6ade21537f9bae864c79ad15891ee2f65acca",
+      "slice_id": "0007a0d5d7703c0c022a00a7",
+      "table": "security_name_history"
+    },
+    {
+      "archive_rows": 3,
+      "endpoint": "namechange",
+      "selected_rows": 3,
+      "sha256": "75feb677937948d29a6ec6478c95dcc86f4889ad20761edb60f886ae40fd49ff",
+      "slice_id": "807d0debdba82801a23b524a",
+      "table": "security_name_history"
+    },
+    {
+      "archive_rows": 1,
+      "endpoint": "namechange",
+      "selected_rows": 1,
+      "sha256": "149a8287fa042380cec35a8430bb10234d169dae659d805c5e651a92cbec4355",
+      "slice_id": "ffff21a7d63107a627cb50a5",
+      "table": "security_name_history"
+    },
+    {
+      "archive_rows": 1353,
+      "endpoint": "adj_factor",
+      "selected_rows": 24,
+      "sha256": "e853c83f6125a44cbed2ee380e5fe4e08e13b164f6790b86d8d243c84d5c16bc",
+      "slice_id": "5723d2b6b73e73a986827fa0",
+      "table": "corporate_action"
+    },
+    {
+      "archive_rows": 1942,
+      "endpoint": "adj_factor",
+      "selected_rows": 24,
+      "sha256": "663a77122b8acd03e7bf5da6c72130c038b53f1afc697ae8bedd285d18f3c29e",
+      "slice_id": "6a62883f4047a6589b4a3faa",
+      "table": "corporate_action"
+    },
+    {
+      "archive_rows": 2957,
+      "endpoint": "adj_factor",
+      "selected_rows": 24,
+      "sha256": "18c31482e1b9e1f6160d4037fcb161428c63459c9be92f27b3fdec76cf1c7a57",
+      "slice_id": "c9c553844d18572a58657dbc",
+      "table": "corporate_action"
+    },
+    {
+      "archive_rows": 68,
+      "endpoint": "fund_adj",
+      "selected_rows": 24,
+      "sha256": "40ebfb5af9c2312185dff17cc7f4010d4594e7d030d6c15e8ac5f52b18369984",
+      "slice_id": "1a73d5527d65129082c485f3",
+      "table": "corporate_action"
+    },
+    {
+      "archive_rows": 110,
+      "endpoint": "fund_adj",
+      "selected_rows": 24,
+      "sha256": "8bed7191d77cf386a823451361dd20b23d4d042492dff3973d29bb9b476bc212",
+      "slice_id": "e285531b236314e9167756f8",
+      "table": "corporate_action"
+    },
+    {
+      "archive_rows": 620,
+      "endpoint": "fund_adj",
+      "selected_rows": 24,
+      "sha256": "b73ab573a4f9769140dc9ac4c0f9423e39cb6d6db6f21e19b9b4c2a65d6a4fee",
+      "slice_id": "84a5672084627ab67aec6d5d",
+      "table": "corporate_action"
+    },
+    {
+      "archive_rows": 1,
+      "endpoint": "income_vip",
+      "selected_rows": 1,
+      "sha256": "5cfd1aab66e255f75e01203441b11fa6862b005ed92c951492fecd39b141e39e",
+      "slice_id": "fresh-control:income_vip",
+      "table": "fundamental_periodic"
+    },
+    {
+      "archive_rows": 2,
+      "endpoint": "balancesheet_vip",
+      "selected_rows": 2,
+      "sha256": "06a90ed35e038129c748e29698c683f63cc580bccd0a7e88dc3c5dee3a26ae6e",
+      "slice_id": "fresh-control:balancesheet_vip",
+      "table": "fundamental_periodic"
+    },
+    {
+      "archive_rows": 2,
+      "endpoint": "cashflow_vip",
+      "selected_rows": 2,
+      "sha256": "4b096f93e0cdfbed479141e713d5797ab3986c391d65d96008a39d5e73869380",
+      "slice_id": "fresh-control:cashflow_vip",
+      "table": "fundamental_periodic"
+    },
+    {
+      "archive_rows": 2,
+      "endpoint": "fina_indicator_vip",
+      "selected_rows": 2,
+      "sha256": "85397867e648cd202048a66555ed59d70ec4b2607fd27845553a561551d447f3",
+      "slice_id": "fresh-control:fina_indicator_vip",
+      "table": "fundamental_periodic"
+    }
+  ],
+  "started_at": "2026-11-15T05:02:48.309385+00:00",
+  "table_samples": [
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 203,
+      "field_comparisons": 2436,
+      "found_rows": 203,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "corporate_action",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 203,
+      "field_comparisons": 2436,
+      "found_rows": 203,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "corporate_action",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 144,
+      "field_comparisons": 3024,
+      "found_rows": 144,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "dividend_event",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 144,
+      "field_comparisons": 3024,
+      "found_rows": 144,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "dividend_event",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 864,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "etf_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 864,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "etf_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 196,
+      "field_comparisons": 2548,
+      "found_rows": 196,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_nav_daily",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 196,
+      "field_comparisons": 2548,
+      "found_rows": 196,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_nav_daily",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 3360,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_nav_observation",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 3360,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_nav_observation",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 1392,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 1392,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 192,
+      "field_comparisons": 1344,
+      "found_rows": 192,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_shares_daily",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 192,
+      "field_comparisons": 1344,
+      "found_rows": 192,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fund_shares_daily",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 120000,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fundamental_periodic",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 120000,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "fundamental_periodic",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 2400,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_membership",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 2400,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_membership",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 816,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 816,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "index_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 576,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "industry_dim",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 576,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "industry_dim",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 816,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "industry_membership_record",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 816,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "industry_membership_record",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 2,
+      "field_comparisons": 14,
+      "found_rows": 2,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "industry_scheme_dim",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 2,
+      "field_comparisons": 14,
+      "found_rows": 2,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "industry_scheme_dim",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 11280,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "market_daily_post_adjusted",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 11280,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "market_daily_post_adjusted",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 198,
+      "field_comparisons": 9306,
+      "found_rows": 198,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "market_daily_raw",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 198,
+      "field_comparisons": 9306,
+      "found_rows": 198,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "market_daily_raw",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 423,
+      "found_rows": 47,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_code_history",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 47,
+      "field_comparisons": 423,
+      "found_rows": 47,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_code_history",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 96,
+      "field_comparisons": 1056,
+      "found_rows": 96,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_dim",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 96,
+      "field_comparisons": 1056,
+      "found_rows": 96,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_dim",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 480,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_industry_membership",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 480,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_industry_membership",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 12,
+      "field_comparisons": 132,
+      "found_rows": 12,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_name_history",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 12,
+      "field_comparisons": 132,
+      "found_rows": 12,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "security_name_history",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 1008,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "stock_profile",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 1008,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "stock_profile",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 8400,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "stock_quote_supplement_daily",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 8400,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "stock_quote_supplement_daily",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 239,
+      "field_comparisons": 2151,
+      "found_rows": 239,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "suspension_event",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 239,
+      "field_comparisons": 2151,
+      "found_rows": 239,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "suspension_event",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 384,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "trade_calendar",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 48,
+      "field_comparisons": 384,
+      "found_rows": 48,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "trade_calendar",
+      "target": "clickhouse"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 2880,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "trade_status_daily",
+      "target": "postgres"
+    },
+    {
+      "duplicate_examples": [],
+      "duplicate_keys": 0,
+      "expected_rows": 240,
+      "field_comparisons": 2880,
+      "found_rows": 240,
+      "label": "immutable_expected_to_current_database",
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "missing_count": 0,
+      "missing_examples": [],
+      "table": "trade_status_daily",
+      "target": "clickhouse"
+    }
+  ],
+  "task": {
+    "created": "2026-11-09T04:57:03.045508+00:00",
+    "error": null,
+    "status": "completed",
+    "updated": "2026-11-14T17:28:49.110191+00:00"
+  },
+  "task_id": "6f16d0049d324b739aeedb96454c25a0",
+  "units": [
+    {
+      "kind": "normalize",
+      "n": 26035,
+      "status": "completed"
+    },
+    {
+      "kind": "stored",
+      "n": 52070,
+      "status": "completed"
+    }
+  ],
+  "unpaired_receipts": {
+    "applied": 656279,
+    "count": 26,
+    "dates": [
+      "2014-09-04",
+      "2014-09-05",
+      "2014-09-09",
+      "2014-09-10",
+      "2014-09-11",
+      "2014-09-12",
+      "2014-09-15",
+      "2014-09-16",
+      "2014-09-17",
+      "2014-09-18",
+      "2014-09-19",
+      "2014-09-22",
+      "2014-09-23",
+      "2014-09-24"
+    ],
+    "samples": [
+      {
+        "duplicate_examples": [],
+        "duplicate_keys": 0,
+        "expected_rows": 596,
+        "field_comparisons": 7152,
+        "found_rows": 596,
+        "label": "unpaired_trade_status_receipts",
+        "mismatch_count": 0,
+        "mismatch_examples": [],
+        "missing_count": 0,
+        "missing_examples": [],
+        "table": "trade_status_daily",
+        "target": "postgres"
+      },
+      {
+        "duplicate_examples": [],
+        "duplicate_keys": 0,
+        "expected_rows": 596,
+        "field_comparisons": 0,
+        "found_rows": 0,
+        "label": "unpaired_trade_status_receipts",
+        "mismatch_count": 0,
+        "mismatch_examples": [],
+        "missing_count": 596,
+        "missing_examples": [
+          [
+            "stock",
+            "601100.SH",
+            "2014-09-23"
+          ],
+          [
+            "index",
+            "000982.SH",
+            "2014-09-23"
+          ],
+          [
+            "index",
+            "H00022.CSI",
+            "2014-09-23"
+          ],
+          [
+            "index",
+            "H30476.CSI",
+            "2014-09-23"
+          ],
+          [
+            "index",
+            "932559.CSI",
+            "2014-09-23"
+          ],
+          [
+            "index",
+            "N31328.CSI",
+            "2014-09-23"
+          ],
+          [
+            "index",
+            "807145.SI",
+            "2014-09-23"
+          ],
+          [
+            "fund",
+            "028687.OF",
+            "2014-09-23"
+          ],
+          [
+            "fund",
+            "026451.OF",
+            "2014-09-23"
+          ],
+          [
+            "fund",
+            "025885.OF",
+            "2014-09-23"
+          ],
+          [
+            "fund",
+            "024594.OF",
+            "2014-09-23"
+          ],
+          [
+            "fund",
+            "018401.OF",
+            "2014-09-23"
+          ]
+        ],
+        "table": "trade_status_daily",
+        "target": "clickhouse"
+      }
+    ]
+  },
+  "audit_finished_at": "2026-11-15T13:25:00.178581+08:00",
+  "audit_conclusion": "requires_remediation",
+  "extensions": {
+    "at": "2026-11-15T05:04:21.372366+00:00",
+    "calendar": {
+      "clickhouse": {
+        "exchanges": [
+          {
+            "end": "2026-11-08",
+            "exchange": "SSE",
+            "invalid_count": 0,
+            "invalid_examples": [],
+            "missing_dates": [],
+            "rows": 7982,
+            "start": "2005-01-01",
+            "unique_dates": 7982
+          },
+          {
+            "end": "2026-11-08",
+            "exchange": "SZSE",
+            "invalid_count": 0,
+            "invalid_examples": [],
+            "missing_dates": [],
+            "rows": 7982,
+            "start": "2005-01-01",
+            "unique_dates": 7982
+          }
+        ],
+        "hash": "e17b72cd1ffa3a26eee9cc270875ae1e7766cd1ceb6b0a8900f9eb2c13f88399",
+        "rows": 15964
+      },
+      "postgres": {
+        "exchanges": [
+          {
+            "end": "2026-11-08",
+            "exchange": "SSE",
+            "invalid_count": 0,
+            "invalid_examples": [],
+            "missing_dates": [],
+            "rows": 7982,
+            "start": "2005-01-01",
+            "unique_dates": 7982
+          },
+          {
+            "end": "2026-11-08",
+            "exchange": "SZSE",
+            "invalid_count": 0,
+            "invalid_examples": [],
+            "missing_dates": [],
+            "rows": 7982,
+            "start": "2005-01-01",
+            "unique_dates": 7982
+          }
+        ],
+        "hash": "e17b72cd1ffa3a26eee9cc270875ae1e7766cd1ceb6b0a8900f9eb2c13f88399",
+        "rows": 15964
+      }
+    },
+    "finished_at": "2026-11-15T05:05:15.952836+00:00",
+    "index_weights": {
+      "clickhouse": [
+        {
+          "index_code": "000300.SH",
+          "maximum_weight": "3.836",
+          "minimum_weight": "0.026",
+          "n": 300,
+          "total_weight": "99.99",
+          "trade_date": "2026-10-30"
+        },
+        {
+          "index_code": "000300.SH",
+          "maximum_weight": "3.286",
+          "minimum_weight": "0.05",
+          "n": 300,
+          "total_weight": "100.004",
+          "trade_date": "2005-04-29"
+        },
+        {
+          "index_code": "000905.SH",
+          "maximum_weight": "1.307",
+          "minimum_weight": "0.019",
+          "n": 500,
+          "total_weight": "100.005",
+          "trade_date": "2020-12-31"
+        },
+        {
+          "index_code": "000016.SH",
+          "maximum_weight": "9.148",
+          "minimum_weight": "0.416",
+          "n": 50,
+          "total_weight": 100,
+          "trade_date": "2015-06-30"
+        },
+        {
+          "index_code": "931998.CSI",
+          "maximum_weight": "18.394",
+          "minimum_weight": "0.041",
+          "n": 50,
+          "total_weight": "99.998",
+          "trade_date": "2024-05-31"
+        },
+        {
+          "index_code": "H30374.CSI",
+          "maximum_weight": "5.989",
+          "minimum_weight": 0,
+          "n": 3873,
+          "total_weight": "99.996",
+          "trade_date": "2019-07-31"
+        }
+      ],
+      "postgres": [
+        {
+          "index_code": "000300.SH",
+          "maximum_weight": "3.836",
+          "minimum_weight": "0.026",
+          "n": 300,
+          "total_weight": "99.99",
+          "trade_date": "2026-10-30"
+        },
+        {
+          "index_code": "000300.SH",
+          "maximum_weight": "3.286",
+          "minimum_weight": "0.05",
+          "n": 300,
+          "total_weight": "100.004",
+          "trade_date": "2005-04-29"
+        },
+        {
+          "index_code": "000905.SH",
+          "maximum_weight": "1.307",
+          "minimum_weight": "0.019",
+          "n": 500,
+          "total_weight": "100.005",
+          "trade_date": "2020-12-31"
+        },
+        {
+          "index_code": "000016.SH",
+          "maximum_weight": "9.148",
+          "minimum_weight": "0.416",
+          "n": 50,
+          "total_weight": "100",
+          "trade_date": "2015-06-30"
+        },
+        {
+          "index_code": "931998.CSI",
+          "maximum_weight": "18.394",
+          "minimum_weight": "0.041",
+          "n": 50,
+          "total_weight": "99.998",
+          "trade_date": "2024-05-31"
+        },
+        {
+          "index_code": "H30374.CSI",
+          "maximum_weight": "5.989",
+          "minimum_weight": "0",
+          "n": 3873,
+          "total_weight": "99.996",
+          "trade_date": "2019-07-31"
+        }
+      ]
+    },
+    "industry": {
+      "clickhouse": {
+        "invalid_count": 0,
+        "invalid_examples": [],
+        "rows": 928
+      },
+      "postgres": {
+        "invalid_count": 0,
+        "invalid_examples": [],
+        "rows": 928
+      }
+    },
+    "trade_status": {
+      "clickhouse": [
+        {
+          "asset_type": "fund",
+          "confidence": "derived",
+          "is_tradable": 1,
+          "n": 344500,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "fund",
+          "confidence": "unknown",
+          "is_tradable": null,
+          "n": 70662757,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "fund",
+          "confidence": "boundary",
+          "is_tradable": 0,
+          "n": 6372257,
+          "status_source": "security_lifecycle"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "derived",
+          "is_tradable": 1,
+          "n": 1463075,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "derived",
+          "is_tradable": null,
+          "n": 519142,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "unknown",
+          "is_tradable": 1,
+          "n": 8341,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "unknown",
+          "is_tradable": null,
+          "n": 1058315,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "boundary",
+          "is_tradable": 0,
+          "n": 25038935,
+          "status_source": "security_lifecycle"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "derived",
+          "is_tradable": 1,
+          "n": 4231747,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "derived",
+          "is_tradable": null,
+          "n": 1,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "unknown",
+          "is_tradable": 0,
+          "n": 171,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "unknown",
+          "is_tradable": null,
+          "n": 264606,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "boundary",
+          "is_tradable": 0,
+          "n": 9535708,
+          "status_source": "security_lifecycle"
+        }
+      ],
+      "postgres": [
+        {
+          "asset_type": "fund",
+          "confidence": "derived",
+          "is_tradable": 1,
+          "n": 348940,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "fund",
+          "confidence": "unknown",
+          "is_tradable": null,
+          "n": 71051200,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "fund",
+          "confidence": "boundary",
+          "is_tradable": 0,
+          "n": 6404357,
+          "status_source": "security_lifecycle"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "derived",
+          "is_tradable": 1,
+          "n": 1486910,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "derived",
+          "is_tradable": null,
+          "n": 526134,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "unknown",
+          "is_tradable": 1,
+          "n": 8341,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "unknown",
+          "is_tradable": null,
+          "n": 1065926,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "index",
+          "confidence": "boundary",
+          "is_tradable": 0,
+          "n": 25154716,
+          "status_source": "security_lifecycle"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "derived",
+          "is_tradable": 1,
+          "n": 4261829,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "derived",
+          "is_tradable": null,
+          "n": 1,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "unknown",
+          "is_tradable": 0,
+          "n": 171,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "unknown",
+          "is_tradable": null,
+          "n": 267683,
+          "status_source": "derived_from_daily_quote"
+        },
+        {
+          "asset_type": "stock",
+          "confidence": "boundary",
+          "is_tradable": 0,
+          "n": 9579626,
+          "status_source": "security_lifecycle"
+        }
+      ]
+    }
+  },
+  "retrieval_metadata": {
+    "at": "2026-11-15T05:13:33.455023+00:00",
+    "declared_roots": 80467,
+    "edges": 253871,
+    "examples": [],
+    "frozen_roots": 80467,
+    "issue_counts": {},
+    "leaf_response_rows": {
+      "adj_factor": 16994744,
+      "bak_daily": 10318346,
+      "balancesheet_vip": 461956,
+      "bse_mapping": 248,
+      "cashflow_vip": 414531,
+      "ci_index_member": 6750,
+      "daily": 16225278,
+      "daily_basic": 16134201,
+      "dividend": 268712,
+      "etf_basic": 1921,
+      "fina_indicator_vip": 615424,
+      "fund_adj": 3402114,
+      "fund_basic": 32691,
+      "fund_daily": 3189987,
+      "fund_nav": 38700161,
+      "fund_share": 2787602,
+      "income_vip": 418307,
+      "index_basic": 23726,
+      "index_classify": 511,
+      "index_daily": 35659354,
+      "index_member_all": 7927,
+      "index_weight": 248966328,
+      "namechange": 14255,
+      "stock_basic": 11852,
+      "suspend_d": 598565,
+      "sw_daily": 2197074,
+      "trade_cal": 15964
+    },
+    "missing_root_endpoints": {},
+    "missing_root_examples": [],
+    "note": "Global metadata/graph coverage; archive byte hashes are independently sampled in report.json. Split-parent rows excluded from leaf totals.",
+    "paging_advancement_checks": 62151,
+    "slices": 344673,
+    "split_date_partition_checks": 86971,
+    "status_counts": [
+      {
+        "endpoint": "adj_factor",
+        "slices": 5304,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "bak_daily",
+        "slices": 5304,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "bak_daily",
+        "slices": 2266,
+        "status": "paged"
+      },
+      {
+        "endpoint": "balancesheet_vip",
+        "slices": 87,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "balancesheet_vip",
+        "slices": 121,
+        "status": "paged"
+      },
+      {
+        "endpoint": "bse_mapping",
+        "slices": 1,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "cashflow_vip",
+        "slices": 87,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "cashflow_vip",
+        "slices": 112,
+        "status": "paged"
+      },
+      {
+        "endpoint": "ci_index_member",
+        "slices": 5927,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "ci_index_member",
+        "slices": 1,
+        "status": "split"
+      },
+      {
+        "endpoint": "daily",
+        "slices": 5304,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "daily_basic",
+        "slices": 7982,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "dividend",
+        "slices": 5926,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "etf_basic",
+        "slices": 3,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fina_indicator_vip",
+        "slices": 87,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fina_indicator_vip",
+        "slices": 141,
+        "status": "paged"
+      },
+      {
+        "endpoint": "fund_adj",
+        "slices": 5304,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fund_adj",
+        "slices": 5423,
+        "status": "paged"
+      },
+      {
+        "endpoint": "fund_basic",
+        "slices": 6,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fund_basic",
+        "slices": 5,
+        "status": "paged"
+      },
+      {
+        "endpoint": "fund_daily",
+        "slices": 5304,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fund_nav",
+        "slices": 15964,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fund_nav",
+        "slices": 15277,
+        "status": "paged"
+      },
+      {
+        "endpoint": "fund_share",
+        "slices": 7982,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "fund_share",
+        "slices": 5784,
+        "status": "paged"
+      },
+      {
+        "endpoint": "income_vip",
+        "slices": 87,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "income_vip",
+        "slices": 116,
+        "status": "paged"
+      },
+      {
+        "endpoint": "index_basic",
+        "slices": 16,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "index_basic",
+        "slices": 12,
+        "status": "paged"
+      },
+      {
+        "endpoint": "index_classify",
+        "slices": 1,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "index_daily",
+        "slices": 7982,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "index_daily",
+        "slices": 8808,
+        "status": "paged"
+      },
+      {
+        "endpoint": "index_member_all",
+        "slices": 11852,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "index_member_all",
+        "slices": 2,
+        "status": "split"
+      },
+      {
+        "endpoint": "index_weight",
+        "slices": 98034,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "index_weight",
+        "slices": 24086,
+        "status": "paged"
+      },
+      {
+        "endpoint": "index_weight",
+        "slices": 86171,
+        "status": "split"
+      },
+      {
+        "endpoint": "namechange",
+        "slices": 5926,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "stock_basic",
+        "slices": 10,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "suspend_d",
+        "slices": 303,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "suspend_d",
+        "slices": 40,
+        "status": "split"
+      },
+      {
+        "endpoint": "sw_daily",
+        "slices": 761,
+        "status": "downloaded"
+      },
+      {
+        "endpoint": "sw_daily",
+        "slices": 760,
+        "status": "split"
+      },
+      {
+        "endpoint": "trade_cal",
+        "slices": 4,
+        "status": "downloaded"
+      }
+    ],
+    "universe_expansion_templates": {
+      "dividend": 1,
+      "index_weight": 1,
+      "namechange": 1
+    },
+    "verified_closed_calendar_exclusions": {
+      "adj_factor": 2678,
+      "bak_daily": 2678,
+      "daily": 2678,
+      "fund_adj": 2678,
+      "fund_daily": 2678
+    }
+  },
+  "universe_coverage": {
+    "results": [
+      {
+        "endpoint": "namechange",
+        "expected_universe": 5926,
+        "missing_count": 0,
+        "missing_examples": [],
+        "observed_securities": 5926
+      },
+      {
+        "endpoint": "dividend",
+        "expected_universe": 5926,
+        "missing_count": 0,
+        "missing_examples": [],
+        "observed_securities": 5926
+      },
+      {
+        "endpoint": "index_weight",
+        "expected_universe": 11863,
+        "missing_count": 0,
+        "missing_examples": [],
+        "observed_securities": 11863
+      }
+    ],
+    "universe_archive_hashes": [
+      {
+        "endpoint": "stock_basic",
+        "rows": 343,
+        "sha256": "9c69b54b3a5fdaf524a3de423db134f2bf802810b91071b4247db64729bc293c"
+      },
+      {
+        "endpoint": "stock_basic",
+        "rows": 4,
+        "sha256": "63786835c62a34af38fb7ed93db8038cfccba6ee5eb1d34a6f566eac958d2b45"
+      },
+      {
+        "endpoint": "stock_basic",
+        "rows": 5579,
+        "sha256": "6bf7ce2d477a2955da92682588a420bcaf12b861c8c52991cb74685a747e5e18"
+      },
+      {
+        "endpoint": "index_basic",
+        "rows": 961,
+        "sha256": "69dd39bc27ce39e6b86b545938306cec02e642376974e68de31eed732f644b1a"
+      },
+      {
+        "endpoint": "index_basic",
+        "rows": 1146,
+        "sha256": "fa05a43dde68b4a7ecb170a614b469ca5791e4d516beece51e406c74a2acf23d"
+      },
+      {
+        "endpoint": "index_basic",
+        "rows": 485,
+        "sha256": "bb30a875302379b4e183fc325065899cae9a38a7101b224497321176ba2cab4d"
+      },
+      {
+        "endpoint": "index_basic",
+        "rows": 208,
+        "sha256": "bb45f48ca8838c9567fab4ca6eabfaaa1bc0054b58e39ad530ac164b1a0677fd"
+      },
+      {
+        "endpoint": "index_basic",
+        "rows": 1063,
+        "sha256": "5b5dbe1fac8332477c285445f674222f77baed21c50ae8bf2340497929c944f7"
+      },
+      {
+        "endpoint": "index_basic",
+        "rows": 8000,
+        "sha256": "9b6438c7fe1d542a77137955a65fd1e6ef379990be35d606bbd6b9fe6edf7746"
+      }
+    ]
+  },
+  "financial_semantics": [
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "581f225ff1f01abdc160f46b53179737df3bbec0c346e95f07c260d863d7056d",
+      "endpoint": "income_vip",
+      "hash_reconstructed_from_stored_columns": "581f225ff1f01abdc160f46b53179737df3bbec0c346e95f07c260d863d7056d",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "581f225ff1f01abdc160f46b53179737df3bbec0c346e95f07c260d863d7056d",
+      "stored_version_self_consistent": true,
+      "update_flag": "0"
+    },
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "d528d64d026a53ea2d7ff0640a3181abb791e5f97ff68c0f7108fa962e6072f8",
+      "endpoint": "balancesheet_vip",
+      "hash_reconstructed_from_stored_columns": "d528d64d026a53ea2d7ff0640a3181abb791e5f97ff68c0f7108fa962e6072f8",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "d528d64d026a53ea2d7ff0640a3181abb791e5f97ff68c0f7108fa962e6072f8",
+      "stored_version_self_consistent": true,
+      "update_flag": "0"
+    },
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "d9087800ee400c95ddbc3ce15429c0593c6bab771b0aedb26e26bf44fbdf1758",
+      "endpoint": "balancesheet_vip",
+      "hash_reconstructed_from_stored_columns": "d9087800ee400c95ddbc3ce15429c0593c6bab771b0aedb26e26bf44fbdf1758",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "d9087800ee400c95ddbc3ce15429c0593c6bab771b0aedb26e26bf44fbdf1758",
+      "stored_version_self_consistent": true,
+      "update_flag": "1"
+    },
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "bcd5a7a00027183f2ec147c14c194b81b5948eb8b42938c5287e8f052c8b2894",
+      "endpoint": "cashflow_vip",
+      "hash_reconstructed_from_stored_columns": "bcd5a7a00027183f2ec147c14c194b81b5948eb8b42938c5287e8f052c8b2894",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "bcd5a7a00027183f2ec147c14c194b81b5948eb8b42938c5287e8f052c8b2894",
+      "stored_version_self_consistent": true,
+      "update_flag": "0"
+    },
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "8b599f706a58ff5e0c10ba740b72e01bab9eb2bb97c01caa6ccb92f35052f054",
+      "endpoint": "cashflow_vip",
+      "hash_reconstructed_from_stored_columns": "8b599f706a58ff5e0c10ba740b72e01bab9eb2bb97c01caa6ccb92f35052f054",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "8b599f706a58ff5e0c10ba740b72e01bab9eb2bb97c01caa6ccb92f35052f054",
+      "stored_version_self_consistent": true,
+      "update_flag": "1"
+    },
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "5e6b1106681c433202b08ce3deaa24b51a90c3963969d664b08b6817739242c0",
+      "endpoint": "fina_indicator_vip",
+      "hash_reconstructed_from_stored_columns": "5e6b1106681c433202b08ce3deaa24b51a90c3963969d664b08b6817739242c0",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "5e6b1106681c433202b08ce3deaa24b51a90c3963969d664b08b6817739242c0",
+      "stored_version_self_consistent": true,
+      "update_flag": "0"
+    },
+    {
+      "business_diff_count": 0,
+      "business_differences": [],
+      "current_version": "119b5a1e13e52f8ec108cefa0d32f490426f6546f147981b1ea9d32832143324",
+      "endpoint": "fina_indicator_vip",
+      "hash_reconstructed_from_stored_columns": "119b5a1e13e52f8ec108cefa0d32f490426f6546f147981b1ea9d32832143324",
+      "period_end": "2005-12-31",
+      "security_code": "000001.SZ",
+      "stored_version": "119b5a1e13e52f8ec108cefa0d32f490426f6546f147981b1ea9d32832143324",
+      "stored_version_self_consistent": true,
+      "update_flag": "1"
+    }
+  ],
+  "current_source_controls": [
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/1-fund_basic-control.response.json.gz",
+      "called_at": "2026-11-15T05:12:53.450207+00:00",
+      "endpoint": "fund_basic",
+      "params": {
+        "ts_code": "016537.OF"
+      },
+      "rows": 1,
+      "selected": [
+        {
+          "benchmark": "中国债券综合全价指数收益率×100%",
+          "c_fee": "0.05",
+          "name": "上银慧鑫利债券",
+          "ts_code": "016537.OF"
+        }
+      ],
+      "sha256": "295878c9e544683f1e371a0bd476ed35d9cf6f341277127729507f8dec1cd50b"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/2-fund_basic-control.response.json.gz",
+      "called_at": "2026-11-15T05:12:54.908528+00:00",
+      "endpoint": "fund_basic",
+      "params": {
+        "ts_code": "005778.OF"
+      },
+      "rows": 1,
+      "selected": [
+        {
+          "benchmark": "中债-优选投资级信用债全价(总值)指数收益率×100%",
+          "c_fee": "0.1",
+          "name": "广发汇元纯债定开债券",
+          "ts_code": "005778.OF"
+        }
+      ],
+      "sha256": "4fd580e5ce490f9507e11f97e8b1bb7c9b52deddba27c46423115e4898fb54c0"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/3-income-control.response.json.gz",
+      "called_at": "2026-11-15T05:12:56.275913+00:00",
+      "endpoint": "income",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 1,
+      "sha256": "676b893b6b092c6568f1948b99de7495fbc7ea568ab37a7b775251818cbf0cb7"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/4-balancesheet-control.response.json.gz",
+      "called_at": "2026-11-15T05:12:57.595587+00:00",
+      "endpoint": "balancesheet",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 2,
+      "sha256": "32436be4138edd68b9a9a5b6c827492bc4804255427396da7e3870362bc5abe0"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/5-cashflow-control.response.json.gz",
+      "called_at": "2026-11-15T05:12:58.915883+00:00",
+      "endpoint": "cashflow",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 2,
+      "sha256": "7d45c6bc9e0e94c8969dc0061117dcec1eb4cd0c89f0034541739c8160fe6b17"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/6-fina_indicator-control.response.json.gz",
+      "called_at": "2026-11-15T05:13:00.236287+00:00",
+      "endpoint": "fina_indicator",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 2,
+      "sha256": "e3c9ac220586277361495cb9db5d59b112a857279cce1e5184d8a90306ca6af3"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/7-income_vip-control.response.json.gz",
+      "called_at": "2026-11-15T05:16:11.013666+00:00",
+      "endpoint": "income_vip",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 1,
+      "selected_rows": 1,
+      "sha256": "5cfd1aab66e255f75e01203441b11fa6862b005ed92c951492fecd39b141e39e"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/8-balancesheet_vip-control.response.json.gz",
+      "called_at": "2026-11-15T05:16:12.419452+00:00",
+      "endpoint": "balancesheet_vip",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 2,
+      "selected_rows": 2,
+      "sha256": "06a90ed35e038129c748e29698c683f63cc580bccd0a7e88dc3c5dee3a26ae6e"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/9-cashflow_vip-control.response.json.gz",
+      "called_at": "2026-11-15T05:16:13.740047+00:00",
+      "endpoint": "cashflow_vip",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 2,
+      "selected_rows": 2,
+      "sha256": "4b096f93e0cdfbed479141e713d5797ab3986c391d65d96008a39d5e73869380"
+    },
+    {
+      "api_code": 0,
+      "archive": "/tmp/dbm-business-audit-6f16-20261115/10-fina_indicator_vip-control.response.json.gz",
+      "called_at": "2026-11-15T05:16:15.060699+00:00",
+      "endpoint": "fina_indicator_vip",
+      "params": {
+        "period": "20051231",
+        "ts_code": "000001.SZ"
+      },
+      "rows": 2,
+      "selected_rows": 2,
+      "sha256": "85397867e648cd202048a66555ed59d70ec4b2607fd27845553a561551d447f3"
+    }
+  ],
+  "close_policy_readback": [
+    {
+      "expected_records": 237,
+      "mismatches": [],
+      "missing": [],
+      "present": 237,
+      "table": "market_daily_raw",
+      "target": "postgres"
+    },
+    {
+      "expected_records": 237,
+      "mismatches": [],
+      "missing": [],
+      "present": 237,
+      "table": "market_daily_raw",
+      "target": "clickhouse"
+    },
+    {
+      "expected_records": 237,
+      "mismatches": [],
+      "missing": [],
+      "present": 237,
+      "table": "market_daily_post_adjusted",
+      "target": "postgres"
+    },
+    {
+      "expected_records": 237,
+      "mismatches": [],
+      "missing": [],
+      "present": 237,
+      "table": "market_daily_post_adjusted",
+      "target": "clickhouse"
+    }
+  ],
+  "global_symbol_readback": {
+    "at": "2026-11-15T05:14:40.702712+00:00",
+    "job": {
+      "cancel": 0,
+      "error": null,
+      "status": "completed",
+      "updated": "2026-11-14T17:28:49.110191+00:00"
+    },
+    "reconciliation_checks": [
+      {
+        "count": 83225,
+        "status": "passed"
+      }
+    ],
+    "reconciliation_progress": {
+      "failed": 0,
+      "processed": 83225,
+      "reused": 53020,
+      "status": "completed",
+      "task_id": "6f16d0049d324b739aeedb96454c25a0",
+      "total": 83225,
+      "updated_at": "2026-11-14T17:28:48.962595+00:00"
+    },
+    "symbols": [
+      {
+        "actual": [
+          {
+            "security_code": "WOLF!AB",
+            "weight": "0.057"
+          }
+        ],
+        "expected_weight": "0.057",
+        "index_code": "931998.CSI",
+        "passed": true,
+        "security_code": "WOLF!AB",
+        "target": "postgres",
+        "trade_date": "2024-05-31"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "WOLF!AB",
+            "weight": "0.057"
+          }
+        ],
+        "expected_weight": "0.057",
+        "index_code": "931998.CSI",
+        "passed": true,
+        "security_code": "WOLF!AB",
+        "target": "clickhouse",
+        "trade_date": "2024-05-31"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "EMC!AJ",
+            "weight": "1.452"
+          }
+        ],
+        "expected_weight": "1.452",
+        "index_code": "931734.CSI",
+        "passed": true,
+        "security_code": "EMC!AJ",
+        "target": "postgres",
+        "trade_date": "2015-11-30"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "EMC!AJ",
+            "weight": "1.452"
+          }
+        ],
+        "expected_weight": "1.452",
+        "index_code": "931734.CSI",
+        "passed": true,
+        "security_code": "EMC!AJ",
+        "target": "clickhouse",
+        "trade_date": "2015-11-30"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "S!AJ",
+            "weight": "1.75"
+          }
+        ],
+        "expected_weight": "1.75",
+        "index_code": "931734.CSI",
+        "passed": true,
+        "security_code": "S!AJ",
+        "target": "postgres",
+        "trade_date": "2015-05-29"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "S!AJ",
+            "weight": "1.75"
+          }
+        ],
+        "expected_weight": "1.75",
+        "index_code": "931734.CSI",
+        "passed": true,
+        "security_code": "S!AJ",
+        "target": "clickhouse",
+        "trade_date": "2015-05-29"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "BITA!AA",
+            "weight": "0.008"
+          }
+        ],
+        "expected_weight": "0.008",
+        "index_code": "H30374.CSI",
+        "passed": true,
+        "security_code": "BITA!AA",
+        "target": "postgres",
+        "trade_date": "2019-07-31"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "BITA!AA",
+            "weight": "0.008"
+          }
+        ],
+        "expected_weight": "0.008",
+        "index_code": "H30374.CSI",
+        "passed": true,
+        "security_code": "BITA!AA",
+        "target": "clickhouse",
+        "trade_date": "2019-07-31"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "CD!AA",
+            "weight": "1.022"
+          }
+        ],
+        "expected_weight": "1.022",
+        "index_code": "H11136.CSI",
+        "passed": true,
+        "security_code": "CD!AA",
+        "target": "postgres",
+        "trade_date": "2023-11-30"
+      },
+      {
+        "actual": [
+          {
+            "security_code": "CD!AA",
+            "weight": "1.022"
+          }
+        ],
+        "expected_weight": "1.022",
+        "index_code": "H11136.CSI",
+        "passed": true,
+        "security_code": "CD!AA",
+        "target": "clickhouse",
+        "trade_date": "2023-11-30"
+      }
+    ],
+    "units": [
+      {
+        "count": 26035,
+        "kind": "normalize",
+        "status": "completed"
+      },
+      {
+        "count": 52070,
+        "kind": "stored",
+        "status": "completed"
+      }
+    ]
+  },
+  "diagnostic_directory": "/tmp/dbm-business-audit-6f16-20261115",
+  "summary": {
+    "tables": 24,
+    "expected_image_records": 3153,
+    "expected_image_field_comparisons": 354180,
+    "source_records": 936,
+    "source_tables": 12,
+    "source_field_comparisons": 22956,
+    "source_response_samples": 49,
+    "source_endpoints": 19,
+    "new_api_calls": 10,
+    "nonempty_archive_references": 159034,
+    "missing_archive_references": 112440,
+    "retained_archive_references": 46594,
+    "postgres_status_rows": 120155834,
+    "clickhouse_status_rows": 119499555,
+    "state_row_difference": 656279,
+    "state_difference_dates": 14,
+    "unpaired_receipts": 26,
+    "unpaired_sample_records": 596,
+    "quote_conflicts_verified_per_target": 237
+  },
+  "limitations": [
+    "这是业务抽样审计，未逐条核验全部业务行，未独立证明供应商的所有经济事实。",
+    "完整请求图检查验证归档元数据关系；全部归档字节未重算，仅对实际选用回包和完整证券清单核验 SHA256。",
+    "现存原始归档、前一轮已验证逐行相同的重请求回包、本轮新请求回包均有来源标记；本轮新请求共 10 次。",
+    "财报版本键按完整合同计算：源业务内容哈希再与映射后业务字段组合；七条财报与当前 VIP 接口逐值及版本一致。",
+    "未知可得时间、源接口不适用字段、当前档案快照不等同于严格历史 PIT；未将这些空值当作缺数。",
+    "本次没有更新业务数据或修改运行任务；运行任务仍为 completed，业务审计结论为需要整改。"
+  ]
+}

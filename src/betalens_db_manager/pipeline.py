@@ -57,8 +57,8 @@ def memory_guard(request,root):
     finally:stop.set();thread.join()
 
 
-NORMALIZATION_POLICY_VERSION='normalization-v3-bounded-history-20261112'
-NORMALIZATION_IMPLEMENTATION='bounded-sw-history-and-archive-closure-20261112'
+NORMALIZATION_POLICY_VERSION='normalization-v4-global-symbols-daily-close-20261115'
+NORMALIZATION_IMPLEMENTATION='bounded-history-global-symbols-daily-close-20261115'
 
 
 _normalization_service=None
@@ -231,6 +231,7 @@ class Pipeline:
             return result
 
     def _detail(self,job,compact=False):
+        if compact:return self._compact_detail(job)
         item=self.s.state.job(job);units=self.store.units(job);receipts=self.store.receipts(job)
         item['pipeline']={'units':[{'id':u['id'],'kind':u['kind'],'status':u['status'],'error':u['error'],'result':u['result']} for u in units],
             'receipts':[{k:r[k] for k in ('batch','target','status','result','error')} for r in receipts],
@@ -259,15 +260,90 @@ class Pipeline:
             'network_eta_seconds_lower_bound':round(remaining/rate) if rate and remaining is not None else None,'estimate_excludes_dynamic_partitions':False,
             'local_pending_cohorts':pending,'local_eta_seconds':round(pending*seconds/ready/max(1,item['plan']['request'].get('normalization_workers',1))) if ready else None,
             'cooldowns':[r for r in self.s.state.logs(job,limit=100) if r.get('event')=='rate_limit_cooldown'][-5:]}
-        if compact:
-            item['plan']={**item['plan'],'requests_count':len(item['plan'].get('requests',[])),
-                          'requests':item['plan'].get('requests',[])[:100]}
-            item['pipeline']['datasets']=sorted({p['dataset'] for p in item['slices']})
-            item['pipeline']['physical_slice_count']=len(item['slices'])
-            item['slices']=item['slices'][:100]
-            for unit in item['pipeline']['units']:
-                result=unit['result'] or {}
-                unit['result']={k:result[k] for k in ('child_id','normalization_seconds','rejected') if k in result}
+        return item
+
+    def _compact_detail(self,job):
+        """Poll projections and totals, never hydrate the execution/archive graph."""
+        from .monitor import ReadOnlyMonitor
+        from .review_service import ReviewService
+        from .pipeline_options import DEFAULTS
+        from datetime import datetime
+        item=self.s.state.job(job,metadata_only=True)
+        observed=ReadOnlyMonitor(self.s.settings).snapshot(job)
+        with self.s.state.connect() as conn:
+            packed=json.loads(conn.execute('SELECT plan FROM jobs WHERE id=?',(job,)).fetchone()[0])
+            if 'snapshot_ref' in packed:
+                request_rows=conn.execute('''SELECT r.request_hash,p.value FROM job_requests r
+                    JOIN request_payloads p ON p.hash=r.request_hash WHERE job=? ORDER BY position LIMIT 100''',(job,)).fetchall()
+                requests=[]
+                for row in request_rows:
+                    value=json.loads(row['value'])
+                    if digest(value)!=row['request_hash']:raise ValueError('请求清单校验失败')
+                    requests.append(value)
+                total_requests=packed['requests_count']
+            else:
+                requests=item['plan'].get('requests',[])[:100];total_requests=len(item['plan'].get('requests',[]))
+            slices=[dict(r) for r in conn.execute('SELECT * FROM slices WHERE job=? ORDER BY id LIMIT 100',(job,))]
+            for part in slices:
+                part['request']=json.loads(part['request']);part['result']=json.loads(part['result']) if part['result'] else None
+            units=[dict(r) for r in conn.execute('''SELECT id,kind,status,error,
+                json_object('child_id',json_extract(result,'$.child_id'),
+                    'normalization_seconds',json_extract(result,'$.normalization_seconds'),
+                    'rejected',json_extract(result,'$.rejected')) AS result
+                FROM pipeline_units WHERE job=? ORDER BY created,id LIMIT 100''',(job,))]
+            for unit in units:unit['result']=json.loads(unit['result'])
+            counts=dict(conn.execute('SELECT status,count(*) FROM pipeline_units WHERE job=? GROUP BY status',(job,)))
+            receipts=[dict(r) for r in conn.execute('''SELECT batch,target,status,result,error FROM pipeline_receipts
+                WHERE job=? ORDER BY updated DESC,batch,target LIMIT 100''',(job,))]
+            for receipt in receipts:receipt['result']=json.loads(receipt['result']) if receipt['result'] else None
+            receipt_total=conn.execute('SELECT count(*) FROM pipeline_receipts WHERE job=?',(job,)).fetchone()[0]
+            stats=conn.execute('''SELECT count(*) AS physical,coalesce(sum(rows),0) AS source_rows,
+                sum(status IN ('downloaded','paged','split','unavailable','contract_blocked','failed')) AS archived
+                FROM slices WHERE job=?''',(job,)).fetchone()
+            datasets=[r[0] for r in conn.execute('SELECT DISTINCT dataset FROM slices WHERE job=? ORDER BY dataset',(job,))]
+            normalization=conn.execute('''SELECT sum(status='completed') AS ready,
+                sum(status IN ('pending','running')) AS pending,
+                coalesce(sum(CASE WHEN status='completed' THEN json_extract(result,'$.normalization_seconds') ELSE 0 END),0) AS seconds
+                FROM pipeline_units WHERE job=? AND kind='normalize' ''',(job,)).fetchone()
+            sync=[dict(r) for r in conn.execute('''SELECT target,sum(revision) AS revision,
+                sum(acknowledged) AS acknowledged,sum(revision>acknowledged) AS pending
+                FROM pipeline_sync WHERE job=? GROUP BY target''',(job,))]
+            rollback=[dict(r) for r in conn.execute('''SELECT r.target,count(*) AS total,
+                sum(coalesce(u.status='completed',0)) AS completed,
+                sum(coalesce(u.status='failed',0)) AS failed,
+                coalesce(sum(CASE WHEN u.status='completed' THEN json_extract(u.result,'$.applied') ELSE 0 END),0) AS applied
+                FROM pipeline_receipts r LEFT JOIN pipeline_receipts u
+                ON u.job=r.job AND u.target=r.target AND u.batch='rollback:'||r.batch
+                WHERE r.job=? AND r.batch NOT LIKE 'rollback:%' GROUP BY r.target''',(job,))]
+            for row in rollback:
+                row['remaining']=row['total']-row['completed']
+                row['pending']=[dict(r) for r in conn.execute('''SELECT u.batch,u.status,u.error,
+                    json_extract(r.manifest,'$.table') AS table_name FROM pipeline_receipts u
+                    JOIN pipeline_receipts r ON r.job=u.job AND r.target=u.target AND u.batch='rollback:'||r.batch
+                    WHERE u.job=? AND u.target=? AND u.status!='completed' AND r.batch NOT LIKE 'rollback:%'
+                    ORDER BY u.updated DESC LIMIT 100''',(job,row['target']))]
+                for pending in row['pending']:pending['table']=pending.pop('table_name');pending['target']=row['target']
+        elapsed=max(1,(datetime.fromisoformat(now())-datetime.fromisoformat(item['created'])).total_seconds())
+        rate=(stats['archived'] or 0)/elapsed;progress=observed['progress'];fixed=progress.get('requests')
+        remaining=max(0,fixed['total']-fixed['processed']) if fixed else None
+        ready=normalization['ready'] or 0;pending=normalization['pending'] or 0
+        download=self.s.state.ledger_get('pipeline_progress',job)
+        validations=sorted(self.s.state.ledger_rows('pipeline_validation',job),key=lambda r:r['started_at'])
+        item['plan']={**item['plan'],'requests':requests,'requests_count':total_requests}
+        item['slices']=slices
+        item['pipeline']={'units':units,'counts':counts,'receipts':receipts,'receipts_total':receipt_total,
+            'receipt_summary':observed['writes'],'rollback_progress':rollback,'audit_sync':sync,
+            'datasets':datasets,'physical_slice_count':stats['physical'],'progress':progress,
+            'download':download,'backlog_bytes':download['buffered_source_bytes'] if download and download.get('independent_producer') else self.backlog(job),
+            'validations':validations,'business_validation':validations[-1]['status'] if validations else 'not_run',
+            'reviews':ReviewService(self.s).counts(job),'options':{k:v for k,v in item['plan']['request'].items() if k in DEFAULTS},
+            'metrics':{'source_rows':stats['source_rows'],'requests_archived':stats['archived'] or 0,
+                'requests_per_minute_observed':round(rate*60,2),
+                'network_eta_seconds_lower_bound':round(remaining/rate) if rate and remaining is not None else None,
+                'estimate_excludes_dynamic_partitions':False,'local_pending_cohorts':pending,
+                'local_eta_seconds':round(pending*normalization['seconds']/ready/max(1,item['plan']['request'].get('normalization_workers',1))) if ready else None,
+                'cooldowns':[r for r in self.s.state.logs(job,limit=100) if r.get('event')=='rate_limit_cooldown'][-5:]}}
+        item['audit_sync_status']='pending' if any(r['pending'] for r in sync) else 'synced'
         return item
 
     def audit(self,job,after=0,limit=100,offset=None):
@@ -305,24 +381,59 @@ class Pipeline:
 
     def reconcile(self,job):
         """Compare typed business after-images, retaining fill_missing differences."""
-        import pyarrow as pa
-        from .pipeline_cache import schema
+        import pyarrow.parquet as pq
+        from .pipeline_cache import schema,read_journal_metadata,file_sha
         pairs=collections.defaultdict(dict);errors=[]
         for r in self.store.receipts(job):
             if not r['batch'].startswith('rollback:') and r['status']=='completed':pairs[r['batch']][r['target']]=r
+        pairs={batch:pair for batch,pair in pairs.items() if set(pair)=={'postgres','clickhouse'}}
+        previous={r['batch']:r for r in self.s.state.ledger_rows('pipeline_reconciliation',job)}
+        catalog=self.s.registry.catalog();completed=0;reused=0;last_publish=0
+        def progress(finished=False):
+            nonlocal last_publish
+            if not finished and time.monotonic()-last_publish<5:return
+            value={'task_id':job,'status':'completed' if finished else 'running','processed':completed,
+                'total':len(pairs),'reused':reused,'failed':len(errors),'updated_at':now()}
+            self.s.state.ledger_put('pipeline_reconciliation_progress',job,value)
+            self.s.state.log(job,'pipeline_reconciliation_progress',**{k:v for k,v in value.items() if k!='task_id'})
+            last_publish=time.monotonic()
         with registry_context(self.s.registry),ThreadPoolExecutor(max_workers=2,thread_name_prefix='reconcile') as pool:
             for batch,pair in pairs.items():
-                if set(pair)!={'postgres','clickhouse'}:continue
-                spec=self.s.registry.spec(pair['postgres']['manifest']['table'])
+                self.s.state.check_cancel(job)
+                spec=catalog[pair['postgres']['manifest']['table']]
                 names=[f['name'] for f in spec.fields if f['name'] not in PROVENANCE-{'available_at','availability_basis','data_quality_status'}]
-                def read_target(target):
-                    journal=load_journal(pair[target]['manifest'],spec)
-                    rows=read_rows(journal['expected'],spec)
-                    return pa.Table.from_pylist(rows,schema=schema(spec)).select(names).sort_by([(k,'ascending') for k in spec.keys])
-                tables=lane_values(target_lanes(('postgres','clickhouse'),read_target,pool))
-                result={'task_id':job,'batch':batch,'table':spec.name,'status':'passed' if tables[0].equals(tables[1]) else 'failed','checked_at':now()}
+                # Check the immutable expected images directly. Loading before/
+                # after rows and converting every Decimal through Python is
+                # unnecessary for this comparison and makes large resumptions slow.
+                def verified_image(target):
+                    record=read_journal_metadata(pair[target]['manifest'])['expected']
+                    if record['schema_hash']!=spec.hash or file_sha(record['path'])!=record['sha256']:
+                        raise ValueError('双库核验镜像校验失败')
+                    return record
+                images=lane_values(target_lanes(('postgres','clickhouse'),verified_image,pool))
+                signature=digest([spec.hash,names,list(spec.keys),
+                    [[pair[t]['manifest'],image['sha256']] for t,image in zip(('postgres','clickhouse'),images)]])
+                old=previous.get(batch) or {}
+                # Legacy passes predate signatures, but their receipts were
+                # immutable before the check. Re-verify every original SHA and
+                # schema before carrying that proof into the new checkpoint.
+                legacy=(not old.get('input_signature') and old.get('table')==spec.name and
+                    old.get('checked_at','')>=max(r['updated'] for r in pair.values()) and
+                    all((r.get('result') or {}).get('schema_hash')==spec.hash for r in pair.values()))
+                cached=old.get('status')=='passed' and (old.get('input_signature')==signature or legacy)
+                if cached:
+                    result={**old,'input_signature':signature,'verified_at':now()};reused+=1
+                else:
+                    def read_target(target):
+                        image=images[0 if target=='postgres' else 1]
+                        return pq.read_table(image['path'],schema=schema(spec),columns=names).sort_by([(k,'ascending') for k in spec.keys])
+                    tables=lane_values(target_lanes(('postgres','clickhouse'),read_target,pool))
+                    result={'task_id':job,'batch':batch,'table':spec.name,'status':'passed' if tables[0].equals(tables[1]) else 'failed',
+                        'input_signature':signature,'checked_at':now()}
                 self.s.state.ledger_put('pipeline_reconciliation',job+':'+batch,result)
                 if result['status']=='failed':errors.append({'stage':'cross_target','batch':batch,'table':spec.name,'error':'双库业务值不同，保留各库原值，需显式协调'})
+                completed+=1;progress()
+        progress(True)
         return errors
 
     def backlog(self,job,item=None,units=None):

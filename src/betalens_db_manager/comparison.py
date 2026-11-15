@@ -1,6 +1,6 @@
 """Shared typed comparison for every canonical target and audit hash."""
 from datetime import date, datetime, timezone
-from decimal import Decimal, localcontext, ROUND_HALF_UP
+from decimal import Decimal, localcontext
 from functools import lru_cache
 
 from .integer_contract import validate_int64
@@ -58,10 +58,10 @@ def typed(spec, row, keys_only=False):
             continue
         if spec.name=='index_membership' and name=='security_code' and value is not None:
             # Index constituents can be HK shares or native foreign symbols
-            # (00700.HK, BABA, BRK.B, 6758, 035720). Preserve it exactly;
+            # (00700.HK, BABA, BRK.B, WOLF!AB, 6758, 035720). Preserve it exactly;
             # it is not evidence that the security is an A-share instrument.
             qualified=re.fullmatch(r'[A-Z0-9_!]+\.[A-Z][A-Z0-9]{0,11}',value)
-            symbol=re.fullmatch(r'[A-Z0-9]+(?:[.\-][A-Z0-9]+)*',value)
+            symbol=re.fullmatch(r'[A-Z0-9]+(?:[.\-!][A-Z0-9]+)*',value)
             if len(value)>64 or not (qualified or symbol):
                 raise ValueError('security_code: 指数成分需要有效的源证券标识')
             continue
@@ -72,17 +72,19 @@ def typed(spec, row, keys_only=False):
     return result
 
 
-def quote_close_precision_matches(spec, column, first, second):
-    """Accept stock daily/daily_basic rounding, keeping exact audit comparisons."""
+def quote_close_source(row):
+    source=row.get('_quote_close_source')
+    if source:return source
+    endpoints=set(str(row.get('source_endpoint') or '').split(','))
+    return next(iter(endpoints)) if endpoints in ({'daily'},{'daily_basic'}) else None
+
+
+def quote_close_prefers_daily(spec, column, first, second):
+    """Use the price feed for close; other fields and same-feed conflicts stay strict."""
     if spec.name!='market_daily_raw' or column!='close':return False
     if first.get('asset_type')!='stock' or second.get('asset_type')!='stock':return False
-    a=set(str(first.get('source_endpoint') or '').split(','))
-    b=set(str(second.get('source_endpoint') or '').split(','))
-    if not ('daily' in a and 'daily_basic' in b or 'daily_basic' in a and 'daily' in b):return False
-    with localcontext() as context:
-        context.prec=80
-        values=[Decimal(str(row['close'])) for row in (first,second)]
-        return all(v.is_finite() for v in values) and values[0].quantize(Decimal('.01'),rounding=ROUND_HALF_UP)==values[1].quantize(Decimal('.01'),rounding=ROUND_HALF_UP)
+    if any(row.get('source_id',row.get('source_name','tushare'))!='tushare' for row in (first,second)):return False
+    return {quote_close_source(first),quote_close_source(second)}=={'daily','daily_basic'}
 
 
 def row_hash(spec, row):
