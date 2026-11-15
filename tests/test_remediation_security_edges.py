@@ -182,17 +182,21 @@ def test_legacy_task_rest_and_sse_outputs_are_redacted(tmp_path):
     assert secret not in dumps(decoded) and decoded['preview']['token'] == token
     events = next(route for route in app.routes if route.path == '/api/jobs/{job}/events')
 
+    async def _not_disconnected():return False
+    from types import SimpleNamespace
+
     async def first_event():
-        result = await events.endpoint(job)
+        result = await events.endpoint(job, SimpleNamespace(is_disconnected=lambda: _not_disconnected()))
         try:return await result.body_iterator.__anext__()
         finally:await result.body_iterator.aclose()
     event = asyncio.run(first_event())
-    assert secret not in event and token in event and job in event
+    assert secret not in event and job in event
+    assert "preview" not in json.loads(event.removeprefix("data: "))
 
 
 def test_legacy_websocket_logs_and_task_outputs_are_redacted(tmp_path, monkeypatch):
     service, app, job, secret, token = legacy_app(tmp_path)
-    monkeypatch.setattr(service.state, 'logs', lambda *a: [{'id': 1, 'parameters': {'access_key': secret}}])
+    monkeypatch.setattr(service.state, 'logs', lambda *a, **kwargs: [{'id': 1, 'parameters': {'access_key': secret}}])
     live = next(route for route in app.routes if route.path == '/api/live/{job}')
 
     class Socket:
@@ -205,7 +209,8 @@ def test_legacy_websocket_logs_and_task_outputs_are_redacted(tmp_path, monkeypat
     socket = Socket()
     asyncio.run(live.endpoint(socket, job))
     assert len(socket.messages) == 2 and secret not in ''.join(socket.messages)
-    assert token in socket.messages[1] and job in socket.messages[1]
+    assert job in socket.messages[1]
+    assert "preview" not in json.loads(socket.messages[1])["record"]
 
 
 def test_generic_auth_fields_are_redacted_in_archive_export(tmp_path):

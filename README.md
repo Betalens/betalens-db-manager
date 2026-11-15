@@ -3,7 +3,7 @@
 独立运行的多来源数据库管理组件，不依赖 Betalens 的研究、因子或回测代码。
 
 ```bash
-python -m pip install -e './betalens-db-manager[files]'
+python -m pip install -e '.[files]'
 betalens-db-manager serve
 ```
 
@@ -62,18 +62,23 @@ CLI 与网页共用执行器。新请求默认且仅支持 `pipeline_version: 2`
 
 ```bash
 # 后端与真实隔离库测试（连接信息仅从私有文件读取）
-BETALENS_INFRA_ENV=/private/credentials.env BETALENS_INFRA_INTEGRATION=1 python -m pytest betalens-db-manager/tests -q
+BETALENS_INFRA_ENV=/private/credentials.env BETALENS_INFRA_INTEGRATION=1 python -m pytest tests -q
 # 浏览器验收：真实后端、隔离 PG/CH、本地 HTTP 来源
-cd betalens-db-manager/frontend
+cd frontend
 npm ci
 npx playwright install --with-deps chromium
 BETALENS_TEST_ENV=/private/credentials.env npx playwright test
 ```
 
-完整运维说明见 [infra.rst](../docs/guide/infra.rst)。
+完整运维说明见 [infra.rst](docs/guide/infra.rst)。
 
 `cache-clean --retire-rolled-back` 永久退役已完整回退的旧任务；可先追加 `--dry-run`。该选项核对每笔原写入都有成功回退回执，随后删除任务族在 archive、pipeline、reference-cache 下的全部本地文件。SQLite 保留任务和退役记录；仍被其他任务引用的文件暂存。退役任务不能执行、校验、重放或访问已删除审计，接口返回 HTTP 410；用户原始导入文件不删除。普通自动清理不会将尚未明确退役的任务永久退役。
 
 `GET /api/worker-status` 中的 heartbeat 返回实际加载的 `cache_policy_version/cache_policy_sha256/cache_policy_loaded_at`，`cache_cleanup` 返回最近清理结果；据此核验部署生效，修改 Python 源码本身不会让已运行进程自动热加载。
 
 资源配置 `throughput_90`：PG 3 核/14 GiB、CH 4 核/20 GiB、管理器 3.8 核/8 GiB，合计 10.8 核、42 GiB。最多同时运行一个采集任务和一个表/目标库无冲突的审计任务。运行中的恢复材料和未退役任务的审计、回退证据保留；下载及重复转换缓存按任务生命周期清理。
+
+
+## 独立开发
+
+使用 Python 3.11 和 Node.js 22：`uv sync --extra test --extra files`，前端在 `frontend/` 执行 `npm ci`、`npm run build`。凭据和运行状态继续位于仓库外。真实数据库与浏览器集成测试必须显式提供隔离配置，测试启动器不再使用本机硬编码路径。

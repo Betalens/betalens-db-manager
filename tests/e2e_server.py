@@ -14,7 +14,7 @@ from controlled_ch import configure_writer
 
 def main():
     root=Path(tempfile.mkdtemp(prefix='betalens-manager-browser-'));suffix=uuid.uuid4().hex[:10]
-    base=Settings.from_env(__import__('os').environ.get('BETALENS_TEST_ENV','/home/janiszzz/betalens-infra/tushare.private.env'))
+    base=Settings.from_env(__import__('os').environ['BETALENS_TEST_ENV'])
     settings=replace(base,pg_database='browser_test_'+suffix,ch_database='browser_test_'+suffix,state_dir=root/'state',config_dir=root/'config',archive_dir=None,env_file=root/'credentials.env')
     s=DatabaseManagerService(settings)
     cleanup_writer=configure_writer(s);settings=s.settings

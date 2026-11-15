@@ -37,7 +37,7 @@ def main():
     artifact_root.mkdir(parents=True, exist_ok=True, mode=0o700)
     root = Path(tempfile.mkdtemp(prefix='fixture-', dir=artifact_root))
     root.chmod(0o700)
-    base = Settings.from_env(os.environ.get('BETALENS_TEST_ENV', '/home/janiszzz/betalens-infra/tushare.private.env'))
+    base = Settings.from_env(os.environ['BETALENS_TEST_ENV'])
     database = 'browser_test_' + suffix
     settings = replace(base, pg_database=database, ch_database=database, state_dir=root/'state',
                        config_dir=root/'config', archive_dir=root/'archive', env_file=root/'credentials.env', token='')
