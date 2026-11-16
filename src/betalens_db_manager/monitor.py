@@ -90,6 +90,7 @@ class ReadOnlyMonitor:
                 json_extract(plan,'$.request.modules') AS modules,
                 json_extract(plan,'$.request.tables') AS tables,
                 json_extract(plan,'$.request.targets') AS targets,
+                json_extract(plan,'$.request.suspension_update_mode') AS suspension_update_mode,
                 json_extract(plan,'$.request.start_date') AS start_date,
                 json_extract(plan,'$.request.end_date') AS end_date FROM jobs WHERE id=?""",(job,)).fetchone()
             if row is None:raise ValueError('任务不存在')
@@ -125,6 +126,21 @@ class ReadOnlyMonitor:
                     for r in conn.execute("""SELECT json_extract(value,'$.target') AS target,
                         json_extract(value,'$.module') AS module,json_extract(value,'$.status') AS status
                         FROM ledger WHERE table_name='reference_result' AND json_extract(value,'$.task_id')=?""",(job,))]
+                if result.get('suspension_update_mode')=='market_day':
+                    # Monthly revisions are pieces of one module, not hundreds
+                    # of completed modules. Keep the ordinary monitor contract.
+                    planned={}
+                    for r in conn.execute("SELECT json_extract(value,'$.target') target,json_extract(value,'$.module') module,count(*) n FROM ledger WHERE table_name='reference_revision' AND json_extract(value,'$.task_id')=? GROUP BY target,module",(job,)):
+                        planned[(r['target'],r['module'])]=r['n']
+                    grouped=[]
+                    for (target,module),total_months in sorted(planned.items()):
+                        published=sum(p['target']==target and p['module']==module and p['status']=='published' for p in publications)
+                        grouped.append({'target':target,'module':module,'status':'published' if published==total_months else 'publishing',
+                                        'month_revisions':{'published':published,'total':total_months}})
+                    publications=grouped
+                    if cache=='pending':
+                        preview=conn.execute('SELECT json_extract(preview,\'$.cache_hash\') FROM jobs WHERE id=?',(job,)).fetchone()
+                        if preview and preview[0]:cache='completed'
                 result['progress']={'phase':'reference','sources':{'registered':total,'archived':archived},
                                     'cache':cache,'publications':publications}
             result['writes']=[dict(r) for r in conn.execute("""SELECT target,status,count(*) AS batches,

@@ -125,3 +125,26 @@ def test_reference_progress_reports_archives_cache_and_target_publications(task)
         assert data['progress']=={'phase':'reference','sources':{'registered':2,'archived':1},
             'cache':'completed','publications':[{'target':'postgres','module':'suspension','status':'published'}]}
     assert state.path.read_bytes()==before
+
+
+def test_market_months_count_as_one_module_with_explicit_month_progress(task):
+    settings,state,_=task
+    job=state.create_job({'pipeline_version':2,'revision':'reference-v1','request':{'modules':['suspension'],
+        'targets':['postgres'],'start_date':'2024-01-01','end_date':'2024-02-29',
+        'suspension_update_mode':'market_day'}},settings.fingerprint)['id']
+    state.update_job(job,status='committing',preview={'cache_hash':'verified'})
+    for month in ('01','02'):
+        state.ledger_put('reference_revision',job+':postgres:suspension:'+month,
+            {'task_id':job,'target':'postgres','module':'suspension','revision_id':'r'+month})
+    state.ledger_put('reference_result',job+':postgres:suspension:01',
+        {'task_id':job,'target':'postgres','module':'suspension','status':'published'})
+    with TestClient(create_monitor_app(settings)) as client:
+        progress=client.get('/api/tasks/'+job+'/status').json()['progress']
+        assert progress['cache']=='completed'
+        assert progress['publications']==[{'target':'postgres','module':'suspension','status':'publishing',
+                                         'month_revisions':{'published':1,'total':2}}]
+    state.ledger_put('reference_result',job+':postgres:suspension:02',
+        {'task_id':job,'target':'postgres','module':'suspension','status':'published'})
+    with TestClient(create_monitor_app(settings)) as client:
+        row=client.get('/api/tasks/'+job+'/status').json()['progress']['publications'][0]
+        assert row['status']=='published' and row['month_revisions']=={'published':2,'total':2}
