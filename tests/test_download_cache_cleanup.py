@@ -101,13 +101,30 @@ def test_active_operations_and_rejected_cohorts_keep_their_evidence(service):
     assert cleanup_download_cache(service)['files'] == 3
 
 
-def test_reference_and_legacy_completed_downloads_are_also_cleaned(service):
+def test_reference_archives_are_retained_while_legacy_downloads_are_cleaned(service):
     reference = task(service, revision='reference-v1')
     legacy = service.state.create_job({'revision': '2', 'request': {}}, service.settings.fingerprint)['id']
     service.state.update_job(legacy, status='rolled_back')
     paths = [payload(service, j) for j in (reference, legacy)]
-    assert cleanup_download_cache(service)['files'] == 6
-    assert not any(p.exists() for p in paths)
+    assert cleanup_download_cache(service)['files'] == 3
+    assert paths[0].exists() and not paths[1].exists()
+
+
+def test_completed_reference_borrowed_archives_remain_protected(service):
+    owner=task(service);raw=payload(service,owner)
+    reference=task(service,revision='reference-v1')
+    service.state.slice(reference,'borrowed','suspend_d',{},archive=str(raw),status='downloaded')
+    assert cleanup_download_cache(service)['files']==0
+    assert raw.exists() and raw.with_suffix('.meta.json').exists()
+
+
+def test_revoked_reference_evidence_is_excluded_from_generic_retirement(service):
+    from betalens_db_manager.cache_retirement import retire_rolled_back_tasks
+    job=task(service,status='rolled_back',revision='reference-v1');raw=payload(service,job)
+    audit=service.settings.state_dir/'reference-cache'/job/'audit.json'
+    audit.parent.mkdir(parents=True);audit.write_text('{}')
+    assert retire_rolled_back_tasks(service,include_new=True)['files']==0
+    assert raw.exists() and audit.exists()
 
 
 def test_dry_run_reports_bytes_and_preserves_files_and_ledger(service):

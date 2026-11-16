@@ -15,7 +15,8 @@ def retire_rolled_back_tasks(service, *, include_new=False, job=None, dry_run=Fa
             retired={r[0] for r in conn.execute("SELECT row_key FROM ledger WHERE table_name='cache_retirement' AND json_extract(value,'$.status')!='retired'")}
             if not include_new and not retired:return summary
             jobs={r['id']:dict(r) for r in conn.execute("""SELECT id,status,
-                json_extract(plan,'$.pipeline_parent') parent FROM jobs""")}
+                json_extract(plan,'$.pipeline_parent') parent,
+                json_extract(plan,'$.revision') revision FROM jobs""")}
             def root_of(identity):
                 seen=set()
                 while identity in jobs and jobs[identity]['parent']:
@@ -24,6 +25,7 @@ def retire_rolled_back_tasks(service, *, include_new=False, job=None, dry_run=Fa
                 return identity if identity in jobs else None
             roots={identity:root_of(identity) for identity in jobs}
             busy={roots.get(r[0]) for r in conn.execute("SELECT DISTINCT job FROM tasks WHERE status IN ('queued','running')")}
+            busy.update(roots.get(identity) for identity,row in jobs.items() if row['revision']=='reference-v1')
             candidates={identity for identity,row in jobs.items() if not row['parent'] and row['status']=='rolled_back'
                 and identity not in busy and (include_new or identity in retired) and (job is None or job==identity)}
             tables={r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}

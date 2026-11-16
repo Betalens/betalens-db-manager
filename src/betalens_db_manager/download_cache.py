@@ -56,7 +56,8 @@ def _cleanup(service, job, dry_run, exclude_jobs=()):
         return summary
     with state.connect() as conn:
         jobs = {r['id']: dict(r) for r in conn.execute("""SELECT id,status,
-            json_extract(plan,'$.pipeline_parent') AS parent FROM jobs""")}
+            json_extract(plan,'$.pipeline_parent') AS parent,
+            json_extract(plan,'$.revision') AS revision FROM jobs""")}
 
         def root_of(identity):
             seen = set()
@@ -70,6 +71,10 @@ def _cleanup(service, job, dry_run, exclude_jobs=()):
         roots = {identity: root_of(identity) for identity in jobs}
         blocked = {roots.get(r[0]) for r in conn.execute(
             "SELECT DISTINCT job FROM tasks WHERE status IN ('queued','running')")}
+        # Published reference manifests depend on their complete source-query
+        # archive. Retain all reference families, including revoked revisions,
+        # and protect any ordinary-task files borrowed by their slices below.
+        blocked.update(roots.get(identity) for identity,row in jobs.items() if row['revision']=='reference-v1')
         tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         if 'pipeline_units' in tables:
             blocked.update(roots.get(r[0]) for r in conn.execute(
