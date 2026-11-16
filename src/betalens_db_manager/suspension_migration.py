@@ -14,7 +14,7 @@ def retirement_sql(settings, suffix='sparse_v2'):
     database = identifier(settings.ch_database)
     candidate = 'trade_status_daily_' + suffix + '_candidate'
     archive = 'trade_status_daily_' + suffix + '_legacy'
-    predicate = "status_source NOT IN ('derived_from_daily_quote','security_lifecycle')"
+    predicate = "status_source IS NULL OR status_source NOT IN ('derived_from_daily_quote','security_lifecycle')"
     pg = lambda table: '"' + schema + '"."' + table + '"'
     ch = lambda table: '`' + database + '`.`' + table + '`'
     return {

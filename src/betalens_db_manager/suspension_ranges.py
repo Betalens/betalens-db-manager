@@ -21,7 +21,7 @@ def bounds(selector):
 
 
 def overlaps(left, right):
-    if left.get('security_code') != right.get('security_code'):
+    if left.get('market') != 'CN_A' and right.get('market') != 'CN_A' and left.get('security_code') != right.get('security_code'):
         return False
     a, b = bounds(left)
     c, d = bounds(right)
@@ -29,7 +29,7 @@ def overlaps(left, right):
 
 
 def contains(selector, code, day):
-    if selector.get('security_code') != code:
+    if selector.get('market') != 'CN_A' and selector.get('security_code') != code:
         return False
     first, last = bounds(selector)
     return first <= day < last
@@ -39,11 +39,11 @@ def coverage_heads(scopes, heads, wanted):
     by_code = defaultdict(list)
     for scope in wanted:
         if scope['module'] == 'suspension':
-            by_code[scope['selector']['security_code']].append(scope['selector'])
+            by_code[scope['selector'].get('security_code','*')].append(scope['selector'])
     return {scope['scope_id']: heads[scope['scope_id']] for scope in scopes
             if scope['module'] == 'suspension' and scope['scope_id'] in heads
             and any(overlaps(scope['selector'], selector)
-                    for selector in by_code.get(scope['selector']['security_code'], []))}
+                    for selector in (by_code.get(scope['selector'].get('security_code','*'), []) + by_code.get('*', [])))}
 
 
 def resolve(pool, reference):
@@ -81,12 +81,16 @@ class SuspensionIndex:
     def __init__(self, heads):
         self.daily = {}
         self.ranges = defaultdict(list)
+        self.market = {}
         verified = set()
         for head in heads:
             _, scope, revision, _ = head
             if scope.get('module') != 'suspension':
                 continue
             selector = scope['selector']
+            if scope.get('format') == 'suspension-market-day-v3':
+                self.market[selector['trade_date']] = head
+                continue
             if selector.get('trade_date'):
                 self.daily[(selector['security_code'], selector['trade_date'])] = head
             else:
@@ -100,12 +104,24 @@ class SuspensionIndex:
 
     def head(self, code, day):
         candidates = [h for h in self.ranges.get(code, []) if contains(h[1]['selector'], code, day)]
+        if day in self.market: candidates.append(self.market[day])
         legacy = self.daily.get((code, day))
         if legacy:
             candidates.append(legacy)
         if not candidates:
             return None
         rank, scope, revision, rows = max(candidates, key=lambda h: h[0])
+        if scope.get('format') == 'suspension-market-day-v3':
+            pool=revision['market_evidence'];evidence=dict(scope['evidence'])
+            universe=pool[evidence['universe_ref']];aliases=universe.get('aliases',{})
+            canonical=aliases.get(code,code);life=dict(universe['securities'].get(canonical,{}))
+            life['complete']=bool(universe.get('complete') and life.get('list_date') and (life.get('list_status')!='D' or life.get('delist_date')))
+            exchange='SZSE' if code.endswith('.SZ') else 'SSE'
+            cal=pool[evidence['calendar_refs'][exchange]]['days'].get(day)
+            evidence.update(lifecycle=life,calendar={'complete':cal is not None,'rows':[{'is_open':cal['is_open']}] if cal else []})
+            selected=[r for r in rows if aliases.get(r['security_code'],r['security_code'])==canonical]
+            view={**scope,'selector':{'security_code':code,'trade_date':day},'evidence':evidence,'rows':selected}
+            return rank,view,revision,selected
         view = day_scope({**scope, 'rows': rows}, day, revision.get('evidence_pool', {}))
         return rank, view, revision, view['rows']
 

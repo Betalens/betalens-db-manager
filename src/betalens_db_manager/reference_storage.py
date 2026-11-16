@@ -167,6 +167,7 @@ class ReferenceStore:
                                        for f in spec.fields]
                         definitions.append(sql.SQL('PRIMARY KEY ({})').format(sql.SQL(',').join(map(sql.Identifier, spec.keys))))
                         cur.execute(sql.SQL('CREATE TABLE IF NOT EXISTS {} ({})').format(self._relation(spec.name), sql.SQL(',').join(definitions)))
+                    cur.execute(sql.SQL('CREATE INDEX IF NOT EXISTS reference_scope_scope_revision_idx ON {} (scope_id,revision_id)').format(self._relation('reference_scope')))
             else:
                 self.db.execute(f'CREATE DATABASE IF NOT EXISTS `{identifier(self.settings.ch_database)}`')
                 for spec in specs.values():
@@ -401,6 +402,11 @@ class ReferenceStore:
             raise ValueError('修订覆盖范围重复')
         from .suspension_ranges import FORMAT, bounds, contains, referenced_pool
         ranged = [s for s in scopes if s.get('format') == FORMAT]
+        from .suspension_market import FORMAT as MARKET_FORMAT, validate_scopes
+        market = [s for s in scopes if s.get('format') == MARKET_FORMAT]
+        if market:
+            if module != 'suspension': raise ValueError('全市场凭证模块错误')
+            validate_scopes(market, revision.get('market_evidence', {}))
         if ranged:
             referenced_pool(ranged, revision.get('evidence_pool', {}))
             for scope in ranged:
@@ -558,7 +564,10 @@ class ReferenceStore:
             selected,_,_=self._control(conn,revision_ids=[revision_id])
             candidate=next((r for r in selected if r['revision_id']==revision_id),{})
             request={**candidate.get('request',{}),'modules':['suspension']} if 'evidence_pool' in candidate else None
-            revisions, scopes, events = self._control(conn,request=request)
+            if candidate.get('format') == 'suspension-market-day-v3':
+                revisions, scopes, events = self._control(conn,scope_ids=candidate['scope_ids'],revision_ids=[revision_id])
+            else:
+                revisions, scopes, events = self._control(conn,request=request)
             revision = next((r for r in revisions if r['revision_id'] == revision_id), None)
             if revision is None:
                 raise ValueError('修订不存在: ' + revision_id)

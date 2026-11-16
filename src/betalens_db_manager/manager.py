@@ -274,6 +274,9 @@ class DatabaseManagerService(ManagerKernel):
         return {'status_storage':'sparse-v2','processor_version':PROCESSOR_VERSION,'retrieval_policies':retrieval,'request':normalized,'requests':bindings,'mapping_snapshots':snapshots,'source_contracts':contracts,'contracts':{},'canonical_contracts':{n:canonical(n).hash for n in names},'mapping_version':digest(snapshots),'target':self.settings.fingerprint,'revision':'manager-v1','source_instance_snapshots':{sid:{**{k:self.sources.values[sid].get(k) for k in ('source_id','provider','label','base_url','auth')},'base_url':self.sources.values[sid].get('base_url') or ('https://api.tushare.pro' if sid=='tushare' else None)} for sid in {b['source_id'] for b in bindings}},'source_instances':{sid:source_identity(self.sources.values[sid]) for sid in {b['source_id'] for b in bindings}},'warnings':warnings,'parent_task_id':request.get('parent_task_id')}
 
     def plan(self,request):
+        selected=request.get('tables') or ([request['table']] if request.get('table') else [])
+        if 'trade_status_daily' in selected and self.state.ledger_get('suspension_retirement','active'):
+            raise ValueError('trade_status_daily 已退役为只读兼容表；请使用 suspension market_day 更新模式')
         if request.get('modules'):
             from .reference_service import ReferenceWorkflow
             return ReferenceWorkflow(self).plan(request)

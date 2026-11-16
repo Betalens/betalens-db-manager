@@ -8,6 +8,9 @@ from .util import digest,now
 def acquire_reference(service,item):
     """Acquire complete request chains with durable, restartable stage units."""
     service.state.ensure_execution(item['id'])
+    from .suspension_market import FORMAT, MarketWorkflow
+    if item['plan'].get('suspension_storage') == FORMAT:
+        return MarketWorkflow(service).acquire(item)
     if item['status'] in {'interrupted','cancelled'}:
         raise ValueError('中断任务须通过新版启动入口协调恢复')
     job=item['id'];request=item['plan']['request'];store=PipelineStore(service.state)

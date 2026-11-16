@@ -8,6 +8,7 @@ type CheckRequest = {
   start_date: string; end_date: string; exchanges: string[];
   schemes: string[]; levels: number[]; check_times: string[];
   source_id?: string;
+  suspension_update_mode?: 'market_day'; update_mode?: 'full' | 'incremental';
   requests_per_minute?: number;
   pipeline_version?: number; auto_commit?: boolean; run_in_background?: boolean; validation_profile?: string; post_check_rules?: string[];
 };
@@ -203,7 +204,7 @@ export default function IntegrityWorkbench({api}: {api: Api}) {
       </div>
       {selectedModules.includes('calendar') && <Options label="日历交易所" options={['SSE', 'SZSE', 'BSE'].map(value => [value, value])} values={exchanges} onChange={setExchanges}/>}
       {selectedModules.includes('industry') && <><Options label="行业分类体系" options={[[ 'SW2021', '申万 2021'], ['CITICS', '中信']]} values={schemes} onChange={setSchemes}/><Options label="行业层级" options={['1', '2', '3'].map(value => [value, value + ' 级'])} values={levels} onChange={setLevels}/></>}
-      <div className="actions"><button className="primary" disabled={checking || busy || !targets.length || !selectedModules.length || !start || !end || start > end} onClick={check}>{checking ? '正在检查…' : '检查业务完整性'}</button><button disabled={busy || !targets.length || !selectedModules.length} onClick={() => prepareDraft()}>按当前范围指定更新请求</button></div>
+      <div className="actions"><button className="primary" disabled={checking || busy || !targets.length || !selectedModules.length || !start || !end || start > end} onClick={check}>{checking ? '正在检查…' : '检查业务完整性'}</button><button disabled={busy || !targets.length || !selectedModules.length} onClick={() => prepareDraft()}>按当前范围指定更新请求</button><button disabled={busy || !targets.length} onClick={() => {const today = new Date().toLocaleDateString('en-CA', {timeZone:'Asia/Shanghai'});const yesterday = new Date(Date.parse(today+'T00:00:00Z')-86400000).toISOString().slice(0,10);setDraft({...current(),modules:['suspension'],security_codes:[],start_date:'2000-01-03',end_date:yesterday,source_id:'tushare',requests_per_minute:500,suspension_update_mode:'market_day',update_mode:'full'});setDraftHint('按交易日提取沪深北全市场停复牌列表，包含历史退市股票；完整空响应也保留凭证。');}}>全市场停牌历史更新</button></div>
       {report && <div data-testid="integrity-results">
         {Object.entries(targetResults).map(([target, value]: [string, any]) => <div className="reference-target-result" key={target}>
           <h3>{targetNames[target] || target} · 完整性结果</h3>
@@ -219,9 +220,10 @@ export default function IntegrityWorkbench({api}: {api: Api}) {
     {draft && <section data-testid="reference-request-draft">
       <h2>2 · 核对并登记更新任务</h2><p>{draftHint}</p>
       <DataTable rows={[draft]}/>
-      <div className="grid"><label>请求起始日期<input aria-label="参考表请求起始日期" type="date" value={draft.start_date} onChange={event => setDraft({...draft, start_date: event.target.value})}/></label><label>请求结束日期<input aria-label="参考表请求结束日期" type="date" value={draft.end_date} onChange={event => setDraft({...draft, end_date: event.target.value})}/></label><label>请求股票代码<input aria-label="参考表请求股票代码" value={draft.security_codes.join(', ')} onChange={event => setDraft({...draft, security_codes: split(event.target.value)})}/></label></div>
+      {draft.suspension_update_mode === 'market_day' && <label>停牌更新模式<select aria-label="停牌更新模式" value={draft.update_mode || 'full'} onChange={event => setDraft({...draft, update_mode:event.target.value as 'full'|'incremental'})}><option value="full">重新提取指定范围全部交易日</option><option value="incremental">补齐缺口并重查最近20个交易日</option></select></label>}
+      <div className="grid"><label>请求起始日期<input aria-label="参考表请求起始日期" type="date" value={draft.start_date} onChange={event => setDraft({...draft, start_date: event.target.value})}/></label><label>请求结束日期<input aria-label="参考表请求结束日期" type="date" value={draft.end_date} onChange={event => setDraft({...draft, end_date: event.target.value})}/></label><label>请求股票代码<input aria-label="参考表请求股票代码" disabled={draft.suspension_update_mode === 'market_day'} value={draft.security_codes.join(', ')} onChange={event => setDraft({...draft, security_codes: split(event.target.value)})}/></label></div>
       <Options label="请求目标库" options={Object.entries(targetNames)} values={draft.targets} onChange={targets => setDraft({...draft, targets})}/>
-      <Options label="请求业务模块" options={modules} values={draft.modules} onChange={modules => setDraft({...draft, modules})}/>
+      {draft.suspension_update_mode !== 'market_day' && <Options label="请求业务模块" options={modules} values={draft.modules} onChange={modules => setDraft({...draft, modules})}/>}
       <label>请求来源<select aria-label="参考表请求来源" value={draft.source_id || 'tushare'} onChange={event => setDraft({...draft, source_id: event.target.value})}><option value="tushare">Tushare</option>{sources.filter(source => source.source_id !== 'tushare' && Object.keys(source.endpoints || {}).length).map(source => <option key={source.source_id} value={source.source_id} disabled={!source.configured}>{source.label || source.source_id}</option>)}</select></label>
       {(draft.source_id || 'tushare') === 'tushare' && <label>Tushare 每分钟请求上限<input aria-label="参考表每分钟请求次数" type="number" min="1" max="10000" value={draft.requests_per_minute || requestRpm} onChange={event => setDraft({...draft, requests_per_minute: Number(event.target.value)})}/><small>同时遵守接口自身限频；按分页和分区完整获取，不以短页推断结束。</small></label>}
       <PipelineOptions enabled={pipelineEnabled} onEnabled={setPipelineEnabled} rules={postChecks} onRules={setPostChecks}/>

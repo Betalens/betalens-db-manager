@@ -47,7 +47,22 @@ def _copy(cur,name,spec,rows):
     cur.copy_expert(sql.SQL('COPY {} ({}) FROM STDIN').format(sql.Identifier(name),sql.SQL(',').join(sql.Identifier(n) for n in columns(spec))),buf)
 
 
+def _assert_not_retired(db, spec, state=None):
+    if spec.name != 'trade_status_daily':return
+    active = state.ledger_get('suspension_retirement','active') if state is not None else None
+    if state is None:
+        import sqlite3
+        path = getattr(db.settings,'state_dir',None)
+        if path is not None and (path/'tasks.sqlite3').exists():
+            with sqlite3.connect((path/'tasks.sqlite3').as_uri()+'?mode=ro',uri=True) as connection:
+                active = connection.execute("SELECT 1 FROM ledger WHERE table_name='suspension_retirement' AND row_key='active'").fetchone()
+    if active:
+        from .commit_protocol import NeedsReconciliation
+        raise NeedsReconciliation('trade_status_daily 已退役为只读兼容表；旧任务写入或回退需先按归档恢复流程处理')
+
+
 def pg_apply(db,spec,comparison):
+    _assert_not_retired(db,spec)
     from psycopg2.extras import RealDictCursor
     with db.connect() as conn,conn.cursor(cursor_factory=RealDictCursor) as cur:
         target=relation(db.settings,spec.name)
@@ -95,6 +110,7 @@ def _ch_check(db,spec,stage,deleted=False,table=None,rows=None):
 
 
 def ch_apply(db,state,job,batch,spec,comparison,inverse=False):
+    _assert_not_retired(db,spec,state)
     with db.write_window('pipeline:'+job):
         if inverse:
             checkpoint=state.ledger_get('pipeline_ch_inverse',job+':'+batch+':'+spec.name)

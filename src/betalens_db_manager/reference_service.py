@@ -99,6 +99,11 @@ class ReferenceWorkflow:
         return item
 
     def plan(self,request):
+        if request.get('suspension_update_mode') == 'market_day':
+            from .suspension_market import MarketWorkflow
+            return MarketWorkflow(self.s).plan(request)
+        if 'suspension' in request.get('modules',[]) and self.s.state.ledger_get('suspension_retirement','active'):
+            raise ValueError('停牌更新已切换为全市场逐日模式，请指定 suspension_update_mode=market_day')
         from .pipeline_options import options
         from .execution_policy import LegacyPipelineError
         if request.get('pipeline_version',2)!=2:raise LegacyPipelineError('旧执行管线已移除，请使用 pipeline_version=2')
@@ -225,6 +230,9 @@ class ReferenceWorkflow:
         return bundles
 
     def build_cache(self,job):
+        from .suspension_market import FORMAT as MARKET_FORMAT, MarketWorkflow
+        if self.s.state.job(job,metadata_only=True)['plan'].get('suspension_storage') == MARKET_FORMAT:
+            return MarketWorkflow(self.s).audit(job)
         self.s.state.ensure_execution(job)
         from .reference_domains import build_scopes
         item=self.job(job)
@@ -332,6 +340,11 @@ class ReferenceWorkflow:
         return item,cache
 
     def publish_cache(self,job,token,accept_partial=False):
+        from .suspension_market import FORMAT as MARKET_FORMAT, MarketWorkflow
+        if self.s.state.job(job,metadata_only=True)['plan'].get('suspension_storage') == MARKET_FORMAT:
+            return MarketWorkflow(self.s).publish(job,token)
+        if 'suspension' in self.s.state.job(job,metadata_only=True)['plan']['request'].get('modules',[]) and self.s.state.ledger_get('suspension_retirement','active'):
+            raise ValueError('旧停牌参考任务禁止恢复发布，请创建全市场逐日任务')
         self.s.state.ensure_execution(job)
         # Each target operation owns the existing publication/write lock. Do
         # not nest a second flock on the same path in this orchestration layer.

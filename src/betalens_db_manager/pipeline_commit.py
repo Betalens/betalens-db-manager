@@ -40,6 +40,8 @@ def write_cohorts(pipeline,parent,items,target):
         # A cached cohort can predate an explicit destination removal. The
         # current parent scope is the write boundary, including on recovery.
         names=list(dict.fromkeys(name for _,snapshot in items for name in snapshot['tables'] if name in request['tables']))
+        if 'trade_status_daily' in names and service.state.ledger_get('suspension_retirement','active'):
+            raise ValueError('trade_status_daily 已退役，旧任务禁止恢复写入；需创建新版停牌任务')
         prepared=[];dirty_names=set();last_sync=monotonic();pending_ack=0
 
         def sync_results(force=False):
