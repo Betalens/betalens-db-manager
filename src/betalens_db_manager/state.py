@@ -29,6 +29,8 @@ class State:
                     id TEXT PRIMARY KEY, created TEXT NOT NULL, updated TEXT NOT NULL,
                     status TEXT NOT NULL, target TEXT NOT NULL, plan TEXT NOT NULL,
                     preview TEXT, error TEXT, cancel INTEGER NOT NULL DEFAULT 0);
+                CREATE INDEX IF NOT EXISTS jobs_created_idx ON jobs(created DESC);
+                CREATE INDEX IF NOT EXISTS jobs_target_created_idx ON jobs(target,created DESC);
                 CREATE TABLE IF NOT EXISTS slices(
                     job TEXT NOT NULL, id TEXT NOT NULL, dataset TEXT NOT NULL, request TEXT NOT NULL,
                     status TEXT NOT NULL, archive TEXT, sha TEXT, rows INTEGER, result TEXT,
@@ -200,7 +202,7 @@ class State:
         if identifiers is not None:
             if not identifiers:return []
             query+=' AND id IN ('+','.join('?' for _ in identifiers)+')';params.extend(identifiers)
-        if dependencies:query+=" AND (dataset IN ('stock_basic','fund_basic','index_basic','trade_cal') OR json_extract(request,'$.dependency_only')=1)"
+        if dependencies:query+=" AND (dataset IN ('stock_basic','fund_basic','index_basic','trade_cal') OR json_extract(request,'$.dependency_only')=1 OR json_extract(request,'$.strategy')='dependency')"
         with self.connect() as conn:rows=conn.execute(query,params).fetchall()
         return [{**dict(r),'request':json.loads(r['request']),'result':json.loads(r['result']) if r['result'] else None} for r in rows]
 

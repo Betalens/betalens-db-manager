@@ -142,6 +142,18 @@ def compile_plan(service,request):
     for endpoint in {r['endpoint'] for r in roots if r['source_id']=='tushare' and r['strategy']=='universe_expansion'}:
         dim='fund_basic' if endpoint.startswith('fund_') else 'index_basic' if endpoint.startswith('index_') else 'stock_basic'
         plan['source_contracts']['tushare:'+dim]=deepcopy(service.sources.endpoint('tushare',dim))
+    # Freeze and download the version dictionary before any membership cohort.
+    # A missing dependency must fail, rather than silently label the endpoint.
+    if any(r['source_id']=='tushare' and r['endpoint']=='index_member_all' for r in roots):
+        contract=deepcopy(service.sources.endpoint('tushare','index_classify'))
+        plan['source_contracts']['tushare:index_classify']=contract
+        for level in (1,2,3):
+            params={'src':'SW2021','level':f'L{level}'}
+            existing=next((r for r in roots if r['source_id']=='tushare' and r['endpoint']=='index_classify' and r['parameters']==params),None)
+            if existing is None:
+                roots.append({'source_id':'tushare','endpoint':'index_classify','parameters':params,
+                              'strategy':'dependency','dependency_only':True})
+            else:existing['strategy']='dependency'
     plan['requests']=roots;plan['pipeline_version']=2;plan['cohort_strategy']='security_batches_v1'
     plan['retrieval_policies']={k:tushare_policy(k.split(':',1)[1],points=5000) for k in plan['source_contracts'] if k.startswith('tushare:')}
     for policy in plan['retrieval_policies'].values():policy['effective_rpm']=min(normalized['requests_per_minute'],policy['endpoint_rpm'])

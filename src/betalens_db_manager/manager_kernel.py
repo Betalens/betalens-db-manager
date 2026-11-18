@@ -274,13 +274,17 @@ class ManagerKernel:
                 target = canonical("index_membership"); partial = {"index_code": source.get("index_code"), "security_code": source.get("con_code"), "trade_date": source.get("trade_date"), "weight": source.get("weight")}
                 output[target.name].append(self._canonical_record(target, partial, endpoint, job, downloaded, row_no, raw, event_date, available, basis, source_name,source_hash=source_hash)); continue
             if endpoint == "index_classify":
-                scheme=source.get('src') or 'SW2021'
+                scheme=source.get('_classification_scheme') or source.get('src')
+                if scheme not in {'SW2014','SW2021'}:
+                    raise ValueError('申万字典缺少明确年份版本')
                 scheme_spec=canonical('industry_scheme_dim')
                 output[scheme_spec.name].append(self._canonical_record(scheme_spec,{'scheme_code':scheme,'scheme_name':'申万'+str(scheme).removeprefix('SW'),'description':'申万行业分类体系'},endpoint,job,downloaded,row_no,raw,None,None,'source_snapshot',source_name,source_hash=source_hash))
                 target = canonical("industry_dim"); partial = {"scheme_code": scheme, "industry_code": source.get("index_code"), "industry_name": source.get("industry_name"), "parent_code": source.get("parent_code"), "level": source.get("level")}
                 output[target.name].append(self._canonical_record(target, partial, endpoint, job, downloaded, row_no, raw, None, None, "source_snapshot", source_name,source_hash=source_hash)); continue
             if endpoint in {"index_member_all", "ci_index_member"}:
-                scheme = "SW2021" if endpoint == "index_member_all" else "CITICS"
+                scheme = source.get('_classification_scheme') if endpoint == 'index_member_all' else 'CITICS'
+                if scheme != ('SW2021' if endpoint == 'index_member_all' else 'CITICS'):
+                    raise ValueError('行业成员缺少经字典核验的接口版本证据')
                 scheme_spec = canonical("industry_scheme_dim")
                 output[scheme_spec.name].append(self._canonical_record(scheme_spec, {"scheme_code":scheme,"scheme_name":"申万2021" if scheme=="SW2021" else "中信","description":"申万行业分类体系" if scheme=='SW2021' else "中信行业分类体系"}, endpoint,job,downloaded,row_no,raw,None,None,"source_snapshot",source_name,source_hash=source_hash))
                 for level in (1,2,3):

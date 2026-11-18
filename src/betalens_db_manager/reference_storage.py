@@ -564,8 +564,12 @@ class ReferenceStore:
             selected,_,_=self._control(conn,revision_ids=[revision_id])
             candidate=next((r for r in selected if r['revision_id']==revision_id),{})
             request={**candidate.get('request',{}),'modules':['suspension']} if 'evidence_pool' in candidate else None
-            if candidate.get('format') == 'suspension-market-day-v3':
+            scoped_industry = (candidate.get('module') == 'industry' and
+                candidate.get('quality_correction',{}).get('policy') == 'sw2014-unversioned-endpoint-quality-correction-v1')
+            if candidate.get('format') == 'suspension-market-day-v3' or scoped_industry:
                 revisions, scopes, events = self._control(conn,scope_ids=candidate['scope_ids'],revision_ids=[revision_id])
+                if scoped_industry and any(s.get('dependencies') for s in scopes if s['revision_id']==revision_id):
+                    raise ValueError('行业质量纠正不得隐式跨范围引用依赖')
             else:
                 revisions, scopes, events = self._control(conn,request=request)
             revision = next((r for r in revisions if r['revision_id'] == revision_id), None)

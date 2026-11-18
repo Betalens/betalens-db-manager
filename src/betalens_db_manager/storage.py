@@ -211,6 +211,9 @@ class Postgres:
         if "security_code" in columns(spec):
             cur.execute(sql.SQL("CREATE INDEX IF NOT EXISTS {} ON {} (security_code)").format(
                 sql.Identifier(spec.name + "_security_idx"), relation(self.settings, spec.name)))
+            if spec.name in {'market_daily_raw','market_daily_post_adjusted'} and 'trade_date' in columns(spec):
+                cur.execute(sql.SQL('CREATE INDEX IF NOT EXISTS {} ON {} (security_code,trade_date)').format(
+                    sql.Identifier(spec.name+'_security_date_idx'),relation(self.settings,spec.name)))
 
     def install(self, expected: str | None = None, specs=None):
         plan = self.schema_plan()

@@ -161,7 +161,8 @@ class SchemaManager:
                                 for widening in item['safe_widenings']:
                                     column=sql.Identifier(widening['column'])
                                     cur.execute(sql.SQL('ALTER TABLE {} ALTER COLUMN {} TYPE bigint USING {}::bigint').format(relation(target.settings,name),column,column))
-                        target.install(specs={name:spec})
+                        if item['ddl']:
+                            target.install(specs={name:spec})
                         self._alter_nullable(spec,target,key,item['nullable_changes'])
                     self._verify_result(plan,spec,key)
                     if plan['action']=='deploy':self._metadata(target,spec)

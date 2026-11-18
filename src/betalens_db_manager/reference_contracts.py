@@ -6,7 +6,7 @@ manifest and must never be inferred from a row's mere presence in storage.
 from .canonical import CanonicalTable, _f
 from .util import digest
 
-VERSION = 'reference-domains-v1'
+VERSION = 'reference-domains-v2-industry-version-proof'
 
 COMMON = [
     _f('revision_id', 'text', '修订编号', nullable=False),

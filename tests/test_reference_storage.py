@@ -63,6 +63,24 @@ def calendar_scope(day='2026-10-20', exchange='SSE', is_open=1):
             'evidence': {'full_response': True}, 'dependencies': []}
 
 
+def test_industry_quality_correction_checks_scope_heads_and_preserves_other_modules():
+    store=MemoryStore()
+    store.stage(revision('calendar'),[calendar_scope()]);store.publish('calendar',{'SSE:2026-10-20':None})
+    scope={'scope_id':'SW2014:stock:L1','module':'industry',
+           'selector':{'security_code':'000001.SZ','scheme_code':'SW2014','level':1},
+           'rows':[{'record_id':'one','security_code':'000001.SZ','scheme_code':'SW2014','level':1,
+                    'membership_status':'unknown','source_endpoint':'index_member_all'}],
+           'complete':True,'evidence':{},'dependencies':[]}
+    r={**revision('fix','industry'),'quality_correction':{'policy':'sw2014-unversioned-endpoint-quality-correction-v1'}}
+    store.stage(r,[scope]);store.publish('fix',{'SW2014:stock:L1':None})
+    heads=store.snapshot()['heads']
+    assert heads['SSE:2026-10-20']=='calendar' and heads['SW2014:stock:L1']=='fix'
+    later={**r,'revision_id':'later','attempt_id':'later'}
+    store.stage(later,[scope])
+    with pytest.raises(ValueError,match='版本头'):
+        store.publish('later',{'SW2014:stock:L1':None})
+
+
 def test_append_is_invisible_until_verified_published_and_revocation_restores_previous():
     store = MemoryStore()
     scope = calendar_scope()

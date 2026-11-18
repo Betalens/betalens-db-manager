@@ -176,7 +176,11 @@ def _industry_scope(code, scheme, level, bundles):
             industry_code, industry_name = r.get(f"l{level}_code"), r.get(f"l{level}_name")
             # The membership endpoint has no SW version argument.  If both
             # versions are requested, a matching dictionary is the evidence.
-            version_proven = endpoint == "ci_index_member" or industry_code in dictionaries
+            # Reused index codes are not version evidence. The tiered endpoint
+            # supplies the 2021 scheme, even when an old dictionary shares codes.
+            version_proven = (endpoint == "ci_index_member" or
+                              scheme == 'SW2021' and industry_code in dictionaries and
+                              dictionaries[industry_code].get('industry_name') == industry_name)
             first, last = _date(r.get("in_date")), _date(r.get("out_date"))
             valid = bool(industry_code and industry_name and first and version_proven)
             invalid_end = bool(r.get("out_date") and last is None)
@@ -185,9 +189,9 @@ def _industry_scope(code, scheme, level, bundles):
             if invalid_end:
                 valid = False
             status = "mapped" if valid else "unknown"
-            row = {"security_code": code, "scheme_code": scheme, "classification_version": scheme,
-                   "level": level, "industry_code": industry_code,
-                   "industry_name": industry_name,
+            row = {"security_code": code, "scheme_code": scheme, "classification_version": scheme if version_proven else None,
+                   "level": level, "industry_code": industry_code if version_proven else None,
+                   "industry_name": industry_name if version_proven else None,
                    "valid_from": first.isoformat() if first else None,
                    "valid_to": last.isoformat() if last else None,
                    "boundary_basis": "source_in_date_out_date_inclusivity_unproven" if last else "source_in_date_open_end" if str(r.get("is_new", "")).upper() == "Y" else "historical_end_unknown",
@@ -204,7 +208,7 @@ def _industry_scope(code, scheme, level, bundles):
     return _scope("industry", {"security_code": code, "scheme_code": scheme, "level": level},
                   rows, complete, reasons, {"queries": _proof(candidates), "whole_history": True,
                                             "dictionary_queries": _proof(dictionary_bundles),
-                                            "classification_version_basis": "source_endpoint" if endpoint == "ci_index_member" else "versioned_dictionary_code_match",
+                                            "classification_version_basis": "source_endpoint" if endpoint == "ci_index_member" else "versioned_dictionary_code_match" if scheme == 'SW2021' else 'unproven_legacy_version',
                                             "source_interval_end_inclusivity": "unknown"})
 
 

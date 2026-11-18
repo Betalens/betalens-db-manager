@@ -11,7 +11,7 @@ VERSION = 'column-producers-v1'
 PROOF_VERSION = 'column-verification-v2-scope-context'
 KINDS = {'direct','constant','copy','computed','system','not_applicable','unavailable'}
 PROCESSORS = {'business_version','post_adjustment','daily_average','asset_scope','industry_scheme',
-              'industry_membership','trade_status','event_summary','announcement_time','record_hash'}
+              'industry_membership','trade_status','event_summary','announcement_time','record_hash','index_snapshot'}
 
 
 def producers_for(spec, mapping):
@@ -53,6 +53,9 @@ def producers_for(spec, mapping):
             elif c.startswith('raw_'):add(c,'copy','保留原始行情以支持重算',['market_daily_raw.'+c.removeprefix('raw_')])
             else:add(c,'copy','继承本次原始行情和每日指标；成交量额不复权',['market_daily_raw.'+c,'daily_basic'])
         elif c=='average_price' and table=='market_daily_raw':add(c,'computed','成交额/成交量；指数不适用，零成交量保留空值',['amount','volume'],'daily_average',scope={'asset_type':['stock','fund']})
+        elif table=='index_membership' and c in {'snapshot_complete','snapshot_member_count'}:
+            add(c,'computed','完整未筛选成分请求链校验通过，并与规范化成分集合逐一一致；未知保持空值',
+                ['index_weight','validated_archive_chain'],'index_snapshot')
         elif table=='trade_status_daily':add(c,'computed','股票按交易日历/停复牌/上市边界；基金指数按行情存在性派生',['trade_cal','suspend_d','stock_basic','daily_quote'],'trade_status')
         elif table=='corporate_action':
             if c=='old_name':add(c,'unavailable','只在完整、无歧义的紧邻名称区间证明后生成；当前不推断')

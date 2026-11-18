@@ -102,6 +102,26 @@ class DatabaseManagerService(ManagerKernel):
 
     def _map_part(self,endpoint,source_rows,job,downloaded,calendar,source_name='tushare'):
         from .pipeline_options import LIGHT
+        from .normalization_context import CURRENT
+        inputs=CURRENT.get()
+        item=inputs.item if inputs is not None and inputs.item['id']==job else self.state.job(job)
+        if source_name == 'tushare' and endpoint in {'index_member_all','ci_index_member','index_classify'}:
+            from .industry_codes import membership_scheme, archived_dictionaries
+            if endpoint == 'index_member_all':
+                catalogs = getattr(inputs, 'industry_catalogs', None) if inputs is not None else None
+                if catalogs is None:
+                    catalogs = archived_dictionaries(item)
+                    if inputs is not None:inputs.industry_catalogs = catalogs
+            else:catalogs = {}
+            parts = {p['id']:p for p in item.get('slices', [])}
+            source_rows = [dict(row) for row in source_rows]
+            for row in source_rows:
+                if endpoint == 'index_classify':
+                    scheme = parts.get(row.get('_slice'),{}).get('request',{}).get('parameters',{}).get('src')
+                    if scheme not in {'SW2014','SW2021'} or row.get('src') not in {None,'','SW',scheme}:
+                        raise ValueError('申万字典缺少一致的显式请求版本')
+                else:scheme = membership_scheme(endpoint, row, catalogs)
+                row['_classification_scheme'] = scheme
         light=LIGHT.get()
         output,factors=super()._map_part(endpoint,source_rows,job,downloaded,calendar,source_name)
         indexed={name:{} for name in output}
@@ -116,9 +136,6 @@ class DatabaseManagerService(ManagerKernel):
                     column=destination[1];value=source.get(field)
                     if row.get(column)==value:
                         origins[column]={'selected':value is not None,'source_null':value is None,'value_hash':digest(value),'origins':[source_name+':'+endpoint+':'+field]}
-        from .normalization_context import CURRENT
-        inputs=CURRENT.get()
-        item=inputs.item if inputs is not None and inputs.item['id']==job else self.state.job(job)
         snapshots=item['plan'].get('mapping_snapshots') or self.mappings.snapshots()
         for name,mapping in snapshots.items():
             if name not in load_canonical_catalog():continue
@@ -133,11 +150,13 @@ class DatabaseManagerService(ManagerKernel):
                 for source in source_rows:
                     raw=source.get('_raw',{});partial,evidence=self.mappings.map_row(spec,raw,binding,processor=True,collect_evidence=not light or name=='fundamental_periodic')
                     protected=set()
+                    if name in {'industry_dim','industry_scheme_dim','security_industry_membership','industry_membership_record'}:
+                        protected.add('scheme_code')
                     if name=='corporate_action':protected={'event_date','effective_date','cash_dividend','share_dividend','old_name','event_type'}
                     if name=='fundamental_periodic':protected={'announcement_date','actual_announcement_date','end_type','statement_type','version_id','rd_exp','research_and_development_expense','research_and_development_investment'}
                     partial={k:v for k,v in partial.items() if k not in protected}
                     if name in DETAILS.values():
-                        if name=='industry_membership_record':partial['scheme_code']='SW2021' if endpoint=='index_member_all' else 'CITICS'
+                        if name=='industry_membership_record':partial['scheme_code']=source['_classification_scheme']
                         partial['record_version']=digest(partial)
                         event=next((source.get(k) for k in ('trade_date','end_date','start_date','nav_date','in_date') if source.get(k)),None)
                         available=None;basis='unknown'
@@ -372,6 +391,8 @@ class DatabaseManagerService(ManagerKernel):
 
     def _build_canonical(self,item):
         from .pipeline_options import LIGHT
+        from .index_snapshot import resolve_evidence
+        item = resolve_evidence(self, item)
         light=LIGHT.get()
         if item['plan'].get('revision')!='manager-v1':return super()._build_canonical(item)
         for mapping in item['plan']['mapping_snapshots'].values():self.mappings.validate(mapping)
@@ -526,6 +547,10 @@ class DatabaseManagerService(ManagerKernel):
                             proof[c]={'selected':True,'value_hash':digest(row[c]),'origins':['producer:'+producer['kind']+':'+str(producer.get('processor') or c)]}
                 if not light:self.state.ledger_put('task_column_lineage',item['id']+':'+name,{'task_id':item['id'],'table':name,'rows':{key:column_lineage.get(key,{}) for key in merged}})
                 evidence.extend({'task_id':item['id'],'event':'field_selected','table':name,'row_key':key,'column':column,**provenance} for key,fields in selected_fields.items() for column,provenance in fields.items())
+        if not rejects and normalized.get('index_membership'):
+            from .index_snapshot import annotate_validated_snapshots, retain_evidence
+            annotate_validated_snapshots(item, normalized['index_membership'])
+            retain_evidence(self, item, normalized['index_membership'])
         self.state.ledger_put('task_field_evidence',item['id'],{'task_id':item['id'],'rows':evidence})
         return normalized,rejects
 

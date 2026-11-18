@@ -131,5 +131,8 @@ def verify_file_cache(service,item):
         meta=json.loads(Path(part['archive']).with_suffix('.meta.json').read_text())
         if part['status']!='downloaded' or meta.get('sha256')!=part['sha'] or meta.get('source_sha256')!=definition['sha256']:
             raise ValueError('文件分片证据不一致')
-        if data.get('fields')!=list(definition['column_map']) or len(data.get('items',[]))!=part['rows'] or any(len(r)!=len(data['fields']) for r in data['items']):
+        # JSON persistence sorts mapping keys. Wire columns retain their own
+        # order and normalization matches by name, never by mapping position.
+        actual=data.get('fields',[])
+        if len(actual)!=len(set(actual)) or set(actual)!=set(definition['column_map']) or len(data.get('items',[]))!=part['rows'] or any(len(r)!=len(actual) for r in data['items']):
             raise ValueError('文件分片字段或行宽不一致')

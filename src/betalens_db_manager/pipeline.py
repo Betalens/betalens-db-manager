@@ -57,8 +57,8 @@ def memory_guard(request,root):
     finally:stop.set();thread.join()
 
 
-NORMALIZATION_POLICY_VERSION='normalization-v4-global-symbols-daily-close-20261115'
-NORMALIZATION_IMPLEMENTATION='bounded-history-global-symbols-daily-close-20261115'
+NORMALIZATION_POLICY_VERSION='normalization-v6-industry-version-proof-20261117'
+NORMALIZATION_IMPLEMENTATION='bounded-history-industry-version-proof-20261117'
 
 
 _normalization_service=None
@@ -659,15 +659,26 @@ class Pipeline:
             for executor in executors.values():executor.join()
         if req['auto_commit']:errors.extend(self.reconcile(job))
         status='partial' if errors or failed_targets else 'completed' if req['auto_commit'] else 'ready_to_commit'
-        self.s.state.update_job(job,status=status,error=dumps(errors[:20]) if errors else None)
-        self.s.state.ledger_put('pipeline_result',job,{'task_id':job,'status':status,'errors':errors,'finished_at':now()})
+        post_validate=status=='completed' and bool(req['post_check_rules'])
+        # Terminal status permits asynchronous cache retirement. Keep the
+        # complete source and typed inputs alive until post-validation ends,
+        # including direct Python callers that have no queued worker operation.
+        self.s.state.update_job(job,status='validating' if post_validate else status,error=dumps(errors[:20]) if errors else None)
         # Refresh derived coverage once per table/target at task end, never per small network packet.
         receipts=self.store.receipts(job)
         names={target:{r['result']['table'] for r in receipts if r['target']==target and r['status']=='completed'} for target in req['targets'] if target not in failed_targets}
         self._refresh_targets(job,list(names),names)
-        if status=='completed' and req['post_check_rules']:
+        if post_validate:
             from .pipeline_validation import ValidationRunner
-            ValidationRunner(self.s).run(job,{'rules':req['post_check_rules']})
+            try:
+                validation=ValidationRunner(self.s).run(job,{'rules':req['post_check_rules']})
+                if validation['status']=='failed':
+                    status='partial';errors.append({'stage':'post_validation','error':'事后业务校验失败','validation_id':validation['id']})
+            except BaseException as exc:
+                self.s.state.update_job(job,status='partial',error=self.s.safe_error(exc))
+                raise
+            self.s.state.update_job(job,status=status,error=dumps(errors[:20]) if errors else None)
+        self.s.state.ledger_put('pipeline_result',job,{'task_id':job,'status':status,'errors':errors,'finished_at':now()})
         return self.detail(job)
 
     def commit(self,job):

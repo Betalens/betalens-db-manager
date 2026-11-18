@@ -139,12 +139,19 @@ def compare(spec, rows, existing, mode):
                 for name in business:
                     if (mode == 'fill_missing' and before.get(name) is not None) or (incoming.get(name) is None and before.get(name) is not None):
                         after[name] = before[name]
-            if all(after.get(k) == before.get(k) for k in business):
+            # An unchanged, explicitly supplied value is affirmed by the new
+            # source. Only a value absent/different in that source is retained
+            # from the previous source; keys alone cannot create a mixed row.
+            preserved=[name for name in business if before.get(name) is not None and
+                       after.get(name)==before[name] and incoming.get(name)!=before[name]]
+            quality_refresh=(mode=='refresh_source' and not preserved and
+                before.get('data_quality_status')=='mixed_sources' and
+                incoming.get('data_quality_status') in {'accepted','verified'})
+            if all(after.get(k) == before.get(k) for k in business) and not quality_refresh:
                 counts['skipped'] += 1
                 continue
             counts['updated'] += 1
             if not atomic_nav and before.get('source_name') and not set(before['source_name'].split(',')).issubset(set(str(incoming.get('source_name','')).split(','))):
-                preserved=[name for name in business if before.get(name) is not None and after.get(name)==before[name]]
                 if preserved:
                     after['source_name']=','.join(sorted(set(before['source_name'].split(',')+str(incoming.get('source_name','')).split(','))))
                     if 'source_endpoint' in after:after['source_endpoint']=','.join(sorted(set(str(before.get('source_endpoint','')).split(',')+str(incoming.get('source_endpoint','')).split(','))))

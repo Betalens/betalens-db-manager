@@ -150,7 +150,10 @@ _TABLES = [
     ), ("scheme_code", "security_code", "industry_code", "valid_from")),
     CanonicalTable("index_membership", "指数成分", "指数成分及历史权重", "指数、成分证券和日期一行", (
         _f("index_code", "text", "指数代码", nullable=False), _f("security_code", "text", "成分证券代码", nullable=False),
-        _f("trade_date", "date", "交易日期", nullable=False), _f("weight", "numeric", "权重", "%"), *COMMON_DAILY,
+        _f("trade_date", "date", "交易日期", nullable=False), _f("weight", "numeric", "权重", "%"),
+        _f("snapshot_complete", "integer", "完整成分快照证明", description="完整且未筛选成分的来源请求链通过核验后为1；未知留空"),
+        _f("snapshot_member_count", "integer", "完整快照成分数量", description="通过完整来源请求链核验的指数日期截面证券数"),
+        *COMMON_DAILY,
     ), ("index_code", "security_code", "trade_date")),
     CanonicalTable("fundamental_periodic", "定期财务数据", "利润表、资产负债表、现金流量表和财务指标的统一宽表", "证券、报告期、报告类型和版本一行", (
         _f("security_code", "text", "证券代码", nullable=False), _f("period_end", "date", "报告期末", nullable=False),

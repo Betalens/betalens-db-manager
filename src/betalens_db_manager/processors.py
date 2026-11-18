@@ -1,7 +1,7 @@
 """Bindings to the shipped executors, never expressions supplied by a mapping."""
 from functools import lru_cache
 
-VERSION = 'registered-processors-v3'
+VERSION = 'registered-processors-v4-industry-version-proof'
 DETAIL_ENDPOINTS = {'stock_basic':'stock_profile','fund_basic':'fund_profile','index_basic':'index_profile',
     'dividend':'dividend_event','suspend_d':'suspension_event','namechange':'security_name_history',
     'fund_nav':'fund_nav_observation','index_member_all':'industry_membership_record','ci_index_member':'industry_membership_record'}

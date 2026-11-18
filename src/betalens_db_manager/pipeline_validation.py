@@ -147,7 +147,9 @@ class ValidationRunner:
                         if not expected:continue
                         if 'readback' in rules and child_item is None:
                             child_item=self.s._job(child,True)
-                            purged=bool(parent.get('download_cache_cleanup')) and any(
+                            from .index_snapshot import resolve_evidence
+                            child_item=resolve_evidence(self.s,child_item)
+                            purged=any(
                                 p.get('archive') and not Path(p['archive']).is_file() for p in child_item['slices'])
                             if purged:
                                 child_item['_source_cache_purged']=True
