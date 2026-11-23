@@ -38,6 +38,9 @@ def key_spec():
 def test_external_key_upload_is_bounded_typed_and_readonly(monkeypatch):
     db=ClickHouse(Settings());spec=key_spec();calls=[]
     def post(url,**kw):
+        if 'files' not in kw:
+            return type('Response',(),{'status_code':200,'text':
+                '{"uuid":"mock","engine":"ReplacingMergeTree","partition_key":"toYYYYMM(event_date)"}'})()
         calls.append(kw);query=kw['params']['query']
         data=kw['files']['_betalens_keys'][1]
         keys=pa.ipc.open_stream(data).read_all().to_pylist()
@@ -62,9 +65,9 @@ def test_external_key_upload_is_bounded_typed_and_readonly(monkeypatch):
 
 def test_only_immutable_partition_keys_allow_direct_pruning():
     db=ClickHouse(Settings());spec=key_spec();rows=[{'event_date':date(1990,1,1)}]
-    assert partition_filter(db,spec,rows)==''
-    assert '199001' in partition_filter(db,replace(spec,keys=('code','event_date')),rows)
-    assert partition_filter(db,replace(spec,keys=('code','event_date')),[{}])==''
+    assert partition_filter(spec,rows,'event_date')==''
+    assert '199001' in partition_filter(replace(spec,keys=('code','event_date')),rows,'event_date')
+    assert partition_filter(replace(spec,keys=('code','event_date')),[{}],'event_date')==''
 
 
 def test_lane_flushes_small_batches_on_close_and_preserves_fifo():

@@ -12,6 +12,7 @@ import requests
 from .canonical import CanonicalTable, canonical, load_canonical_catalog
 from .config import Settings
 from .comparison import compare as compare_rows, typed
+from .ch_partition import desired_partition_field, normalize_partition, partition_expression
 from .storage import columns, row_hash, row_key, CONTROL_DDL, control_spec
 from .util import digest, dumps, identifier, parse_date
 
@@ -56,7 +57,7 @@ class ClickHouse:
         # Unknown/new SQL forms are conservatively coordinated. A blacklist
         # missed DELETE and administrative forms such as ATTACH/DETACH.
         first=query.lstrip().split(None,1)[0].upper() if query.strip() else ''
-        mutation=first not in {'SELECT','SHOW','DESCRIBE','DESC','EXISTS','EXPLAIN'}
+        mutation=first not in {'SELECT','SHOW','DESCRIBE','DESC','EXISTS','EXPLAIN'} and not query.lstrip().upper().startswith('CHECK GRANT ')
         if external_tables and (mutation or data is not None):
             raise ValueError('外部临时键表仅用于只读查询')
         if mutation and self.write_coordinator is not None and not self._write_window.get():
@@ -104,10 +105,12 @@ class ClickHouse:
         if field["type"]=="numeric":base=f"Decimal({field.get('precision',38)}, {field.get('scale',12)})"
         return base if required or not field.get("nullable", True) else f"Nullable({base})"
 
-    def ddl(self, spec: CanonicalTable) -> str:
+    def ddl(self, spec: CanonicalTable, *, partition_key=None) -> str:
         definitions = [f"`{f['name']}` {self._type(f, f['name'] in spec.keys)}" for f in spec.fields]
         keys = ",".join(f"`{key}`" for key in spec.keys)
-        partition = "toYYYYMM(`event_date`)" if any(f["name"]=="event_date" and not f.get("nullable",True) for f in spec.fields) else "tuple()"
+        partition = partition_expression(desired_partition_field(spec)) if partition_key is None else partition_key
+        if partition not in {'tuple()', 'toYYYYMM(event_date)', 'toYYYYMM(trade_date)'}:
+            raise ValueError('不支持的 ClickHouse 分区表达式')
         return f"CREATE TABLE IF NOT EXISTS {self.table(spec.name)} ({','.join(definitions)}) ENGINE=ReplacingMergeTree PARTITION BY {partition} ORDER BY ({keys})"
 
     def install(self, specs=None) -> dict:
@@ -115,6 +118,10 @@ class ClickHouse:
         for spec in (specs if specs is not None else load_canonical_catalog()).values():
             existing=self._json_rows(self.execute(f"SELECT name FROM system.columns WHERE database={self._literal(self.settings.ch_database)} AND table={self._literal(spec.name)} FORMAT JSONEachRow"))
             names={r['name'] for r in existing}
+            if names:
+                from .ch_partition import layout
+                if layout(self,spec.name)['partition_key'] != partition_expression(desired_partition_field(spec)):
+                    raise ValueError(f'{spec.name}: 分区键不同，须使用 ch-repartition 停机迁移')
             required=[f['name'] for f in spec.fields if f['name'] not in names and (f['name'] in spec.keys or not f.get('nullable',True))]
             if names and required and int(self.execute(f'SELECT count() FROM {self.table(spec.name)} FINAL')):
                 raise ValueError('已有数据的 ClickHouse 表新增必填列须先执行可审计回填：'+','.join(required))
@@ -131,14 +138,18 @@ class ClickHouse:
         return self.status()
 
     def status(self) -> dict:
-        raw = self.execute(f"SELECT name FROM system.tables WHERE database='{self.settings.ch_database}' FORMAT JSONEachRow")
-        names = {json.loads(line)["name"] for line in raw.splitlines() if line.strip()}
+        raw = self.execute(f"SELECT name,partition_key FROM system.tables WHERE database='{self.settings.ch_database}' FORMAT JSONEachRow")
+        layouts = {row['name']: row.get('partition_key') for row in self._json_rows(raw)}
+        names = set(layouts)
         specs={**load_canonical_catalog(),**{name:control_spec(name) for name in CONTROL_DDL}}
         missing=[name for name in specs if name not in names];missing_columns=[];mismatches=[]
         present=self._json_rows(self.execute(f"SELECT table,name,type FROM system.columns WHERE database='{self.settings.ch_database}' FORMAT JSONEachRow"))
         actual={(row['table'],row['name']):row['type'] for row in present}
         for name,spec in specs.items():
             if name in missing:continue
+            expected_partition = partition_expression(desired_partition_field(spec))
+            if normalize_partition(layouts[name]) != expected_partition:
+                mismatches.append(f'{name}: 分区键期望 {expected_partition}，实际 {layouts[name]}')
             for field in spec.fields:
                 found=actual.get((name,field['name']));expected=self._type(field,field['name'] in spec.keys)
                 if found is None:missing_columns.append(f"{name}.{field['name']}")

@@ -22,7 +22,11 @@ class SchemaManager:
             fields=target._json_rows(target.execute(f"SELECT name,type AS physical_type,is_in_primary_key FROM system.columns WHERE database={target._literal(target.settings.ch_database)} AND table={target._literal(name)} ORDER BY position FORMAT JSONEachRow"))
             sorting=target.execute(f"SELECT sorting_key FROM system.tables WHERE database={target._literal(target.settings.ch_database)} AND name={target._literal(name)} FORMAT TSVRaw")
             keys=[k.strip().strip('`') for k in sorting.removeprefix('tuple(').removesuffix(')').split(',') if k.strip()]
-        return {'fields':fields,'keys':keys,'exists':bool(fields)}
+        actual={'fields':fields,'keys':keys,'exists':bool(fields)}
+        if not hasattr(target,'_existing_columns') and fields:
+            from .ch_partition import layout
+            actual.update(layout(target,name))
+        return actual
 
     def _row_count(self,name,key):
         target=self.service.pg if key=='postgres' else self.service.ch
@@ -74,6 +78,8 @@ class SchemaManager:
             row_count=self._row_count(name,key) if actual['exists'] and (required_added or tightening) else None
             null_counts={column:self._null_count(name,key,column) for column in tightening} if actual['exists'] else {}
             blocked=[]
+            if difference['partition_change'] and action=='deploy':
+                blocked.append('ClickHouse 分区键不同，须使用 ch-repartition 停机迁移')
             if row_count and required_added:
                 blocked.append('已有数据的表新增必填列须先执行可审计回填：'+','.join(required_added))
             for column,count in null_counts.items():
@@ -105,7 +111,7 @@ class SchemaManager:
             result['targets'].append({'target':key,'actual':actual,'added':[f['name'] for f in added],
                 'changed':changed,'nullable_changes':nullable_changes,'removed':removed,
                 'safe_widenings':difference['safe_widenings'],
-                'key_change':key_change,'requires_rebuild':requires_rebuild,
+                'key_change':key_change,'partition_change':difference['partition_change'],'requires_rebuild':requires_rebuild,
                 'row_count':row_count,'null_counts':null_counts,'blocked':blocked,'ddl':ddl})
         result['token']=digest(result);self.state.ledger_put('schema_plan',result['token'],result)
         return result

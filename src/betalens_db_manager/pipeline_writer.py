@@ -4,7 +4,8 @@ import pyarrow as pa
 from psycopg2 import sql
 from .canonical import CanonicalTable
 from .comparison import typed,row_hash,row_key
-from .commit_protocol import manifest_rows,remaining_changes,TargetConflict
+from .commit_protocol import manifest_rows,remaining_changes,TargetConflict,NeedsReconciliation
+from .ch_partition import layout,live_partition,month_id
 from .pipeline_cache import schema
 from .storage import columns,relation
 
@@ -22,12 +23,12 @@ def arrow_bytes(spec,rows):
     return out.getvalue().to_pybytes()
 
 
-def ch_insert(db,spec,table,rows):
+def ch_insert(db,spec,table,rows,*,actual=None):
     # Each block spans at most 64 monthly partitions, below the server default 100.
     groups={}
-    partitioned=any(f['name']=='event_date' and not f.get('nullable',True) for f in spec.fields)
+    field=live_partition(db,spec,actual=actual or layout(db,table.rsplit('.',1)[-1].strip('`')))
     for row in rows:
-        key=str(row.get('event_date'))[:7] if partitioned else ''
+        key=month_id(row[field]) if field else 'all'
         groups.setdefault(key,[]).append(row)
     keys=list(groups)
     for start in range(0,len(keys),64):
@@ -95,7 +96,8 @@ def _ch_check(db,spec,stage,deleted=False,table=None,rows=None):
     from .resource_budget import BUDGET
     keys=','.join('`'+k+'`' for k in spec.keys)
     target=db.table(table or spec.name)
-    predicate=scoped_filter(db,spec,rows or [],stage,table=table)
+    field=live_partition(db,spec,table)
+    predicate=scoped_filter(db,spec,rows or [],stage,field,table=table)
     source=f'(SELECT * FROM {target} FINAL WHERE {predicate}({keys}) IN (SELECT {keys} FROM {stage}))'
     if deleted:
         n=int(db.execute(f'SELECT count() FROM {source}'))
@@ -112,23 +114,30 @@ def _ch_check(db,spec,stage,deleted=False,table=None,rows=None):
 def ch_apply(db,state,job,batch,spec,comparison,inverse=False):
     _assert_not_retired(db,spec,state)
     with db.write_window('pipeline:'+job):
+        actual=layout(db,spec.name)
+        live_partition(db,spec,actual=actual)
         if inverse:
             checkpoint=state.ledger_get('pipeline_ch_inverse',job+':'+batch+':'+spec.name)
-            if checkpoint and db.table_digest(spec,partitions=checkpoint.get('partitions'))==checkpoint.get('expected'):
+            if checkpoint and (checkpoint.get('partition_key')!=actual['partition_key'] or
+                               actual['uuid'] not in {checkpoint.get('original_uuid'),checkpoint.get('candidate_uuid')}):
+                raise NeedsReconciliation(f'{spec.name}: 回退检查点不属于当前 ClickHouse 物理布局')
+            if checkpoint and actual['uuid']==checkpoint['candidate_uuid']:
+                if db.table_digest(spec,partitions=checkpoint['partitions'])!=checkpoint['expected']:
+                    raise TargetConflict('已交换的回退表摘要不符')
                 temp=db.table(checkpoint['temporary_table'])
                 db.execute(f'DROP TABLE IF EXISTS {temp}')
                 return {'verified':True,'applied':0,'recovered':True}
         live=list(db._find_existing(spec,manifest_rows(comparison)).values())
         changes=remaining_changes(spec,comparison,live)
         if not changes:return ApplyResult([])
-        if inverse:return _ch_inverse(db,state,job,batch,spec,comparison,changes)
+        if inverse:return _ch_inverse(db,state,job,batch,spec,comparison,changes,actual)
         stage_name=('pipeline_'+uuid.uuid4().hex)
         stage=db.table(stage_name)
-        db.execute(db.ddl(spec).replace(db.table(spec.name),stage,1))
+        db.execute(db.ddl(spec,partition_key=actual['partition_key']).replace(db.table(spec.name),stage,1))
         try:
             rows=[c['after'] for c in changes]
             if any(r is None for r in rows):raise ValueError('删除必须通过可恢复逆操作执行')
-            ch_insert(db,spec,stage,rows)
+            ch_insert(db,spec,stage,rows,actual=actual)
             names=','.join('`'+n+'`' for n in columns(spec))
             parts=db._json_rows(db.execute(f'SELECT DISTINCT _partition_id AS id FROM {stage} FINAL FORMAT JSONEachRow'))
             for part in parts:db.execute(f'INSERT INTO {db.table(spec.name)} ({names}) SELECT {names} FROM {stage} FINAL WHERE _partition_id={db._literal(part["id"])}')
@@ -137,27 +146,29 @@ def ch_apply(db,state,job,batch,spec,comparison,inverse=False):
         finally:db.execute(f'DROP TABLE IF EXISTS {stage}')
 
 
-def _ch_inverse(db,state,job,batch,spec,comparison,changes):
+def _ch_inverse(db,state,job,batch,spec,comparison,changes,actual):
     """Server-side copy excludes changed keys; no Python whole-partition reconstruction."""
     key=job+':'+batch+':'+spec.name
     old=state.ledger_get('pipeline_ch_inverse',key)
-    partitioned=any(f['name']=='event_date' and not f.get('nullable',True) for f in spec.fields)
-    partitions={str(row['event_date']).replace('-','')[:6] for c in comparison['changes'] for row in (c['before'],c['after']) if row and row.get('event_date')} if partitioned else {'all'}
-    if old:partitions=old.get('partitions')
-    current_digest=lambda name=None:db.table_digest(spec,name,partitions=partitions)
+    field=live_partition(db,spec,actual=actual)
+    partitions={month_id(row[field]) for c in comparison['changes'] for row in (c['before'],c['after'])
+                if row} if field else {'all'}
     temp_name=('inverse_'+__import__('hashlib').sha256(key.encode()).hexdigest()[:20])
     temp=db.table(temp_name);target=db.table(spec.name)
-    if old and current_digest()==old.get('expected'):
-        if db.execute(f'EXISTS TABLE {temp}')=='1':db.execute(f'DROP TABLE {temp}')
-        return {'verified':True,'applied':0,'recovered':True}
-    if old and current_digest()!=old['original']:raise TargetConflict('逆操作目标已被其他任务改变')
-    original=old['original'] if old else current_digest()
     stage_name='inverse_keys_'+uuid.uuid4().hex;stage=db.table(stage_name)
-    db.execute(db.ddl(spec).replace(target,stage,1))
+    ddl=db.ddl(spec,partition_key=actual['partition_key'])
+    db.execute(ddl.replace(target,stage,1))
     try:
-        ch_insert(db,spec,stage,[c['before'] for c in changes])
+        ch_insert(db,spec,stage,[c['before'] for c in changes],actual=actual)
+        if field and field not in spec.keys:
+            from .clickhouse_keys import existing_partitions
+            partitions.update(existing_partitions(db,spec,stage))
+        if old:partitions=set(old['partitions'])
+        current_digest=lambda name=None:db.table_digest(spec,name,partitions=partitions)
+        original=current_digest()
+        if old and original!=old['original']:raise TargetConflict('逆操作目标已被其他任务改变')
         if db.execute(f'EXISTS TABLE {temp}')=='1':db.execute(f'DROP TABLE {temp}')
-        db.execute(db.ddl(spec).replace(target,temp,1))
+        db.execute(ddl.replace(target,temp,1))
         keys=','.join('`'+k+'`' for k in spec.keys);names=','.join('`'+n+'`' for n in columns(spec))
         # Copy one partition at a time so long histories never hit max_partitions_per_insert_block.
         parts=db._json_rows(db.execute(f'SELECT DISTINCT _partition_id AS id FROM {target} FINAL FORMAT JSONEachRow'))
@@ -166,10 +177,13 @@ def _ch_inverse(db,state,job,batch,spec,comparison,changes):
                 db.execute(f'ALTER TABLE {temp} ATTACH PARTITION ID {db._literal(part["id"])} FROM {target}')
             else:db.execute(f'INSERT INTO {temp} ({names}) SELECT {names} FROM {target} FINAL WHERE _partition_id={db._literal(part["id"])} AND ({keys}) NOT IN (SELECT {keys} FROM {stage})')
         restored=[c['after'] for c in changes if c['after'] is not None]
-        if restored:ch_insert(db,spec,temp,restored)
+        if restored:ch_insert(db,spec,temp,restored,actual=actual)
         fresh=list(db._find_existing(spec,manifest_rows(comparison)).values())
         if len(remaining_changes(spec,comparison,fresh))!=len(changes):raise TargetConflict('逆操作发布前目标发生变化')
-        checkpoint={'task_id':job,'table':spec.name,'original':original,'expected':current_digest(temp_name),'temporary_table':temp_name,'partitions':sorted(partitions) if partitions else None}
+        checkpoint={'task_id':job,'table':spec.name,'original':original,'expected':current_digest(temp_name),
+                    'temporary_table':temp_name,'partitions':sorted(partitions),
+                    'partition_key':actual['partition_key'],'original_uuid':actual['uuid'],
+                    'candidate_uuid':layout(db,temp_name)['uuid']}
         state.ledger_put('pipeline_ch_inverse',key,checkpoint)
         db.execute(f'EXCHANGE TABLES {target} AND {temp}')
         if current_digest()!=checkpoint['expected']:raise ValueError('逆操作受影响分区摘要不符')

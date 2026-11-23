@@ -195,3 +195,16 @@ HTTP 查询示例
 
 密集状态退役后，trade_status_daily 仅保留非派生旧记录作兼容查询，禁止新写入及旧任务恢复写入。
 物理回收须通过完整归档、隔离恢复演练、保留记录哈希比较和新版查询验收；旧可信发布记录不改写。
+
+ClickHouse 交易日分区迁移
+------------------------
+
+以 ``trade_date`` 为非空业务键的 ClickHouse 表使用交易月分区。其它表的布局不变。
+入库批次、查重及回退以目标表的实际分区为准；修改业务键中的交易日期须按旧键删除和新键写入审计。
+
+使用 ``ch-repartition preview`` 生成清单和令牌。维护账号须有目标库的 ``SYSTEM MERGES`` 权限，
+库须使用 Atomic。正式执行前排空任务与未完成的回执，启用管理器维护标记并停止外部读写。
+运行 ``ch-repartition apply --token TOKEN --readers-stopped``。执行期间保持维护状态；中断后用相同令牌重试，
+或用 ``ch-repartition rollback --token TOKEN --readers-stopped`` 撤销尚未完成的迁移。
+迁移记录保存每张表的 UUID、校验摘要和备份表名；确认新布局可读可写后再恢复服务。旧表保留，
+恢复服务后的回切需先处理新写入。

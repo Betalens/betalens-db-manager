@@ -22,6 +22,7 @@ class SchemaBundle:
     def __init__(self,service):self.s=service
 
     def entries(self):
+        from .ch_partition import desired_partition_field, partition_expression
         self.s.registry.refresh();result={}
         with registry_context(self.s.registry):
             definitions=[(name,self.s.registry.spec(name),'business','registry') for name in self.s.registry.catalog() if self.s.registry.record(name).get('status')!='archived']
@@ -44,7 +45,7 @@ class SchemaBundle:
                    'fields':fields,'keys':list(spec.keys),'indexes':indexes,'dependencies':dependencies,
                    'definition_source':str(self.s.registry.path(name)) if owner=='registry' else owner,
                    'importable':owner=='registry','definition_error':self.s.registry.errors.get(name),
-                   'clickhouse_engine':'ReplacingMergeTree','partition_key':'toYYYYMM(event_date)' if any(f['name']=='event_date' and not f.get('nullable',True) for f in fields) else 'tuple()'}
+                   'clickhouse_engine':'ReplacingMergeTree','partition_key':partition_expression(desired_partition_field(spec))}
             entry['version']=digest(entry);result[name]=entry
         return result
 
@@ -174,7 +175,7 @@ class SchemaBundle:
 
     def _create_ch(self,entry):
         definitions=[f"`{f['name']}` {f['physical_types']['clickhouse']}" for f in entry['fields']]
-        partition='toYYYYMM(`event_date`)' if entry['partition_key']!='tuple()' else 'tuple()'
+        partition=entry['partition_key']
         keys=','.join('`'+k+'`' for k in entry['keys'])
         self.s.ch.execute(f"CREATE TABLE {self.s.ch.table(entry['name'])} ({','.join(definitions)}) ENGINE=ReplacingMergeTree PARTITION BY {partition} ORDER BY ({keys})")
 

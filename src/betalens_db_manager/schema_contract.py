@@ -67,7 +67,14 @@ def compare_structure(spec, actual: dict, target: str) -> dict:
     # grants, indexes and dependencies. It is not a drop/copy/rename migration.
     safe_widenings=[item for item in changed if target=='postgres' and item['from'] in {'smallint','integer'} and item['to']=='bigint']
     requires_rebuild = bool([item for item in changed if item not in safe_widenings] or removed or key_change)
-    ready = bool(actual.get("exists")) and not (added or changed or nullable_changes or removed or key_change)
+    partition_change = False
+    if target == 'clickhouse' and 'partition_key' in actual:
+        from types import SimpleNamespace
+        from .ch_partition import desired_partition_field, normalize_partition, partition_expression
+        expected_partition = partition_expression(desired_partition_field(SimpleNamespace(fields=fields, keys=keys)))
+        partition_change = normalize_partition(actual['partition_key']) != expected_partition
+    ready = bool(actual.get("exists")) and not (added or changed or nullable_changes or removed or key_change or partition_change)
     return {"ready": ready, "added": added, "changed": changed,
             "nullable_changes": nullable_changes, "removed": removed,
-            "key_change": key_change, "requires_rebuild": requires_rebuild,"safe_widenings":safe_widenings}
+            "key_change": key_change, "partition_change":partition_change,
+            "requires_rebuild": requires_rebuild,"safe_widenings":safe_widenings}

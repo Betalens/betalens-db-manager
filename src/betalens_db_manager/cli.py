@@ -20,6 +20,10 @@ def main(argv=None):
     monitor.add_argument('--port',type=int,default=8011)
     commands.add_parser("doctor", help="检查配置、数据库及磁盘")
     commands.add_parser('migration-preview',help='只读盘点两库物理类型、可空性与待迁移字段，不执行DDL')
+    repartition = commands.add_parser('ch-repartition', help='预检或在维护窗口重建 ClickHouse 交易日分区')
+    repartition.add_argument('action', choices=['preview', 'apply', 'rollback'])
+    repartition.add_argument('--token', help='预检返回的迁移令牌')
+    repartition.add_argument('--readers-stopped', action='store_true', help='确认查询、同步和外部写入已停止')
     repair=commands.add_parser('mapping-repair',help='预览或发布逐列生产规则和已核对的映射修复；不执行DDL或补写')
     repair.add_argument('action',choices=['preview','apply'])
     repair.add_argument('--plan',type=Path,help='预览输出文件或要确认的计划文件')
@@ -93,6 +97,14 @@ def main(argv=None):
         elif args.command == 'migration-preview':
             from .deployment_preview import migration_preview
             result=migration_preview(service)
+        elif args.command == 'ch-repartition':
+            from .ch_repartition import execute, preview
+            if args.action == 'preview':
+                result = preview(service)
+            else:
+                if not args.token or not args.readers_stopped:
+                    raise ValueError('迁移需要预检 --token 和 --readers-stopped')
+                result = execute(service, args.token, rollback=args.action == 'rollback')
         elif args.command=='mapping-repair':
             from .config_migration import preview,apply
             if args.action=='preview':

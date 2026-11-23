@@ -19,6 +19,7 @@ def configure_writer(service):
     admin.execute(f'CREATE USER `{user}` IDENTIFIED WITH sha256_password BY {admin._literal(password)} HOST IP {admin._literal(str(address))}')
     try:
         admin.execute(f'GRANT SELECT,INSERT,ALTER,CREATE DATABASE,CREATE TABLE,DROP TABLE,TRUNCATE,OPTIMIZE ON `{original.ch_database}`.* TO `{user}`')
+        admin.execute(f'GRANT SYSTEM MERGES ON `{original.ch_database}`.* TO `{user}`')
         admin.execute(f'GRANT SELECT ON system.* TO `{user}`')
         admin.execute(f'GRANT SHOW ACCESS ON *.* TO `{user}`')
         settings=replace(original,ch_user=user,ch_password=password,ch_writer_mode='local_dedicated')
